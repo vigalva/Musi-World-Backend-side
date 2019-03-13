@@ -1,4 +1,4 @@
-package main.java.smartspace;
+package smartspace;
 
 
 public class Application {
