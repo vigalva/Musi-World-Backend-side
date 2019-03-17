@@ -59,13 +59,11 @@ public class UserEntity<K> implements SmartspaceEntity<K>{
 
 	public UserEntity() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public K getKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (K) userEmail;
 	}
 
 	@Override
