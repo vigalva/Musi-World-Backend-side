@@ -1,0 +1,102 @@
+package smartspace;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import smartspace.data.ActionEntity;
+
+public class ActionEntityTest {
+	public static void test() {
+		
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+
+		String expectedActionId = "ElementId";
+		actionEntity.setActionId(expectedActionId);
+		if (!actionEntity.getActionId().equals(expectedActionId)) {
+			throw new RuntimeException(
+				"Error while testing setActionId() & getActionId(). "
+				+ "Expected: " + expectedActionId 
+				+ ". However, actual: " + actionEntity.getActionId());
+		}
+		
+		String expected = "string";
+		actionEntity.setElementId(expected);
+		if (!actionEntity.getElementId().equals(expected)) {
+			throw new RuntimeException(
+				"Error while testing setElementId() & getElementId(). "
+				+ "Expected: " + expected
+				+ ". However, actual: " + actionEntity.getElementId());
+		}
+		
+		actionEntity.setActionSmartspace(expected);
+		if (!actionEntity.getActionSmartspace().equals(expected)) {
+			throw new RuntimeException(
+				"Error while testing setActionSmartspace() & getActionSmartspace(). "
+				+ "Expected: " + expected 
+				+ ". However, actual: " + actionEntity.getActionSmartspace());
+		}
+
+		
+		actionEntity.setActionType(expected);
+		if (!actionEntity.getActionType().equals(expected)) {
+			throw new RuntimeException(
+				"Error while testing setActionType() & getActionType(). "
+				+ "Expected: " + expected 
+				+ ". However, actual: " + actionEntity.getActionType());
+		}
+		
+
+		actionEntity.setElementSmartspace(expected);
+		if (!actionEntity.getElementSmartspace().equals(expected)) {
+			throw new RuntimeException(
+				"Error while testing setElementSmatspace() & getElementSmatspace(). "
+				+ "Expected: " + expected 
+				+ ". However, actual: " + actionEntity.getElementSmartspace());
+		}
+
+		String expectedPlayerEmail = "PlayerEmail@mail.com";
+		actionEntity.setPlayerEmail(expectedPlayerEmail);
+		if (!actionEntity.getPlayerEmail().equals(expectedPlayerEmail)) {
+			throw new RuntimeException(
+				"Error while testing setPlayerEmail() & getPlayerEmail(). "
+				+ "Expected: " + expectedPlayerEmail 
+				+ ". However, actual: " + actionEntity.getPlayerEmail());
+		}
+		
+		actionEntity.setPlayerSmatspace(expected);
+		if (!actionEntity.getPlayerSmatspace().equals(expected)) {
+			throw new RuntimeException(
+				"Error while testing setPlayerSmatspace() & getPlayerSmatspace(). "
+				+ "Expected: " + expected 
+				+ ". However, actual: " + actionEntity.getPlayerSmatspace());
+		}
+		
+		Map<String, Object> expectedMap = new HashMap<>();
+		expectedMap.put(expected, "ddd");
+		actionEntity.setMoreAttributes(expectedMap);
+		if (!actionEntity.getMoreAttributes().equals(expectedMap)) {
+			throw new RuntimeException(
+				"Error while testing setMoreAttributes() & getMoreAttributes(). "
+				+ "Expected: " + expected 
+				+ ". However, actual: " + actionEntity.getMoreAttributes());
+		}
+		
+		Date expectedDate = new Date();
+		actionEntity.setCreationTimestamp(expectedDate);
+		if (!actionEntity.getCreationTimestamp().equals(expectedDate)) {
+			throw new RuntimeException(
+				"Error while testing setCreationTimestamp() + getCreationTimestamp(). "
+				+ "Expected: " + expectedDate 
+				+ ". However, actual: " + actionEntity.getCreationTimestamp());
+		}
+
+		//actionEntity.setKey(expected);
+		if (!actionEntity.getKey().equals(expectedPlayerEmail+expectedActionId)) {
+			throw new RuntimeException(
+				"Error while testing getKey(). "
+				+ "Expected: " + expectedPlayerEmail+expectedActionId 
+				+ ". However, actual: " + actionEntity.getKey());
+		}
+	}
+}
