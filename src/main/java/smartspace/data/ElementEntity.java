@@ -102,8 +102,7 @@ public class ElementEntity<K> implements SmartspaceEntity<K>{
 
 	@Override
 	public K getKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (K) (creatorEmail+elementId);
 	}
 
 	@Override

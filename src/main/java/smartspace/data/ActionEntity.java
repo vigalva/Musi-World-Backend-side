@@ -30,11 +30,11 @@ public class ActionEntity<K> implements SmartspaceEntity<K>{
 		this.actionId = actionId;
 	}
 
-	public String getElementSmatspace() {
+	public String getElementSmartspace() {
 		return elementSmatspace;
 	}
 
-	public void setElementSmatspace(String elementSmatspace) {
+	public void setElementSmartspace(String elementSmatspace) {
 		this.elementSmatspace = elementSmatspace;
 	}
 
@@ -93,8 +93,7 @@ public class ActionEntity<K> implements SmartspaceEntity<K>{
 
 	@Override
 	public K getKey() {
-		// TODO Auto-generated method stub
-		return null;
+		return (K) (playerEmail + actionId);
 	}
 
 	@Override

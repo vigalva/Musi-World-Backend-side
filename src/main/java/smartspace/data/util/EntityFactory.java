@@ -2,10 +2,9 @@ package smartspace.data.util;
 
 import java.util.Map;
 
-import com.sun.xml.internal.bind.v2.runtime.Location;
-
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
+import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
