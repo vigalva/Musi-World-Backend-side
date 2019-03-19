@@ -1,6 +1,8 @@
 package smartspace.data;
+ 
 
-public class UserEntity<K> implements SmartspaceEntity<K>{
+
+public class UserEntity<K> implements SmartspaceEntity<String>{
 	private String userSmatspace;
 	private String userEmail;
 	private String username;
@@ -62,14 +64,15 @@ public class UserEntity<K> implements SmartspaceEntity<K>{
 	}
 
 	@Override
-	public K getKey() {
-		return (K) userEmail;
+	public String getKey() {
+		return (String) (userSmatspace+ "@"+ userEmail);
 	}
 
 	@Override
-	public void setKey(K key) {
-		// TODO Auto-generated method stub
-		
+	public void setKey(String key) {
+		String parts[]=key.split("@");
+		this.userSmatspace=parts[0];
+		this.userEmail=parts[1];
 	}
 
 }

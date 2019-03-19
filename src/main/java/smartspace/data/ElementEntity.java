@@ -2,7 +2,7 @@ package smartspace.data;
 
 import java.util.Map;
 
-public class ElementEntity<K> implements SmartspaceEntity<K>{
+public class ElementEntity<K> implements SmartspaceEntity<String>{
 	private String elementSmartspace;
 	private String elementId;
 	private Location location;
@@ -101,13 +101,15 @@ public class ElementEntity<K> implements SmartspaceEntity<K>{
 	}
 
 	@Override
-	public K getKey() {
-		return (K) (creatorEmail+elementId);
+	public String getKey() {
+		return (String) (elementSmartspace+"!"+elementId);
 	}
 
 	@Override
-	public void setKey(K key) {
-		// TODO Auto-generated method stub
+	public void setKey(String key) {
+		String parts[]=key.split("!");
+		this.elementSmartspace=parts[0];
+		this.elementId=parts[1];
 		
 	}
 

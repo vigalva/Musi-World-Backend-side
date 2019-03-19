@@ -2,7 +2,7 @@ package smartspace.data;
 
 import java.util.Map;
 
-public class ActionEntity<K> implements SmartspaceEntity<K>{
+public class ActionEntity<K> implements SmartspaceEntity<String>{
 	private String actionSmartspace;
 	private String actionId;
 	private String elementSmatspace;
@@ -92,13 +92,15 @@ public class ActionEntity<K> implements SmartspaceEntity<K>{
 	}
 
 	@Override
-	public K getKey() {
-		return (K) (playerEmail + actionId);
+	public String getKey() {
+		return  (String) (actionId +"!"+ actionSmartspace);
 	}
 
 	@Override
-	public void setKey(K key) {
-		// TODO Auto-generated method stub
+	public void setKey(String key) {
+		String[] parts=key.split("!");
+		this.actionId=parts[0];
+		this.actionSmartspace=parts[1];
 		
 	}
 
