@@ -2,9 +2,9 @@ package smartspace.data;
 
 import smartspace.data.Location;
 
-public class LocationTest {
-	public static void test() {
-
+public class LocationTests {
+	public void testLocatoins() {
+		//GIVEN initialized Location
 		Location location = new Location();
 		double max = 50;
 		for(double x=-max;x<max;x+=0.001)
@@ -24,5 +24,8 @@ public class LocationTest {
 						+ ". However, actual: " + location.getY());
 				}
 			}
+	}
+	public void test() {
+		testLocatoins();
 	}
 }

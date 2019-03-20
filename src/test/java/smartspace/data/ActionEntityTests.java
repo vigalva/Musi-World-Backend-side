@@ -6,12 +6,12 @@ import java.util.Map;
 
 import smartspace.data.ActionEntity;
 
-public class ActionEntityTest {
-	public static void test() {
-		
+public class ActionEntityTests {
+	public void test_get_set_ActionId() {
+		//GIVEN initialized ActionEntity & ActionId
 		ActionEntity<String> actionEntity = new ActionEntity<>();
-
-		String expectedActionId = "ElementId";
+		String expectedActionId = "ActionId";
+		
 		actionEntity.setActionId(expectedActionId);
 		if (!actionEntity.getActionId().equals(expectedActionId)) {
 			throw new RuntimeException(
@@ -20,7 +20,12 @@ public class ActionEntityTest {
 				+ ". However, actual: " + actionEntity.getActionId());
 		}
 		
-		String expectedActionSmartspace = "smart";
+	}
+	public void test_get_set_ActionSmartspace() {
+		//GIVEN initialized ActionEntity & ActionSmartspace
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedActionSmartspace = "ActionSmartspace";
+		
 		actionEntity.setActionSmartspace(expectedActionSmartspace);
 		if (!actionEntity.getActionSmartspace().equals(expectedActionSmartspace)) {
 			throw new RuntimeException(
@@ -28,36 +33,52 @@ public class ActionEntityTest {
 				+ "Expected: " + expectedActionSmartspace 
 				+ ". However, actual: " + actionEntity.getActionSmartspace());
 		}
+	}
+	public void test_get_set_ElementId() {
+		//GIVEN initialized ActionEntity & ElementId
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedElementId = "ElementId";
 		
-		String expected = "string";
-		actionEntity.setElementId(expected);
-		if (!actionEntity.getElementId().equals(expected)) {
+		actionEntity.setElementId(expectedElementId);
+		if (!actionEntity.getElementId().equals(expectedElementId)) {
 			throw new RuntimeException(
 				"Error while testing setElementId() & getElementId(). "
-				+ "Expected: " + expected
+				+ "Expected: " + expectedElementId
 				+ ". However, actual: " + actionEntity.getElementId());
 		}
 		
-
+	}	
+	public void test_get_set_ActionType() {
+		//GIVEN initialized ActionEntity & ActionType
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedActionType = "ActionType";
 		
-		actionEntity.setActionType(expected);
-		if (!actionEntity.getActionType().equals(expected)) {
+		actionEntity.setActionType(expectedActionType);
+		if (!actionEntity.getActionType().equals(expectedActionType)) {
 			throw new RuntimeException(
 				"Error while testing setActionType() & getActionType(). "
-				+ "Expected: " + expected 
+				+ "Expected: " + expectedActionType 
 				+ ". However, actual: " + actionEntity.getActionType());
 		}
+	}
+	public void test_get_set_ElementSmartspace() {
+		//GIVEN initialized ActionEntity & ElementSmartspace
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedElementSmartspace = "ElementSmartspace";
 		
-
-		actionEntity.setElementSmartspace(expected);
-		if (!actionEntity.getElementSmartspace().equals(expected)) {
+		actionEntity.setElementSmartspace(expectedElementSmartspace);
+		if (!actionEntity.getElementSmartspace().equals(expectedElementSmartspace)) {
 			throw new RuntimeException(
 				"Error while testing setElementSmatspace() & getElementSmatspace(). "
-				+ "Expected: " + expected 
+				+ "Expected: " + expectedElementSmartspace 
 				+ ". However, actual: " + actionEntity.getElementSmartspace());
 		}
-
+	}
+	public void test_get_set_PlayerEmail() {
+		//GIVEN initialized ActionEntity & PlayerEmail
+		ActionEntity<String> actionEntity = new ActionEntity<>();
 		String expectedPlayerEmail = "PlayerEmail@mail.com";
+		
 		actionEntity.setPlayerEmail(expectedPlayerEmail);
 		if (!actionEntity.getPlayerEmail().equals(expectedPlayerEmail)) {
 			throw new RuntimeException(
@@ -65,26 +86,40 @@ public class ActionEntityTest {
 				+ "Expected: " + expectedPlayerEmail 
 				+ ". However, actual: " + actionEntity.getPlayerEmail());
 		}
+	}
+	public void test_get_set_PlayerSmatspace() {
+		//GIVEN initialized ActionEntity & PlayerSmatspace
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedPlayerSmatspace = "PlayerSmatspace";
 		
-		actionEntity.setPlayerSmatspace(expected);
-		if (!actionEntity.getPlayerSmatspace().equals(expected)) {
+		actionEntity.setPlayerSmatspace(expectedPlayerSmatspace);
+		if (!actionEntity.getPlayerSmatspace().equals(expectedPlayerSmatspace)) {
 			throw new RuntimeException(
 				"Error while testing setPlayerSmatspace() & getPlayerSmatspace(). "
-				+ "Expected: " + expected 
+				+ "Expected: " + expectedPlayerSmatspace 
 				+ ". However, actual: " + actionEntity.getPlayerSmatspace());
 		}
+	}
+	public void test_get_set_MoreAttributes() {
+		//GIVEN initialized ActionEntity & Map of Attributes
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedMoreAttributes = "MoreAttributes";
 		
 		Map<String, Object> expectedMap = new HashMap<>();
-		expectedMap.put(expected, "ddd");
+		expectedMap.put(expectedMoreAttributes, "ddd");
 		actionEntity.setMoreAttributes(expectedMap);
 		if (!actionEntity.getMoreAttributes().equals(expectedMap)) {
 			throw new RuntimeException(
 				"Error while testing setMoreAttributes() & getMoreAttributes(). "
-				+ "Expected: " + expected 
+				+ "Expected: " + expectedMoreAttributes
 				+ ". However, actual: " + actionEntity.getMoreAttributes());
 		}
-		
+	}
+	public void test_get_set_Date() {
+		//GIVEN initialized ActionEntity & Date
+		ActionEntity<String> actionEntity = new ActionEntity<>();
 		Date expectedDate = new Date();
+		
 		actionEntity.setCreationTimestamp(expectedDate);
 		if (!actionEntity.getCreationTimestamp().equals(expectedDate)) {
 			throw new RuntimeException(
@@ -92,14 +127,21 @@ public class ActionEntityTest {
 				+ "Expected: " + expectedDate 
 				+ ". However, actual: " + actionEntity.getCreationTimestamp());
 		}
-
+	}
+	public void test_get_set_Key() {
+		//GIVEN initialized ActionEntity, ActionId & ActionSmartspace.
+		ActionEntity<String> actionEntity = new ActionEntity<>();
+		String expectedActionId = "ActionId";
+		String expectedActionSmartspace = "ActionSmartspace";
+		actionEntity.setActionId(expectedActionId);
+		actionEntity.setActionSmartspace(expectedActionSmartspace);
+		
 		if (!actionEntity.getKey().equals(expectedActionId+'!'+expectedActionSmartspace)) {
 			throw new RuntimeException(
 				"Error while testing setKey() & getKey(). "
 				+ "Expected: " + expectedActionId+'!'+expectedActionSmartspace
 				+ ". However, actual: " + actionEntity.getKey());
 		}
-		
 		actionEntity.setKey(expectedActionSmartspace+'!'+expectedActionId);
 		if (!actionEntity.getKey().equals(expectedActionSmartspace+'!'+expectedActionId)) {
 			throw new RuntimeException(
@@ -107,5 +149,19 @@ public class ActionEntityTest {
 				+ "Expected: " + expectedActionSmartspace+'!'+expectedActionId
 				+ ". However, actual: " + actionEntity.getKey());
 		}
+	}
+
+	public void test() {
+		test_get_set_ActionId();
+		test_get_set_ActionSmartspace();
+		test_get_set_ElementId();
+		test_get_set_ActionType();
+		test_get_set_ElementSmartspace();
+		test_get_set_PlayerEmail();
+		test_get_set_PlayerSmatspace();
+		test_get_set_MoreAttributes();
+		test_get_set_Date();
+		test_get_set_Key();
+		
 	}
 }
