@@ -1,4 +1,4 @@
-package smartspace;
+package smartspace.data;
 
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;

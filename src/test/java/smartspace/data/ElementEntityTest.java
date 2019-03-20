@@ -1,4 +1,4 @@
-package smartspace;
+package smartspace.data;
 
 import java.util.Date;
 import java.util.HashMap;

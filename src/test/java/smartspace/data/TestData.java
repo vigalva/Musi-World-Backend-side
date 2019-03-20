@@ -1,4 +1,4 @@
-package smartspace;
+package smartspace.data;
 
 public class TestData {
 	public static void main(String[] args) {
