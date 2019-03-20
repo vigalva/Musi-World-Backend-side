@@ -20,6 +20,15 @@ public class ActionEntityTest {
 				+ ". However, actual: " + actionEntity.getActionId());
 		}
 		
+		String expectedActionSmartspace = "smart";
+		actionEntity.setActionSmartspace(expectedActionSmartspace);
+		if (!actionEntity.getActionSmartspace().equals(expectedActionSmartspace)) {
+			throw new RuntimeException(
+				"Error while testing setActionSmartspace() & getActionSmartspace(). "
+				+ "Expected: " + expectedActionSmartspace 
+				+ ". However, actual: " + actionEntity.getActionSmartspace());
+		}
+		
 		String expected = "string";
 		actionEntity.setElementId(expected);
 		if (!actionEntity.getElementId().equals(expected)) {
@@ -29,13 +38,6 @@ public class ActionEntityTest {
 				+ ". However, actual: " + actionEntity.getElementId());
 		}
 		
-		actionEntity.setActionSmartspace(expected);
-		if (!actionEntity.getActionSmartspace().equals(expected)) {
-			throw new RuntimeException(
-				"Error while testing setActionSmartspace() & getActionSmartspace(). "
-				+ "Expected: " + expected 
-				+ ". However, actual: " + actionEntity.getActionSmartspace());
-		}
 
 		
 		actionEntity.setActionType(expected);
@@ -91,11 +93,18 @@ public class ActionEntityTest {
 				+ ". However, actual: " + actionEntity.getCreationTimestamp());
 		}
 
-		//actionEntity.setKey(expected);
-		if (!actionEntity.getKey().equals(expectedPlayerEmail+expectedActionId)) {
+		if (!actionEntity.getKey().equals(expectedActionId+'!'+expectedActionSmartspace)) {
+			throw new RuntimeException(
+				"Error while testing setKey() & getKey(). "
+				+ "Expected: " + expectedActionId+'!'+expectedActionSmartspace
+				+ ". However, actual: " + actionEntity.getKey());
+		}
+		
+		actionEntity.setKey(expectedActionSmartspace+'!'+expectedActionId);
+		if (!actionEntity.getKey().equals(expectedActionSmartspace+'!'+expectedActionId)) {
 			throw new RuntimeException(
 				"Error while testing getKey(). "
-				+ "Expected: " + expectedPlayerEmail+expectedActionId 
+				+ "Expected: " + expectedActionSmartspace+'!'+expectedActionId
 				+ ". However, actual: " + actionEntity.getKey());
 		}
 	}

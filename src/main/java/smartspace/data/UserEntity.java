@@ -65,12 +65,12 @@ public class UserEntity<K> implements SmartspaceEntity<String>{
 
 	@Override
 	public String getKey() {
-		return (String) (userSmatspace+ "@"+ userEmail);
+		return (String) (userSmatspace+ "!"+ userEmail);
 	}
 
 	@Override
 	public void setKey(String key) {
-		String parts[]=key.split("@");
+		String parts[]=key.split("!");
 		this.userSmatspace=parts[0];
 		this.userEmail=parts[1];
 	}

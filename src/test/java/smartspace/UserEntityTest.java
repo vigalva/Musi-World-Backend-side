@@ -60,21 +60,29 @@ public class UserEntityTest {
 				+ ". However, actual: " + userEntity.getUsername());
 		}
 		
-		userEntity.setUserSmatspace(expected);
-		if (!(userEntity.getUserSmatspace().equals(expected))) {
+		String expectedUserSmartspace = "UserSmartspace";
+		userEntity.setUserSmatspace(expectedUserSmartspace);
+		if (!(userEntity.getUserSmatspace().equals(expectedUserSmartspace))) {
 			throw new RuntimeException(
 				"Error while testing setUserSmatspacee() & getUserSmatspace(). "
-				+ "Expected: " + expected
+				+ "Expected: " + expectedUserSmartspace
 				+ ". However, actual: " + userEntity.getUserSmatspace());
 		}
 		
-		if(!userEntity.getKey().equals(expectedUserEmail)) {
+		if(!userEntity.getKey().equals(expectedUserSmartspace+'!'+expectedUserEmail)) {
 			throw new RuntimeException(
 					"Error while testing getKey(). "
-					+ "Expected: " + expectedUserEmail 
+					+ "Expected: " + expectedUserSmartspace+'!'+expectedUserEmail
 					+ ". However, actual: " + userEntity.getKey());
-			}
-			
+		}
+		
+		userEntity.setKey(expectedUserEmail+'!'+expectedUserSmartspace);
+		if(!userEntity.getKey().equals(expectedUserEmail+'!'+expectedUserSmartspace)) {
+			throw new RuntimeException(
+					"Error while testing setKey() & getKey(). "
+					+ "Expected: " + expectedUserEmail+'!'+expectedUserSmartspace
+					+ ". However, actual: " + userEntity.getKey());
+		}
 		
 		
 		

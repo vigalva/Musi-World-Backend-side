@@ -22,16 +22,17 @@ public class ElementEntityTest {
 				+ ". However, actual: " + elementEntity.getElementId());
 		}
 		
-		String expected = "string";
-		elementEntity.setElementSmartspace(expected);
-		if (!elementEntity.getElementSmartspace().equals(expected)) {
+		String expectedElementSmartspace = "smart";
+		elementEntity.setElementSmartspace(expectedElementSmartspace);
+		if (!elementEntity.getElementSmartspace().equals(expectedElementSmartspace)) {
 			throw new RuntimeException(
 				"Error while testing setElementSmartspace() & getElementSmartspace(). "
-				+ "Expected: " + expected 
+				+ "Expected: " + expectedElementSmartspace 
 				+ ". However, actual: " + elementEntity.getElementSmartspace());
 		}
 
 		
+		String expected = "string";
 		elementEntity.setType(expected);
 		if (!elementEntity.getType().equals(expected)) {
 			throw new RuntimeException(
@@ -111,11 +112,18 @@ public class ElementEntityTest {
 				+ ". However, actual: " + elementEntity.isExpired());
 		}
 
-		//actionEntity.setKey(expected);
-		if (!elementEntity.getKey().equals(expectedCreatorEmail+expectedElementId)) {
+		if (!elementEntity.getKey().equals(expectedElementSmartspace+'!'+expectedElementId)) {
 			throw new RuntimeException(
 				"Error while testing getKey(). "
-				+ "Expected: " + expectedCreatorEmail+expectedElementId 
+				+ "Expected: " + expectedElementSmartspace+'!'+expectedElementId
+				+ ". However, actual: " + elementEntity.getKey());
+		}
+		
+		elementEntity.setKey(expectedElementId+'!'+expectedElementSmartspace);
+		if (!elementEntity.getKey().equals(expectedElementId+'!'+expectedElementSmartspace)) {
+			throw new RuntimeException(
+				"Error while testing setKey() & getKey(). "
+				+ "Expected: " + expectedElementId+'!'+expectedElementSmartspace
 				+ ". However, actual: " + elementEntity.getKey());
 		}
 	}
