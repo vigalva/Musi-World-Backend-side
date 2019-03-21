@@ -1,5 +1,6 @@
 package smartspace.data;
 
+import java.util.Date;
 import java.util.Map;
 
 public class ActionEntity<K> implements SmartspaceEntity<String>{
@@ -13,7 +14,16 @@ public class ActionEntity<K> implements SmartspaceEntity<String>{
 	private java.util.Date creationTimestamp;
 	private Map<String,Object> moreAttributes;
 
-	
+	public ActionEntity(String elementId, String elementSmartspace, String actionType,
+			Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
+		this.elementId=elementId;
+		this.elementSmatspace=elementSmartspace;
+		this.actionType=actionType;
+		this.creationTimestamp=creationTimestamp;
+		this.playerEmail=playerEmail;
+		this.playerSmatspace=playerSmartspace;
+		this.moreAttributes=moreAttributes;
+	}
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}

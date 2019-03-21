@@ -5,8 +5,8 @@ import java.util.List;
 import smartspace.data.ActionEntity;
 
 public interface ActionDao {
-	public ActionEntity create(ActionEntity actionEntity);
-	public List<ActionEntity> readAll();
+	public ActionEntity<String> create(ActionEntity<String> actionEntity);
+	public List<ActionEntity<String>> readAll();
 	public void deleteAll();
 
 }

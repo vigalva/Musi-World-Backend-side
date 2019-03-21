@@ -10,7 +10,16 @@ public class UserEntity<K> implements SmartspaceEntity<String>{
 	private UserRole role;
 	private long points;
 	
-
+	public UserEntity(String userEmail, String userSmartspace, String username, String avatar,
+			UserRole role, long points) {
+		this.userEmail=userEmail;
+		this.userSmatspace=userSmartspace;
+		this.username=username;
+		this.avatar=avatar;
+		this.role=role;
+		this.points=points;
+		
+	}
 	public String getUserSmatspace() {
 		return userSmatspace;
 	}

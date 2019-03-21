@@ -1,5 +1,6 @@
 package smartspace.data;
 
+import java.util.Date;
 import java.util.Map;
 
 public class ElementEntity<K> implements SmartspaceEntity<String>{
@@ -14,7 +15,17 @@ public class ElementEntity<K> implements SmartspaceEntity<String>{
 	private String creatorEmail;
 	private Map<String,Object> moreAttributes;
 	
-
+	public ElementEntity(String name, String type, Location location, Date creationTimeStamp,
+			String creatorEmail, String creatorSmartspace, boolean expired, Map<String, Object> moreAttributes) {
+		this.name=name;
+		this.type=type;
+		this.location=location;
+		this.creationTimestamp=creationTimeStamp;
+		this.creatorEmail=creatorEmail;
+		this.creatorSmartspace=creatorSmartspace;
+		this.expired=expired;
+		this.moreAttributes=moreAttributes;
+	}
 	public String getElementSmartspace() {
 		return elementSmartspace;
 	}

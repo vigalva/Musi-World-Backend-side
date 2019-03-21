@@ -6,9 +6,9 @@ import java.util.Optional;
 import smartspace.data.UserEntity;
 
 public interface UserDao<UserKey> {
-	public UserEntity create(UserEntity userEntity);
-	public Optional<UserEntity> readById(UserKey userKey);
-	public List<UserEntity> readAll();
-	public void update(UserEntity userEntity);
+	public UserEntity<String> create(UserEntity<String> userEntity);
+	public Optional<UserEntity<String>> readById(String userKey);
+	public List<UserEntity<String>> readAll();
+	public void update(UserEntity<String> userEntity);
 	public void deleteAll();
 }
