@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import smartspace.data.ElementEntity;
-import smartspace.data.UserEntity;
 
 public interface ElementDao<ElementKey>{
 	public ElementEntity<String> create(ElementEntity<String> elementEntity);
