@@ -15,12 +15,12 @@ import smartspace.data.ElementEntity;
 import smartspace.data.util.EntityFactory;
 
 @Component
-public class ElmentEntityDemo implements CommandLineRunner {
+public class ElementEntityDemo implements CommandLineRunner {
 	private EntityFactory factory;
 	private ElementDao<String> elementDao;
 
 	@Autowired
-	public ElmentEntityDemo(EntityFactory factory, ElementDao<String> elementDao) {
+	public ElementEntityDemo(EntityFactory factory, ElementDao<String> elementDao) {
 		this.factory = factory;
 		this.elementDao = elementDao;
 	}
