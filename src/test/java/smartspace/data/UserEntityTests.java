@@ -19,7 +19,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_Avatar() {
 		//GIVEN initialized ActionEntity & Avatar
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		String expectedAvatar = "string";
 		
 		userEntity.setAvatar(expectedAvatar);
@@ -28,7 +28,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_Points() {
 		//GIVEN initialized ActionEntity & max
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		long max = new Long(1000);
 		
 		for(long i = -max;i<max ;i++) {
@@ -39,7 +39,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_UserRole() {
 		//GIVEN initialized ActionEntity
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		
 		UserRole expectedUserRole = UserRole.MANAGER;
 		userEntity.setRole(expectedUserRole);
@@ -52,7 +52,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_UserEmail() {
 		//GIVEN initialized ActionEntity & UserEmail
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		String expectedUserEmail = "userEmail@mail.com";
 		
 		userEntity.setUserEmail(expectedUserEmail);
@@ -61,7 +61,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_Username() {
 		//GIVEN initialized ActionEntity & User Name
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		String expectedUsername = "Username";
 		
 		userEntity.setUsername(expectedUsername);
@@ -70,7 +70,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_UserSmartspace() {
 		//GIVEN initialized ActionEntity & UserName
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		String expectedUserSmartspace = "UserSmartspace";
 		
 		userEntity.setUserSmatspace(expectedUserSmartspace);
@@ -79,7 +79,7 @@ public class UserEntityTests {
 	@Test
 	public void test_get_set_Key() {
 		//GIVEN initialized ActionEntity & UserEmail
-		UserEntity<String> userEntity = new UserEntity<>();
+		UserEntity userEntity = new UserEntity();
 		String expectedUserSmartspace = "UserSmartspace";
 		String expectedUserEmail = "userEmail@mail.com";
 

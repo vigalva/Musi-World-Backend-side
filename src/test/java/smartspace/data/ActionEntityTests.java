@@ -20,7 +20,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_ActionId() {
 		//GIVEN initialized ActionEntity & ActionId
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedActionId = "ActionId";
 		
 		actionEntity.setActionId(expectedActionId);
@@ -31,7 +31,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_ActionSmartspace() {
 		//GIVEN initialized ActionEntity & ActionSmartspace
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedActionSmartspace = "ActionSmartspace";
 		
 		actionEntity.setActionSmartspace(expectedActionSmartspace);
@@ -42,7 +42,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_ElementId() {
 		//GIVEN initialized ActionEntity & ElementId
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedElementId = "ElementId";
 		
 		actionEntity.setElementId(expectedElementId);
@@ -53,7 +53,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_ActionType() {
 		//GIVEN initialized ActionEntity & ActionType
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedActionType = "ActionType";
 		
 		actionEntity.setActionType(expectedActionType);
@@ -63,7 +63,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_ElementSmartspace() {
 		//GIVEN initialized ActionEntity & ElementSmartspace
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedElementSmartspace = "ElementSmartspace";
 		
 		actionEntity.setElementSmartspace(expectedElementSmartspace);
@@ -73,7 +73,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_PlayerEmail() {
 		//GIVEN initialized ActionEntity & PlayerEmail
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedPlayerEmail = "PlayerEmail@mail.com";
 		
 		actionEntity.setPlayerEmail(expectedPlayerEmail);
@@ -83,7 +83,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_PlayerSmatspace() {
 		//GIVEN initialized ActionEntity & PlayerSmatspace
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedPlayerSmatspace = "PlayerSmatspace";
 		
 		actionEntity.setPlayerSmatspace(expectedPlayerSmatspace);
@@ -93,7 +93,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_MoreAttributes() {
 		//GIVEN initialized ActionEntity & Map of Attributes
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedMoreAttributes = "MoreAttributes";
 		
 		Map<String, Object> expectedMap = new HashMap<>();
@@ -105,7 +105,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_Date() {
 		//GIVEN initialized ActionEntity & Date
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		Date expectedDate = new Date();
 		
 		actionEntity.setCreationTimestamp(expectedDate);
@@ -115,7 +115,7 @@ public class ActionEntityTests {
 	@Test
 	public void test_get_set_Key() {
 		//GIVEN initialized ActionEntity, ActionId & ActionSmartspace.
-		ActionEntity<String> actionEntity = new ActionEntity<>();
+		ActionEntity actionEntity = new ActionEntity();
 		String expectedActionId = "ActionId";
 		String expectedActionSmartspace = "ActionSmartspace";
 		actionEntity.setActionId(expectedActionId);

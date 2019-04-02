@@ -2,8 +2,24 @@ package smartspace.data;
 
 import java.util.Date;
 import java.util.Map;
+import javax.persistence.Convert;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
-public class ElementEntity<K> implements SmartspaceEntity<String>{
+import smartspace.dao.rdb.MapToJsonConverter;
+
+
+@Entity
+@Table(name="ELEMENTS")
+public class ElementEntity implements SmartspaceEntity<String>{
 	private String elementSmartspace;
 	private String elementId;
 	private Location location;
@@ -41,11 +57,11 @@ public class ElementEntity<K> implements SmartspaceEntity<String>{
 	public void setElementId(String elementId) {
 		this.elementId = elementId;
 	}
-
+	@Embedded
 	public Location getLocation() {
 		return location;
 	}
-
+	@Transient
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -65,7 +81,7 @@ public class ElementEntity<K> implements SmartspaceEntity<String>{
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	@Temporal(TemporalType.TIMESTAMP)
 	public java.util.Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
@@ -97,7 +113,8 @@ public class ElementEntity<K> implements SmartspaceEntity<String>{
 	public void setCreatorEmail(String creatorEmail) {
 		this.creatorEmail = creatorEmail;
 	}
-
+	@Lob
+	@Convert(converter=MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -111,6 +128,7 @@ public class ElementEntity<K> implements SmartspaceEntity<String>{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Id
 	@Override
 	public String getKey() {
 		return (String) (elementSmartspace+"!"+elementId);

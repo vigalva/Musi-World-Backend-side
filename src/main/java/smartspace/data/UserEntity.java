@@ -1,8 +1,24 @@
 package smartspace.data;
  
+import java.util.Date;
+import java.util.Map;
+import javax.persistence.Convert;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import smartspace.dao.rdb.MapToJsonConverter;
 
-public class UserEntity<K> implements SmartspaceEntity<String>{
+@Entity
+@Table(name="USERS")
+public class UserEntity implements SmartspaceEntity<String>{
 	private String userSmatspace;
 	private String userEmail;
 	private String username;
@@ -51,7 +67,7 @@ public class UserEntity<K> implements SmartspaceEntity<String>{
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-
+	@Enumerated(EnumType.STRING)
 	public UserRole getRole() {
 		return role;
 	}
@@ -71,7 +87,7 @@ public class UserEntity<K> implements SmartspaceEntity<String>{
 	public UserEntity() {
 		super();
 	}
-
+	@Id
 	@Override
 	public String getKey() {
 		return (String) (userSmatspace+ "!"+ userEmail);

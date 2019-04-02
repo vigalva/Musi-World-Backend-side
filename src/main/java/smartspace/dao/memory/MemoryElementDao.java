@@ -13,15 +13,15 @@ import org.springframework.stereotype.Repository;
 import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 
-@Repository
+//@Repository
 public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	
-	private  Map<String, ElementEntity<String>> memory;
+	private  Map<String, ElementEntity> memory;
 	private String smartspace;
 	private String elementid;
 
 	public MemoryElementDao() {
-		this.memory = Collections.synchronizedSortedMap(new TreeMap<>());;
+		this.memory = Collections.synchronizedSortedMap(new TreeMap<>());
 		
 	}
 	
@@ -35,15 +35,15 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	}
 	
 	@Override
-	public ElementEntity<String> create(ElementEntity<String> elementEntity) {
+	public ElementEntity create(ElementEntity elementEntity) {
 		elementEntity.setKey(smartspace + "!" + elementid);
 		this.memory.put(elementEntity.getKey(), elementEntity);
 		return elementEntity;
 	}
 
 	@Override
-	public Optional<ElementEntity<String>> readById(String elementkey) {
-		ElementEntity<String> elemntEntity = this.memory.get(elementkey);
+	public Optional<ElementEntity> readById(ElementKey elementkey) {
+		ElementEntity elemntEntity = this.memory.get(elementkey);
 		if (elemntEntity != null) {
 			return Optional.of(elemntEntity);
 		}else {
@@ -52,14 +52,14 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	}
 
 	@Override
-	public List<ElementEntity<String>> readAll() {
+	public List<ElementEntity> readAll() {
 		return new ArrayList<>(this.memory.values());
 	}
 
 	@Override
-	public void update(ElementEntity<String> elementEntity) {
-		ElementEntity<String> existing = 
-				this.readById(elementEntity.getKey()).
+	public void update(ElementEntity elementEntity) {
+		ElementEntity existing = 
+				this.readById((ElementKey) elementEntity.getKey()).
 				orElseThrow(()->new RuntimeException("no message entity with key: " + elementEntity.getKey()));
 			
 			if (elementEntity.getName() != null) {
@@ -81,13 +81,13 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	}
 
 	@Override
-	public void deleteByKey(String elementKey) {
+	public void deleteByKey(ElementKey elementKey) {
 		memory.remove(elementKey);
 		
 	}
 
 	@Override
-	public void delete(ElementEntity<String> elementEntity) {
+	public void delete(ElementEntity elementEntity) {
 		memory.remove(elementEntity.getKey(),elementEntity);
 		
 	}
@@ -97,5 +97,9 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 		memory.clear();
 		
 	}
+
+	
+
+	
 
 }

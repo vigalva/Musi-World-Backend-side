@@ -22,7 +22,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_ElementId() {
 		//GIVEN initialized ElementEntity & ElementId
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedElementId = "9";
 		
 		elementEntity.setElementId(expectedElementId);
@@ -31,7 +31,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_ElementSmartspace() {
 		//GIVEN initialized ElementEntity & ElementSmartspace
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedElementSmartspace = "ElementSmartspace";
 		
 		elementEntity.setElementSmartspace(expectedElementSmartspace);
@@ -40,7 +40,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_Type() {
 		//GIVEN initialized ElementEntity & ElementType
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedType = "Type";
 		
 		elementEntity.setType(expectedType);
@@ -49,7 +49,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_Location() {
 		//GIVEN initialized ElementEntity & Location
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		Location expectedLocation = new Location();
 
 		elementEntity.setLocation(expectedLocation);
@@ -58,7 +58,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_CreatorEmail() {
 		//GIVEN initialized ElementEntity & CreatorEmail
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedCreatorEmail = "CreatorEmail@mail.com";
 		
 		elementEntity.setCreatorEmail(expectedCreatorEmail);
@@ -67,7 +67,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_CreatorSmartspace() {
 		//GIVEN initialized ElementEntity & expectedCreatorSmartspace
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedCreatorSmartspace = "CreatorSmartspace";
 		
 		elementEntity.setCreatorSmartspace(expectedCreatorSmartspace);
@@ -76,7 +76,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_Name() {
 		//GIVEN initialized ElementEntity & Name
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedName = "CreatorSmartspace";
 		
 		elementEntity.setName(expectedName);
@@ -85,7 +85,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_MoreAttributes() {
 		//GIVEN initialized ElementEntity & MoreAttributes
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedMoreAttributes = "MoreAttributes";
 		
 		Map<String, Object> expectedMap = new HashMap<>();
@@ -96,7 +96,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_Date() {
 		//GIVEN initialized ElementEntity & Date
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		Date expectedDate = new Date();
 		
 		elementEntity.setCreationTimestamp(expectedDate);
@@ -105,7 +105,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_Expiraition() {
 		//GIVEN initialized ElementEntity
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		
 		boolean expectedExpiraition = true;
 		elementEntity.setExpired(expectedExpiraition);
@@ -118,7 +118,7 @@ public class ElementEntityTests {
 	@Test
 	public void test_get_set_Key() {
 		//GIVEN initialized ElementEntity
-		ElementEntity<String> elementEntity = new ElementEntity<>();
+		ElementEntity elementEntity = new ElementEntity();
 		String expectedElementId = "9";
 		String expectedElementSmartspace = "ElementSmartspace";
 		

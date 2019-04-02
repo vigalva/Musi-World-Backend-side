@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
-@Repository
+//@Repository
 public class MemoryUserDao<UserKey> implements UserDao<UserKey>{
 	
-	private  Map<String,UserEntity<String>> memory;
+	private  Map<String,UserEntity> memory;
 	private String smartspace;
 	private String userEmail;
 	
@@ -34,15 +34,15 @@ public class MemoryUserDao<UserKey> implements UserDao<UserKey>{
 		this.userEmail=email;
 	}
 	@Override
-	public UserEntity<String> create(UserEntity<String> userEntity) {
+	public UserEntity create(UserEntity userEntity) {
 		userEntity.setKey(smartspace + "!" + userEmail);
 		this.memory.put(userEntity.getKey(), userEntity);
 		return userEntity;
 	}
 
 	@Override
-	public Optional<UserEntity<String>> readById(String userKey) {
-		UserEntity<String> userEntity = this.memory.get(userKey);
+	public Optional<UserEntity> readById(UserKey userKey) {
+		UserEntity userEntity = this.memory.get(userKey);
 		if (userEntity != null) {
 			return Optional.of(userEntity);
 		}else {
@@ -51,15 +51,15 @@ public class MemoryUserDao<UserKey> implements UserDao<UserKey>{
 	}
 
 	@Override
-	public List<UserEntity<String>> readAll() {
+	public List<UserEntity> readAll() {
 		
 		return new ArrayList<>(this.memory.values());
 	}
 
 	@Override
-	public void update(UserEntity<String> userEntity) {
-		UserEntity<String> existing = 
-				this.readById(userEntity.getKey()).
+	public void update(UserEntity userEntity) {
+		UserEntity existing = 
+				this.readById((UserKey) userEntity.getKey()).
 				orElseThrow(()->new RuntimeException("no message entity with key: " + userEntity.getKey()));
 			
 			if (userEntity.getAvatar() != null) {

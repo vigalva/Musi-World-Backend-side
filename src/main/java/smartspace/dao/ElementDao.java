@@ -6,11 +6,13 @@ import java.util.Optional;
 import smartspace.data.ElementEntity;
 
 public interface ElementDao<ElementKey>{
-	public ElementEntity<String> create(ElementEntity<String> elementEntity);
-	public Optional<ElementEntity<String>> readById(String elementkey);
-	public List<ElementEntity<String>> readAll();
-	public void update(ElementEntity<String> elementEntity);
-	public void deleteByKey(String  elementKey);
-	public void delete(ElementEntity<String> elementEntity);
+	public ElementEntity create(ElementEntity elementEntity);
+	public Optional<ElementEntity> readById(ElementKey elementkey);
+	public List<ElementEntity> readAll();
+	public void update(ElementEntity elementEntity);
+	public void deleteByKey(ElementKey  elementKey);
+	public void delete(ElementEntity elementEntity);
 	public void deleteAll();
+	
+	
 }

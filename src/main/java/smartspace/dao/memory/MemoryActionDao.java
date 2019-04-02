@@ -13,10 +13,10 @@ import org.springframework.stereotype.Repository;
 import smartspace.dao.ActionDao;
 import smartspace.data.ActionEntity;
 
-@Repository
+//@Repository
 public class MemoryActionDao implements ActionDao {
 	
-	private Map<String, ActionEntity<String>> memory;
+	private Map<String, ActionEntity> memory;
 	private String actionId;
 	private String smartspace;
 	
@@ -36,14 +36,14 @@ public class MemoryActionDao implements ActionDao {
 	}
 	
 	@Override
-	public ActionEntity<String> create(ActionEntity<String> actionEntity) {
+	public ActionEntity create(ActionEntity actionEntity) {
 		actionEntity.setKey(smartspace + "!" + actionId);
 		this.memory.put(actionEntity.getKey(),actionEntity);
 		return actionEntity;
 	}
 
 	@Override
-	public List<ActionEntity<String>> readAll() {
+	public List<ActionEntity> readAll() {
 		return new ArrayList<>(this.memory.values());
 	}
 

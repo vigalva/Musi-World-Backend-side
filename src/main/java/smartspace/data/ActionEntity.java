@@ -3,7 +3,23 @@ package smartspace.data;
 import java.util.Date;
 import java.util.Map;
 
-public class ActionEntity<K> implements SmartspaceEntity<String>{
+import javax.persistence.Convert;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import smartspace.dao.rdb.MapToJsonConverter;
+
+@Entity
+@Table(name="ACTIONS")
+public class ActionEntity implements SmartspaceEntity<String>{
 	private String actionSmartspace;
 	private String actionId;
 	private String elementSmatspace;
@@ -79,15 +95,16 @@ public class ActionEntity<K> implements SmartspaceEntity<String>{
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
 	}
-
+	@Temporal(TemporalType.TIMESTAMP)
 	public java.util.Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
-
+	
 	public void setCreationTimestamp(java.util.Date creationTimestamp) {
 		this.creationTimestamp = creationTimestamp;
 	}
-
+	@Lob
+	@Convert(converter=MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -101,8 +118,8 @@ public class ActionEntity<K> implements SmartspaceEntity<String>{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public String getKey() {
+	@Id
+	@Override	public String getKey() {
 		return  (String) (actionId +"!"+ actionSmartspace);
 	}
 

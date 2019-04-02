@@ -5,13 +5,16 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.data.util.EntityFactory;
 
 @Component
+@Profile("production")
 public class UserEntityDemo implements CommandLineRunner {
 	private EntityFactory factory;
 	private UserDao<String> userDao;
@@ -35,7 +38,7 @@ public class UserEntityDemo implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		UserEntity<String> user1 = this.factory.createNewUser(null, null, "demo", "demo", null, 0);
+		UserEntity user1 = this.factory.createNewUser("dummy", "dummy", "dummy userName", "dummy avatar", UserRole.PLAYER, 100);
 
 		System.err.println("new user:\n" + user1);
 		
@@ -43,13 +46,13 @@ public class UserEntityDemo implements CommandLineRunner {
 		System.err.println("new user: " + user1.getKey());
 		
 		
-		UserEntity<String> update = new UserEntity<String>();
+		UserEntity update = new UserEntity();
 		update.setKey(user1.getKey());
 		update.setPoints(10);
 		update.setUsername("somethine else");
 		this.userDao.update(update);
 		
-		Optional<UserEntity<String>> userOP = this.userDao.readById(user1.getKey());
+		Optional<UserEntity> userOP = this.userDao.readById(user1.getKey());
 		if (userOP.isPresent()) {
 			user1 = userOP.get(); 
 		}else {

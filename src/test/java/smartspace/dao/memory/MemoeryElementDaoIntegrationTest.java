@@ -101,25 +101,25 @@ public class MemoeryElementDaoIntegrationTest {
 		details.put("size", text.length());
 		details.put("font", "Arial-7px");
 		details.put("language", Locale.ENGLISH);
-		ElementEntity<String> element1 = this.factory.createNewElement(text, null, null, new Date(), null, null, false, details);
+		ElementEntity element1 = this.factory.createNewElement(text, null, null, new Date(), null, null, false, details);
 		element1 = this.elementDao.create(element1);
-		ElementEntity<String> initElement = new ElementEntity<String>();
+		ElementEntity initElement = new ElementEntity();
 		initElement.setKey(element1.getKey());
 		
 		Map<String, Object> updatedDetails = new HashMap<>(element1.getMoreAttributes());
 		updatedDetails.put("location", new double[] {1.0, 6.0});
 		updatedDetails.put("locationList", Arrays.asList(new double[] {1.0, 6.0}));
 		updatedDetails.put("locationPoint", new Point(1, 6));
-		ElementEntity<String> update = new ElementEntity<String>();
+		ElementEntity update = new ElementEntity();
 		update.setKey(element1.getKey());
 		update.setMoreAttributes(updatedDetails);
 		this.elementDao.update(update);
 		
-		Optional<ElementEntity<String> > elementOp = this.elementDao.readById(element1.getKey());
+		Optional<ElementEntity > elementOp = this.elementDao.readById(element1.getKey());
 		
 		this.elementDao.deleteAll();
 		
-		List<ElementEntity<String>> listAfterDeletion = this.elementDao.readAll();
+		List<ElementEntity> listAfterDeletion = this.elementDao.readAll();
 		
 		// THEN the initially generated message key is not null
 		// AND the message read using key is present

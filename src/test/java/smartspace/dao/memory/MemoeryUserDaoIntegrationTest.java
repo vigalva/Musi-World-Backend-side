@@ -92,22 +92,22 @@ public class MemoeryUserDaoIntegrationTest {
 		// AND I read all
 		String text = "Test";
 		int points=100;
-		UserEntity<String> user1 = this.factory.createNewUser(null, null, text, null, null, points);
+		UserEntity user1 = this.factory.createNewUser(null, null, text, null, null, points);
 		user1 = this.userDao.create(user1);
-		UserEntity<String> initUser = new UserEntity<String>();
+		UserEntity initUser = new UserEntity();
 		initUser.setKey(user1.getKey());
 		
 		int updatedPoints=500;
-		UserEntity<String> update = new UserEntity<String>();
+		UserEntity update = new UserEntity();
 		update.setKey(user1.getKey());
 		update.setPoints(updatedPoints);
 		this.userDao.update(update);
 		
-		Optional<UserEntity<String> > userOp = this.userDao.readById(user1.getKey());
+		Optional<UserEntity > userOp = this.userDao.readById(user1.getKey());
 		
 		this.userDao.deleteAll();
 		
-		List<UserEntity<String>> listAfterDeletion = this.userDao.readAll();
+		List<UserEntity> listAfterDeletion = this.userDao.readAll();
 		
 		// THEN the initially generated message key is not null
 		// AND the message read using key is present

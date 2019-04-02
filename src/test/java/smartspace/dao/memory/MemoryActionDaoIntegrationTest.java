@@ -94,7 +94,7 @@ public class MemoryActionDaoIntegrationTest {
 		details.put("size", action.length());
 		details.put("font", "Arial-7px");
 		details.put("language", Locale.ENGLISH);
-		ActionEntity<String> action1 = this.factory.createNewAction(null,
+		ActionEntity action1 = this.factory.createNewAction(null,
 				null,
 				action,
 				new Date(),
@@ -103,14 +103,14 @@ public class MemoryActionDaoIntegrationTest {
 				details);
 
 		action1 = this.actionDao.create(action1);
-		ActionEntity<String> initMessage = new ActionEntity<String>();
+		ActionEntity initMessage = new ActionEntity();
 		initMessage.setKey(action1.getKey());
 		
 		Map<String, Object> updatedDetails = new HashMap<>(action1.getMoreAttributes());
 		updatedDetails.put("location", new double[] {1.0, 6.0});
 		updatedDetails.put("locationList", Arrays.asList(new double[] {1.0, 6.0}));
 		updatedDetails.put("locationPoint", new Point(1, 6));
-		ActionEntity<String> update = new ActionEntity<String>();
+		ActionEntity update = new ActionEntity();
 		update.setKey(action1.getKey());
 		update.setMoreAttributes(updatedDetails);
 	
@@ -118,7 +118,7 @@ public class MemoryActionDaoIntegrationTest {
 		
 		this.actionDao.deleteAll();
 		
-		List<ActionEntity<String>> listAfterDeletion = this.actionDao.readAll();
+		List<ActionEntity> listAfterDeletion = this.actionDao.readAll();
 		
 		// THEN the initially generated message key is not null
 		// AND the message read using key is present
