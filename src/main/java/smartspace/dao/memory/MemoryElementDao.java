@@ -14,7 +14,7 @@ import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 
 //@Repository
-public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
+public class MemoryElementDao implements ElementDao<String> {
 	
 	private  Map<String, ElementEntity> memory;
 	private String smartspace;
@@ -42,7 +42,7 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	}
 
 	@Override
-	public Optional<ElementEntity> readById(ElementKey elementkey) {
+	public Optional<ElementEntity> readById(String elementkey) {
 		ElementEntity elemntEntity = this.memory.get(elementkey);
 		if (elemntEntity != null) {
 			return Optional.of(elemntEntity);
@@ -59,7 +59,7 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	@Override
 	public void update(ElementEntity elementEntity) {
 		ElementEntity existing = 
-				this.readById((ElementKey) elementEntity.getKey()).
+				this.readById(elementEntity.getKey()).
 				orElseThrow(()->new RuntimeException("no message entity with key: " + elementEntity.getKey()));
 			
 			if (elementEntity.getName() != null) {
@@ -81,7 +81,7 @@ public class MemoryElementDao<ElementKey> implements ElementDao<ElementKey> {
 	}
 
 	@Override
-	public void deleteByKey(ElementKey elementKey) {
+	public void deleteByKey(String elementKey) {
 		memory.remove(elementKey);
 		
 	}

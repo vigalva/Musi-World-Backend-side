@@ -14,7 +14,7 @@ import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
 @Repository
-public class RdbUserDao<UserKey> implements UserDao<UserKey> {
+public class RdbUserDao implements UserDao<String> {
 
 	private UserCrud userCrud;
 	private String smartspace;
@@ -67,7 +67,7 @@ public class RdbUserDao<UserKey> implements UserDao<UserKey> {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Optional<UserEntity> readById(UserKey key) {
+	public Optional<UserEntity> readById(String key) {
 		// SQL: SELECT
 		return this.userCrud.findById((String)key);
 	}
@@ -76,7 +76,7 @@ public class RdbUserDao<UserKey> implements UserDao<UserKey> {
 	@Transactional
 	public void update(UserEntity update) {
 		UserEntity existing = 
-				this.readById((UserKey) update.getKey())
+				this.readById( update.getKey())
 				.orElseThrow(()->new RuntimeException("no message entity with key: " + update.getKey()));
 			
 		if (update.getAvatar()!=null) {

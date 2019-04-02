@@ -14,7 +14,7 @@ import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 
 @Repository
-public class RdbElementDao<ElementKey> implements ElementDao<ElementKey> {
+public class RdbElementDao implements ElementDao<String> {
 
 	private ElementCrud elementCrud;
 	private String smartspace;
@@ -67,7 +67,7 @@ public class RdbElementDao<ElementKey> implements ElementDao<ElementKey> {
 
 	@Override
 	@Transactional(readOnly=true)
-	public Optional<ElementEntity> readById(ElementKey key) {
+	public Optional<ElementEntity> readById(String  key) {
 		// SQL: SELECT
 		return this.elementCrud.findById((String)key);
 	}
@@ -76,7 +76,7 @@ public class RdbElementDao<ElementKey> implements ElementDao<ElementKey> {
 	@Transactional
 	public void update(ElementEntity update) {
 		ElementEntity existing = 
-				this.readById((ElementKey) update.getKey())
+				this.readById( update.getKey())
 				.orElseThrow(()->new RuntimeException("no message entity with key: " + update.getKey()));
 			
 		if (update.getCreatorEmail() != null) {
@@ -124,7 +124,7 @@ public class RdbElementDao<ElementKey> implements ElementDao<ElementKey> {
 	}
 
 	@Override
-	public void deleteByKey(ElementKey elementKey) {
+	public void deleteByKey(String elementKey) {
 		elementCrud.deleteById((String)elementKey);
 		
 	}

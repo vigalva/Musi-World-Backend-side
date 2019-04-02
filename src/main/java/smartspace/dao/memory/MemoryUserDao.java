@@ -14,7 +14,7 @@ import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
 //@Repository
-public class MemoryUserDao<UserKey> implements UserDao<UserKey>{
+public class MemoryUserDao implements UserDao<String>{
 	
 	private  Map<String,UserEntity> memory;
 	private String smartspace;
@@ -41,7 +41,7 @@ public class MemoryUserDao<UserKey> implements UserDao<UserKey>{
 	}
 
 	@Override
-	public Optional<UserEntity> readById(UserKey userKey) {
+	public Optional<UserEntity> readById(String userKey) {
 		UserEntity userEntity = this.memory.get(userKey);
 		if (userEntity != null) {
 			return Optional.of(userEntity);
@@ -59,7 +59,7 @@ public class MemoryUserDao<UserKey> implements UserDao<UserKey>{
 	@Override
 	public void update(UserEntity userEntity) {
 		UserEntity existing = 
-				this.readById((UserKey) userEntity.getKey()).
+				this.readById( userEntity.getKey()).
 				orElseThrow(()->new RuntimeException("no message entity with key: " + userEntity.getKey()));
 			
 			if (userEntity.getAvatar() != null) {
