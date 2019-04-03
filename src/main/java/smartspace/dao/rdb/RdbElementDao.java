@@ -51,7 +51,7 @@ public class RdbElementDao implements ElementDao<String> {
 		if (!this.elementCrud.existsById(element.getKey())) {
 			return this.elementCrud.save(element);
 		}else {
-			throw new RuntimeException("message already exists with key: " + element.getKey());
+			throw new RuntimeException("element already exists with key: " + element.getKey());
 		}
 	}
 

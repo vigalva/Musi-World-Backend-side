@@ -39,10 +39,12 @@ public class ActionEntityDemo implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		ActionEntity action1 = factory.createNewAction("dummyId", "dummy smartspace", "Test", new Date(), "dummy play email", "dummy player smartspace", new HashMap<>());
-		System.err.println("new action: " + action1.getKey());
+		
 		
 		
 		action1 = this.actionDao.create(action1);
+		
+		System.err.println("new action: " + action1.getKey());
 		System.err.println("action created is " + action1.getKey());
 		
 	

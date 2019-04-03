@@ -43,7 +43,7 @@ public class UserEntityDemo implements CommandLineRunner {
 		System.err.println("new user:\n" + user1);
 		
 		user1 = this.userDao.create(user1);
-		System.err.println("new user: " + user1.getKey());
+		System.err.println("new user is: " + user1.getKey());
 		
 		
 		UserEntity update = new UserEntity();
@@ -58,14 +58,14 @@ public class UserEntityDemo implements CommandLineRunner {
 		}else {
 			throw new RuntimeException("Error! message vanished after update");
 		}
-		System.err.println("updated element: " + user1+ "updated details is: "+user1.getPoints()+ " "+user1.getUsername());
+		System.err.println("updated user: " + user1+ "updated details is: "+user1.getPoints()+ " "+user1.getUsername());
 		
 		this.userDao.deleteAll();
 		
 		if (this.userDao.readAll().isEmpty()) {
-			System.err.println("successfully deleted all messages");
+			System.err.println("successfully deleted all users");
 		}else {
-			throw new RuntimeException("Error! messages still exist after deletion");
+			throw new RuntimeException("Error! users still exist after deletion");
 		}
 		
 	}

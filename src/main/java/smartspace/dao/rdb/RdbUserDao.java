@@ -51,7 +51,7 @@ public class RdbUserDao implements UserDao<String> {
 		if (!this.userCrud.existsById(user.getKey())) {
 			return this.userCrud.save(user);
 		}else {
-			throw new RuntimeException("message already exists with key: " + user.getKey());
+			throw new RuntimeException("user already exists with key: " + user.getKey());
 		}
 	}
 

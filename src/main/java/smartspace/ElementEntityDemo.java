@@ -43,7 +43,7 @@ public class ElementEntityDemo implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		
 		ElementEntity element1 = this.factory.createNewElement("dummy name", "dummy type", new Location(), new Date(), "dummy mail", "dummy smartspace", false, new HashMap<>());
-		System.err.println("new Element:\n" + element1);
+		System.err.println("new Element: " + element1);
 		
 		element1 = this.elementDao.create(element1);
 		System.err.println(" element created: " + element1.getKey());
@@ -69,9 +69,9 @@ public class ElementEntityDemo implements CommandLineRunner {
 		this.elementDao.deleteAll();
 		
 		if (this.elementDao.readAll().isEmpty()) {
-			System.err.println("successfully deleted all messages");
+			System.err.println("successfully deleted all elements");
 		}else {
-			throw new RuntimeException("Error! messages still exist after deletion");
+			throw new RuntimeException("Error! elements still exist after deletion");
 		}
 		
 	}
