@@ -13,6 +13,4 @@ public interface ElementDao<ElementKey>{
 	public void deleteByKey(ElementKey  elementKey);
 	public void delete(ElementEntity elementEntity);
 	public void deleteAll();
-	
-	
 }

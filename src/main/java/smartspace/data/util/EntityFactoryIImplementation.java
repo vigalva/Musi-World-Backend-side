@@ -35,5 +35,5 @@ public class EntityFactoryIImplementation implements EntityFactory {
 			return new ActionEntity( elementId,  elementSmartspace,  actionType,
 			 creationTimestamp,  playerEmail,  playerSmartspace,  moreAttributes);
 
-}
+	}
 }

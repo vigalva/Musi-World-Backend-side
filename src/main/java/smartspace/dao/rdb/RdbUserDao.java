@@ -77,7 +77,7 @@ public class RdbUserDao implements UserDao<String> {
 	public void update(UserEntity update) {
 		UserEntity existing = 
 				this.readById( update.getKey())
-				.orElseThrow(()->new RuntimeException("no message entity with key: " + update.getKey()));
+				.orElseThrow(()->new RuntimeException("no user entity with key: " + update.getKey()));
 			
 		if (update.getAvatar()!=null) {
 			existing.setAvatar(update.getAvatar());
@@ -98,9 +98,6 @@ public class RdbUserDao implements UserDao<String> {
 			existing.setUserSmatspace(update.getUserSmatspace());
 		}
 
-	
-		
-
 		// SQL: UPDATE
 		this.userCrud.save(existing);
 	}
@@ -111,7 +108,5 @@ public class RdbUserDao implements UserDao<String> {
 		// SQL: DELETE
 		this.userCrud.deleteAll();
 	}
-
-	
 
 }

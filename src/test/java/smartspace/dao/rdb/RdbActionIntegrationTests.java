@@ -2,7 +2,6 @@ package smartspace.dao.rdb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,7 @@ public class RdbActionIntegrationTests<K> {
 	private EntityFactory factory;
 	
 	@Autowired
-	public void setMessageDao(ActionDao actionDao) {
+	public void setActionDao(ActionDao actionDao) {
 		this.actionDao = actionDao;
 	}
 	
@@ -50,8 +49,7 @@ public class RdbActionIntegrationTests<K> {
 	}
 
 	@Test
-	
-	//methond to check creation of 1 action
+	// Method to check creation of 1 action
 	public void testCreateAction () throws Exception{
 		// GIVEN the database is clean
 		
@@ -71,6 +69,7 @@ public class RdbActionIntegrationTests<K> {
 		
 		
 	}
+	
 	@Test
 	
 	//Test to check readAll method and deleteAll
@@ -98,10 +97,5 @@ public class RdbActionIntegrationTests<K> {
 	
 		this.actionDao.deleteAll();
 		assertThat(this.actionDao.readAll()).isEmpty();
-	}
-	
-	
-	
-	
-	
+	}	
 }
