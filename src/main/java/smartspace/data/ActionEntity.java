@@ -24,7 +24,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	private String actionId;
 	private String elementSmatspace;
 	private String elementId;
-	private String playerSmatspace;
+	private String playerSmartspace;
 	private String playerEmail;
 	private String actionType;
 	private java.util.Date creationTimestamp;
@@ -37,7 +37,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 		this.actionType=actionType;
 		this.creationTimestamp=creationTimestamp;
 		this.playerEmail=playerEmail;
-		this.playerSmatspace=playerSmartspace;
+		this.playerSmartspace=playerSmartspace;
 		this.moreAttributes=moreAttributes;
 	}
 	public String getActionSmartspace() {
@@ -73,11 +73,11 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	}
 
 	public String getPlayerSmatspace() {
-		return playerSmatspace;
+		return playerSmartspace;
 	}
 
 	public void setPlayerSmatspace(String playerSmatspace) {
-		this.playerSmatspace = playerSmatspace;
+		this.playerSmartspace = playerSmatspace;
 	}
 
 	public String getPlayerEmail() {

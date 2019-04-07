@@ -89,8 +89,6 @@ public class UserEntity implements SmartspaceEntity<String>{
 		this.userSmatspace=parts[0];
 		this.userEmail=parts[1];
 	}
-	public boolean equals(UserEntity someUser) {
-		return this.getKey().equals(someUser.getKey());
-	}
+	
 
 }
