@@ -40,6 +40,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 		this.playerSmartspace=playerSmartspace;
 		this.moreAttributes=moreAttributes;
 	}
+	@Transient
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}
@@ -47,7 +48,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	public void setActionSmartspace(String actionSmartspace) {
 		this.actionSmartspace = actionSmartspace;
 	}
-
+	@Transient
 	public String getActionId() {
 		return actionId;
 	}

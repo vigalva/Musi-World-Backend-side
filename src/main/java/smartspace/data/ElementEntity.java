@@ -40,6 +40,7 @@ public class ElementEntity implements SmartspaceEntity<String>{
 		this.expired=expired;
 		this.moreAttributes=moreAttributes;
 	}
+	@Transient
 	public String getElementSmartspace() {
 		return elementSmartspace;
 	}
@@ -47,7 +48,7 @@ public class ElementEntity implements SmartspaceEntity<String>{
 	public void setElementSmartspace(String elementSmartspace) {
 		this.elementSmartspace = elementSmartspace;
 	}
-
+	@Transient
 	public String getElementId() {
 		return elementId;
 	}
@@ -59,7 +60,7 @@ public class ElementEntity implements SmartspaceEntity<String>{
 	public Location getLocation() {
 		return location;
 	}
-	@Transient
+	
 	public void setLocation(Location location) {
 		this.location = location;
 	}
