@@ -2,10 +2,11 @@ package smartspace.dao.rdb;
 
 
 
-import org.springframework.data.repository.CrudRepository;
+//import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import smartspace.data.ActionEntity;
 
-public interface ActionCrud extends CrudRepository<ActionEntity, String> {
+public interface ActionCrud extends PagingAndSortingRepository<ActionEntity, String> {
 
 }
