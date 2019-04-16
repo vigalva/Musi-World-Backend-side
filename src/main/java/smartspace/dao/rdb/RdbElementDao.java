@@ -6,14 +6,17 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import smartspace.dao.ElementDao;
+import smartspace.dao.AdvancedElementDao;
+//import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 
 @Repository
-public class RdbElementDao implements ElementDao<String> {
+public class RdbElementDao implements AdvancedElementDao<String> {
 
 	private ElementCrud elementCrud;
 	private String smartspace;
@@ -133,6 +136,17 @@ public class RdbElementDao implements ElementDao<String> {
 	public void delete(ElementEntity elementEntity) {
 		elementCrud.delete(elementEntity);
 		
+	}
+
+	@Override
+	public List<ElementEntity> readAll(int size, int page) {
+		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
+	}
+
+	@Override
+	public List<ElementEntity> readAll(String sortBy, int size, int page) {
+		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
+
 	}
 
 }

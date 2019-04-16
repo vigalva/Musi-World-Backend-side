@@ -6,14 +6,17 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import smartspace.dao.UserDao;
+import smartspace.dao.AdvancedUserDao;
+//import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
 @Repository
-public class RdbUserDao implements UserDao<String> {
+public class RdbUserDao implements AdvancedUserDao<String> {
 
 	private UserCrud userCrud;
 	private String smartspace;
@@ -100,6 +103,17 @@ public class RdbUserDao implements UserDao<String> {
 	public void deleteAll() {
 		// SQL: DELETE
 		this.userCrud.deleteAll();
+	}
+
+	@Override
+	public List<UserEntity> readAll(int size, int page) {
+		return this.userCrud.findAll(PageRequest.of(page, size)).getContent();
+
+	}
+
+	@Override
+	public List<UserEntity> readAll(String sortBy, int size, int page) {
+		return this.userCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
 
 }

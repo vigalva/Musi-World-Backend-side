@@ -18,20 +18,26 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import smartspace.dao.AdvancedActionDao;
+import smartspace.dao.AdvancedElementDao;
+import smartspace.dao.AdvancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
+import smartspace.data.Location;
+import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.data.util.EntityFactory;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(properties= {"spring.profiles.active=default"})
-public class AdvancedActionDaoTests {
-	private AdvancedActionDao<String> actionDao;
+public class AdvancedUserDaoTests {
+	private AdvancedUserDao<String> userDao;
 	private EntityFactory factory;
 	
 	@Autowired
-	public void setMessageDao(AdvancedActionDao<String> actionDao) {
-		this.actionDao = actionDao;
+	public void setMessageDao(AdvancedUserDao<String> actionDao) {
+		this.userDao = actionDao;
 	}
 
 	@Autowired
@@ -41,18 +47,18 @@ public class AdvancedActionDaoTests {
 	
 	@After
 	public void tearDown() {
-		this.actionDao.deleteAll();
+		this.userDao.deleteAll();
 	}
 	
 	@Test
 	public void testReadAllWithPagination() throws Exception{
 		// GIVEN the database contains only 20 messages 
 		IntStream.range(0, 20)
-			.mapToObj(i->this.factory.createNewAction("duumy element", "dummy smartspace", "Warning", new Date(), "dummy mail", "dummy smartspace", new HashMap<>()))
-			.forEach(this.actionDao::create);
+			.mapToObj(i->this.factory.createNewUser("dummy mail"+i, "dummy smart sapce", "dummy user", "dummy avatar", UserRole.PLAYER, 100))
+			.forEach(this.userDao::create);
 		
 		// WHEN I read 3 messages from page 6
-		List<ActionEntity> actual = this.actionDao.readAll(3, 6);
+		List<UserEntity> actual = this.userDao.readAll(3, 6);
 		
 		// THEN I receive 2 messages
 		assertThat(actual)
@@ -62,22 +68,21 @@ public class AdvancedActionDaoTests {
 	}
 	
 	@Test
-	public void testReadAllWithPaginationAndSortByType() throws Exception{
-		// GIVEN the database contains only 10 actions 
+	public void testReadAllWithPaginationAndSortByName() throws Exception{
+		// GIVEN the database contains only 10 elements 
 		IntStream.range(0, 10)
-			.mapToObj(i->this.factory.createNewAction("duumy element", "dummy smartspace", "warning"+i, new Date(), "dummy mail", "dummy smartspace", new HashMap<>()))
-			.forEach(this.actionDao::create);
+		.mapToObj(i->this.factory.createNewUser("dummy mail"+i, "dummy smart sapce", "User"+i, "dummy avatar", UserRole.PLAYER, 100))
+		.forEach(this.userDao::create);
 		
-		// WHEN I read 2 actions from page 3 and sorting by ActionType
-		List<ActionEntity> actual = this.actionDao.readAll("ActionType", 2, 3);
+		// WHEN I read 2 elements from page 3 and sorting by Name
+		List<UserEntity> actual = this.userDao.readAll("username", 2, 3);
 		
-		// THEN I receive actions with type containig: "6","7"
+		// THEN I receive actions with name containig: "6","7"
 		assertThat(actual)
-			.usingElementComparatorOnFields("ActionType")
+			.usingElementComparatorOnFields("username")
 			.containsExactly(
-					factory.createNewAction("duumy element", "dummy smartspace", "warning6", new Date(), "dummy mail", "dummy smartspace", new HashMap<>()),
-					factory.createNewAction("duumy element", "dummy smartspace", "warning7", new Date(), "dummy mail", "dummy smartspace", new HashMap<>()));
-		
+					factory.createNewUser("dummy mail", "dummy smart sapce", "User6", "dummy avatar", UserRole.PLAYER, 100),
+					factory.createNewUser("dummy mail", "dummy smart sapce", "User7", "dummy avatar", UserRole.PLAYER, 100));		
 		tearDown();
 	}
 

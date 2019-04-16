@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Convert;
-import javax.persistence.Embedded;
+//import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+//import javax.persistence.EnumType;
+//import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;

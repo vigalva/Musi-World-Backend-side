@@ -14,7 +14,7 @@ import smartspace.dao.AdvancedActionDao;
 import smartspace.data.ActionEntity;
 
 @Repository
-public class RdbActionDao implements AdvancedActionDao {
+public class RdbActionDao<K> implements AdvancedActionDao<K> {
 
 	private ActionCrud actionCrud;
 	private String actionId;
