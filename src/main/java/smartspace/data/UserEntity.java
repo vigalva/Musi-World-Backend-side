@@ -2,6 +2,7 @@ package smartspace.data;
  
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
@@ -26,6 +27,7 @@ public class UserEntity implements SmartspaceEntity<String>{
 		this.points=points;
 		
 	}
+	@Transient
 	public String getUserSmatspace() {
 		return userSmatspace;
 	}
@@ -33,7 +35,7 @@ public class UserEntity implements SmartspaceEntity<String>{
 	public void setUserSmatspace(String userSmatspace) {
 		this.userSmatspace = userSmatspace;
 	}
-
+	@Transient
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -89,8 +91,6 @@ public class UserEntity implements SmartspaceEntity<String>{
 		this.userSmatspace=parts[0];
 		this.userEmail=parts[1];
 	}
-	public boolean equals(UserEntity someUser) {
-		return this.getKey().equals(someUser.getKey());
-	}
+	
 
 }

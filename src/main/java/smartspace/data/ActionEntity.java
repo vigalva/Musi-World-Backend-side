@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Convert;
-import javax.persistence.Embedded;
+//import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+//import javax.persistence.EnumType;
+//import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -24,7 +24,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	private String actionId;
 	private String elementSmatspace;
 	private String elementId;
-	private String playerSmatspace;
+	private String playerSmartspace;
 	private String playerEmail;
 	private String actionType;
 	private java.util.Date creationTimestamp;
@@ -37,9 +37,10 @@ public class ActionEntity implements SmartspaceEntity<String>{
 		this.actionType=actionType;
 		this.creationTimestamp=creationTimestamp;
 		this.playerEmail=playerEmail;
-		this.playerSmatspace=playerSmartspace;
+		this.playerSmartspace=playerSmartspace;
 		this.moreAttributes=moreAttributes;
 	}
+	@Transient
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}
@@ -47,7 +48,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	public void setActionSmartspace(String actionSmartspace) {
 		this.actionSmartspace = actionSmartspace;
 	}
-
+	@Transient
 	public String getActionId() {
 		return actionId;
 	}
@@ -73,11 +74,11 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	}
 
 	public String getPlayerSmatspace() {
-		return playerSmatspace;
+		return playerSmartspace;
 	}
 
 	public void setPlayerSmatspace(String playerSmatspace) {
-		this.playerSmatspace = playerSmatspace;
+		this.playerSmartspace = playerSmatspace;
 	}
 
 	public String getPlayerEmail() {
