@@ -71,11 +71,13 @@ public class RdbActionDao<K> implements AdvancedActionDao<K> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll(int size, int page) {
 		return this.actionCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll(String sortBy, int size, int page) {
 		return this.actionCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}

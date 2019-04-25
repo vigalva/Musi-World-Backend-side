@@ -2,8 +2,7 @@ package smartspace.dao.rdb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Date;
-import java.util.HashMap;
+
 import java.util.List;
 //import java.util.Map;
 import java.util.stream.IntStream;
@@ -17,12 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import smartspace.dao.AdvancedActionDao;
-import smartspace.dao.AdvancedElementDao;
+
 import smartspace.dao.AdvancedUserDao;
-import smartspace.data.ActionEntity;
-import smartspace.data.ElementEntity;
-import smartspace.data.Location;
+
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.data.util.EntityFactory;

@@ -139,11 +139,13 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAll(int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAll(String sortBy, int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 
