@@ -7,7 +7,7 @@ import smartspace.data.ElementEntity;
 public class ElementServiceImpl implements ElementService {
 
 	@Override
-	public ElementEntity importElements(ElementEntity[] convertToEntity) {
+	public List<ElementEntity> importElements(ElementEntity[] convertToEntity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
