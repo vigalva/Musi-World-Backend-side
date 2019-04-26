@@ -18,8 +18,26 @@ public class ElementController {
 	@Autowired
 	public ElementController(ElementService elementService) {
 		this.elementService = elementService;
+	}	
+	
+	@RequestMapping(
+			path="/smartspace/admin/element/{adminSmartspace}/{adminEmail}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] getElement (
+			@PathVariable("adminSmartspace") String adminSmartspace,
+			@PathVariable("adminEmail") String adminEmail,
+			@RequestParam(name="size", required=false, defaultValue="10") int size, 
+			@RequestParam(name="page", required=false, defaultValue="0") int page) {
+		
+		return
+		this.elementService
+			.getElement(size, page)
+			.stream()
+			.map(ElementBoundary::new)
+			.collect(Collectors.toList())
+			.toArray(new ElementBoundary[0]);
 	}
-
 
 	@RequestMapping(
 			path="/elementdemo",
@@ -35,22 +53,7 @@ public class ElementController {
 							)
 					);
 	}
-	
-	@RequestMapping(
-			path="/elementdemo",
-			method=RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] getElement (
-			@RequestParam(name="size", required=false, defaultValue="10") int size, 
-			@RequestParam(name="page", required=false, defaultValue="0") int page) {
-		return
-		this.elementService
-			.getElement(size, page)
-			.stream()
-			.map(ElementBoundary::new)
-			.collect(Collectors.toList())
-			.toArray(new ElementBoundary[0]);
-	}
+
 	
 	@RequestMapping(
 			path="/elementdemo/{pattern}/{sortBy}",
