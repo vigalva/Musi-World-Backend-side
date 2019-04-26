@@ -32,45 +32,45 @@ public class ElementController {
 		
 		return
 		this.elementService
-			.getElement(size, page)
+			.ExportElements(size, page)
 			.stream()
 			.map(ElementBoundary::new)
 			.collect(Collectors.toList())
 			.toArray(new ElementBoundary[0]);
 	}
 
-	@RequestMapping(
-			path="/elementdemo",
-			method=RequestMethod.POST,
-			consumes=MediaType.APPLICATION_JSON_VALUE,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary createElement (
-			@RequestBody ElementBoundary element) {		
-		return new ElementBoundary(
-				this.elementService
-					.createElement(
-							element.convertToEntity()
-							)
-					);
-	}
-
-	
-	@RequestMapping(
-			path="/elementdemo/{pattern}/{sortBy}",
-			method=RequestMethod.GET,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] getMessages (
-			@PathVariable("pattern") String pattern,
-			@PathVariable("sortBy") String sortBy,
-			@RequestParam(name="size", required=false, defaultValue="10") int size, 
-			@RequestParam(name="page", required=false, defaultValue="0") int page) {
-		return
-		this.elementService
-			.getMessagesByPattern(pattern, sortBy, size, page)
-			.stream()
-			.map(ElementBoundary::new)
-			.collect(Collectors.toList())
-			.toArray(new ElementBoundary[0]);
-	}
+//	@RequestMapping(
+//			path="/elementdemo",
+//			method=RequestMethod.POST,
+//			consumes=MediaType.APPLICATION_JSON_VALUE,
+//			produces=MediaType.APPLICATION_JSON_VALUE)
+//	public ElementBoundary createElement (
+//			@RequestBody ElementBoundary element) {		
+//		return new ElementBoundary(
+//				this.elementService
+//					.createElement(
+//							element.convertToEntity()
+//							)
+//					);
+//	}
+//
+//	
+//	@RequestMapping(
+//			path="/elementdemo/{pattern}/{sortBy}",
+//			method=RequestMethod.GET,
+//			produces=MediaType.APPLICATION_JSON_VALUE)
+//	public ElementBoundary[] getMessages (
+//			@PathVariable("pattern") String pattern,
+//			@PathVariable("sortBy") String sortBy,
+//			@RequestParam(name="size", required=false, defaultValue="10") int size, 
+//			@RequestParam(name="page", required=false, defaultValue="0") int page) {
+//		return
+//		this.elementService
+//			.getMessagesByPattern(pattern, sortBy, size, page)
+//			.stream()
+//			.map(ElementBoundary::new)
+//			.collect(Collectors.toList())
+//			.toArray(new ElementBoundary[0]);
+//	}
 	
 }
