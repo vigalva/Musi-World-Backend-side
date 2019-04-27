@@ -20,6 +20,10 @@ public class ElementBoundary {
 	private String creatorEmail;
 	private Map<String,Object> moreAttributes;
 	
+	public ElementBoundary() {
+		
+	}
+	
 	public ElementBoundary(ElementEntity elementEntity) {
 		key = elementEntity.getKey();
 		elementSmartspace = elementEntity.getElementSmartspace();

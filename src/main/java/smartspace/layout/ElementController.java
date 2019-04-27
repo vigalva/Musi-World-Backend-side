@@ -51,10 +51,9 @@ public class ElementController {
 	public ElementBoundary[] getElement (
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail,
-			@RequestBody ElementEntity[] elements) { 
+			@RequestBody ElementBoundary[] elements) { 
 		return
-			(ElementBoundary[]) this.elementService
-			.importElements(elements).toArray();
+			(ElementBoundary[]) this.elementService.importElements(elements).toArray();
 	}
 
 	
