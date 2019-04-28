@@ -1,5 +1,6 @@
 package smartspace.layout;
 
+import java.util.Date;
 import java.util.Map;
 
 import smartspace.data.ElementEntity;
@@ -7,155 +8,117 @@ import smartspace.data.Location;
 
 
 public class ElementBoundary {
-	private String key;
-	private String elementSmartspace;
-	private String elementId;
-	private Double locationX;
-	private Double locationY;
+	private ElementBoundaryKey key;
 	private String name;
-	private String type;
-	private java.util.Date creationTimestamp;
+	private String elementType;
 	private boolean expired;
-	private String creatorSmartspace;
-	private String creatorEmail;
-	private Map<String,Object> moreAttributes;
+	private Date created;
+	private UserBoundaryKey creator;
+	private LatLng latlng;
+	private Map<String,Object> elementProperties;
 	
 	public ElementBoundary() {
 		
 	}
 	
 	public ElementBoundary(ElementEntity elementEntity) {
-		key = elementEntity.getKey();
-		elementSmartspace = elementEntity.getElementSmartspace();
-		elementId = elementEntity.getElementId();
-		if(elementEntity.getLocation()!=null) {
-			locationX = elementEntity.getLocation().getX();
-			locationY = elementEntity.getLocation().getY();
-		}else {
-			locationX = null;
-			locationY = null;			
+		
+		this.key=new ElementBoundaryKey();
+		this.latlng= new LatLng();
+		this.creator=new UserBoundaryKey();
+		
+		this.key.setId(elementEntity.getElementId());
+		this.key.setSmartspace(elementEntity.getElementSmartspace());
+		this.name=elementEntity.getName();
+		this.elementType=elementEntity.getType();
+		this.expired=elementEntity.isExpired();
+		this.created=elementEntity.getCreationTimestamp();
+		this.creator.setEmail(elementEntity.getCreatorEmail());
+		this.creator.setSmartspace(elementEntity.getCreatorSmartspace());
+		
+		if (elementEntity.getLocation()==null)
+			this.latlng=null;
+		else {
+			latlng.setLan(elementEntity.getLocation().getX());
+			latlng.setLat(elementEntity.getLocation().getY());
 		}
-		name = elementEntity.getName();
-		type = elementEntity.getType();
-		creationTimestamp = elementEntity.getCreationTimestamp();
-		expired = elementEntity.isExpired();
-		creatorSmartspace = elementEntity.getCreatorSmartspace();
-		creatorEmail = elementEntity.getCreatorEmail();
-		moreAttributes = elementEntity.getMoreAttributes();
+		this.elementProperties=elementEntity.getMoreAttributes();
+		
 	}
 
 	public ElementEntity convertToEntity() {
-		ElementEntity elementEntity = new ElementEntity();
-		elementEntity.setElementSmartspace(elementSmartspace);
-		elementEntity.setElementId(elementId );
-		Location l  = new Location();
-		l.setX(locationX);
-		l.setY(locationY);
-		elementEntity.setLocation(l);
-		elementEntity.setName(name);
-		elementEntity.setType(type);
-		elementEntity.setCreationTimestamp(creationTimestamp);
-		elementEntity.setExpired(expired);
-		elementEntity.setCreatorSmartspace(creatorSmartspace);
-		elementEntity.setCreatorEmail(creatorEmail);
-		elementEntity.setMoreAttributes(moreAttributes);
-		return elementEntity;
+		ElementEntity entity=new ElementEntity();
+		
+		entity.setCreationTimestamp(this.getCreated());
+		entity.setCreatorEmail(this.getCreator().getEmail());
+		entity.setCreatorSmartspace(this.getCreator().getSmartspace());
+		entity.setElementId(this.getKey().getId());
+		entity.setElementSmartspace(this.getKey().getSmartspace());
+		entity.setExpired(this.isExpired());
+		if (this.latlng==null)
+			entity.setLocation(null);
+		else {
+			entity.setLocation(new Location());
+			entity.getLocation().setX(this.getLatlng().getLan());
+			entity.getLocation().setY(this.getLatlng().getLat());
+		}
+		entity.setMoreAttributes(this.getElementProperties());
+		entity.setName(this.getName());
+		entity.setType(this.getElementType());
+		
+		return entity;
+	
 	}
 	
-	public String getKey() {
+	public Date getCreated() {
+		return created;
+	}
+	public UserBoundaryKey getCreator() {
+		return creator;
+	}
+	public Map<String, Object> getElementProperties() {
+		return elementProperties;
+	}
+	public String getElementType() {
+		return elementType;
+	}
+	public ElementBoundaryKey getKey() {
 		return key;
 	}
-
-	public void setKey(String key) {
-		this.key = key;
+	public LatLng getLatlng() {
+		return latlng;
 	}
-
-	public String getElementSmartspace() {
-		return elementSmartspace;
-	}
-
-	public void setElementSmartspace(String elementSmartspace) {
-		this.elementSmartspace = elementSmartspace;
-	}
-
-	public String getElementId() {
-		return elementId;
-	}
-
-	public void setElementId(String elementId) {
-		this.elementId = elementId;
-	}
-
-	public Double getLocationX() {
-		return locationX;
-	}
-
-	public void setLocationX(Double locationX) {
-		this.locationX = locationX;
-	}
-
-	public Double getLocationY() {
-		return locationY;
-	}
-
-	public void setLocationY(Double locationY) {
-		this.locationY = locationY;
-	}
-
 	public String getName() {
 		return name;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public java.util.Date getCreationTimestamp() {
-		return creationTimestamp;
-	}
-
-	public void setCreationTimestamp(java.util.Date creationTimestamp) {
-		this.creationTimestamp = creationTimestamp;
-	}
-
 	public boolean isExpired() {
 		return expired;
 	}
-
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+	public void setCreator(UserBoundaryKey creator) {
+		this.creator = creator;
+	}
+	public void setElementProperties(Map<String, Object> elementProperties) {
+		this.elementProperties = elementProperties;
+	}
+	public void setElementType(String elementType) {
+		this.elementType = elementType;
+	}
 	public void setExpired(boolean expired) {
 		this.expired = expired;
 	}
-
-	public String getCreatorSmartspace() {
-		return creatorSmartspace;
+	public void setKey(ElementBoundaryKey key) {
+		this.key = key;
 	}
-
-	public void setCreatorSmartspace(String creatorSmartspace) {
-		this.creatorSmartspace = creatorSmartspace;
+	public void setLatlng(LatLng latlng) {
+		this.latlng = latlng;
 	}
-
-	public String getCreatorEmail() {
-		return creatorEmail;
+	public void setName(String name) {
+		this.name = name;
 	}
-
-	public void setCreatorEmail(String creatorEmail) {
-		this.creatorEmail = creatorEmail;
-	}
-
-	public Map<String, Object> getMoreAttributes() {
-		return moreAttributes;
-	}
-
-	public void setMoreAttributes(Map<String, Object> moreAttributes) {
-		this.moreAttributes = moreAttributes;
-	}
+	
+	
 	
 }

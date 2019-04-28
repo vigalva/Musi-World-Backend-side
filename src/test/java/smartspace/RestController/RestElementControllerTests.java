@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,9 +26,12 @@ import org.springframework.web.client.RestTemplate;
 import smartspace.dao.AdvancedElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
-
+import smartspace.data.UserEntity;
 import smartspace.layout.ElementBoundary;
+import smartspace.layout.ElementBoundaryKey;
+import smartspace.layout.LatLng;
 import smartspace.layout.UserBoundary;
+import smartspace.layout.UserBoundaryKey;
 import smartspace.logic.ElementService;
 
 @RunWith(SpringRunner.class)
@@ -77,31 +81,48 @@ public class RestElementControllerTests {
 		// GIVEN the database is clean 
 		String adminSmartspace="dummy smartspace";
 		String adminEmail="dummy mail";
-		// WHEN I import array of 1 UserBoundaries
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
+		
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("some smartspace");
+		
+		ElementBoundaryKey dummyKey=new ElementBoundaryKey();
+		
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some smartspace");
+		
+		LatLng dummlocation=new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		// WHEN I import array of 1 ElementBoundaries
 		List<ElementBoundary> elements = new ArrayList<>();
+		
 		ElementBoundary newElement= new ElementBoundary();
+		newElement.setKey(dummyKey);
 		newElement.setName("dummy name");
-		newElement.setType("dummy type");
-		newElement.setCreatorSmartspace("test");
-		newElement.setCreatorEmail("dummy creator email");
-		newElement.setLocationY(1.2);
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
 		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
 		
 		elements.add(newElement);
+
 		
 		ElementBoundary[] response = this.restTemplate
 			.postForObject(
-					this.baseUrl+"admin/useres/{adminSmartspace}/{adminEmail}",
+					this.baseUrl+"admin/elements/{adminSmartspace}/{adminEmail}",
 					elements, 
 					ElementBoundary[].class,adminSmartspace, adminEmail);
-		
+	
 		// THEN the database contains 1 message
 		// AND the returned message is similar to the message in the database
 		assertThat(
 				this.elementDao.readAll())
 			.hasSize(1)
-			.usingElementComparatorOnFields("key")
-			.containsExactly(response[0].convertToEntity());
+		.usingElementComparatorOnFields("key")
+		.containsExactly(response[0].convertToEntity());
 		
 		tearDown();
 	}
@@ -109,42 +130,63 @@ public class RestElementControllerTests {
 	
 
 	@Test
-	public void testGetMessagesUsingPagination() throws Exception{
+	public void testGetElementsUsingPagination() throws Exception{
 		
 		// GIVEN the database contains 38 messages
 		int totalSize = 38;
 		ElementBoundary newElement= new ElementBoundary();
-		newElement.setName("dummy name");
-		newElement.setType("dummy type");
-		newElement.setCreatorSmartspace("test");
-		newElement.setCreatorEmail("dummy creator email");
-		newElement.setLocationY(1.2);
-		newElement.setLocationX(1.2);
-		Location l  = new Location();
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
 		
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("some smartspace");
+		
+		ElementBoundaryKey dummyKey=new ElementBoundaryKey();
+		
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some smartspace");
+		
+		LatLng dummlocation=new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		// WHEN I import array of 38 ElementBoundaries
+		
+		
+		
+		newElement.setKey(dummyKey);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
 		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
 		
 		List<ElementEntity> allEntities = 
 				IntStream.range(1, totalSize + 1)
-					.mapToObj(i->newElement.getKey()+ i)
-					.map(element->new ElementEntity(
-							newElement.getName(), 	
-							newElement.getType(), 
-							l,
-							newElement.getCreationTimestamp(),
-							newElement.getCreatorEmail(),
-							newElement.getElementSmartspace(),
-							newElement.isExpired(),
-							new HashMap<>()))
+					.mapToObj(i->newElement.getKey().getSmartspace()+ i)
+					.map(elem->new ElementEntity(
+							newElement.getName(), 
+							newElement.getElementType(), 
+							new Location(newElement.getLatlng().getLan(),newElement.getLatlng().getLat()),
+							newElement.getCreated(), 
+							newElement.getCreator().getEmail(),
+							newElement.getCreator().getSmartspace(), 
+							newElement.isExpired(), 
+							newElement.getElementProperties()))
 		
 					.collect(Collectors.toList());
+				
 		
 		List<ElementBoundary> allBoundaris=new ArrayList<>();
 		for (ElementEntity e : allEntities) {
+			e.setElementId("some id");
+			e.setElementSmartspace("some smartspace");
 			allBoundaris.add(new ElementBoundary(e));
 		}
 		ElementBoundary[] all=allBoundaris.toArray(new ElementBoundary[0]);
 		allEntities=this.elementService.importElements(all);
+		
+
 		
 		List<ElementBoundary> lastEight = 
 				allEntities
@@ -153,7 +195,7 @@ public class RestElementControllerTests {
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList());
 		
-		// WHEN I getUsers using page #3 of size 10
+		// WHEN I getElements using page #3 of size 10 i get 8 messages
 
 		
 		int size = 10;
@@ -163,74 +205,107 @@ public class RestElementControllerTests {
 		ElementBoundary[] results = 
 		  this.restTemplate
 			.getForObject(
-					this.baseUrl +"admin/users/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
+					this.baseUrl +"admin/elements/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
 					ElementBoundary[].class,adminSmartspace, adminEmail, 
 					size, page);
-		
-		ArrayList<ElementBoundary> arrayList = new ArrayList<ElementBoundary>(Arrays.asList(results));
-		System.err.println(arrayList);
-		System.err.println(lastEight
-				);
-		// THEN the response contains 8 messages
+		System.err.println(results.length);
+		ArrayList<ElementBoundary> arrayList = new ArrayList<ElementBoundary>(Arrays.asList(results));	
 		assertThat(results)
-			.usingElementComparatorOnFields("username")
+			.usingElementComparatorOnFields("name")
 			.containsExactlyElementsOf(lastEight);
 		
-	}
+	
 
+	}
 	@Test
 	public void testGetMessagesUsingPaginationWithoutNoResult() throws Exception{
 		
 		// GIVEN the database contains 38 messages
-		int totalSize = 38;
-		ElementBoundary newElement= new ElementBoundary();
-		newElement.setName("dummy name");
-		newElement.setType("dummy type");
-		newElement.setCreatorSmartspace("test");
-		newElement.setCreatorEmail("dummy creator email");
-		newElement.setLocationY(1.2);
-		newElement.setLocationX(1.2);
-		Location l  = new Location();
 		
+		// GIVEN the database contains 38 messages
+		int totalSize = 30;
+		ElementBoundary newElement= new ElementBoundary();
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
+		
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("some smartspace");
+		
+		ElementBoundaryKey dummyKey=new ElementBoundaryKey();
+		
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some smartspace");
+		
+		LatLng dummlocation=new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		// WHEN I import array of 30 ElementBoundaries
+		
+		
+		
+		newElement.setKey(dummyKey);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
 		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
 		
 		List<ElementEntity> allEntities = 
 				IntStream.range(1, totalSize + 1)
-					.mapToObj(i->newElement.getKey()+ i)
-					.map(element->new ElementEntity(
-							newElement.getName(), 	
-							newElement.getType(), 
-							l,
-							newElement.getCreationTimestamp(),
-							newElement.getCreatorEmail(),
-							newElement.getElementSmartspace(),
-							newElement.isExpired(),
-							new HashMap<>()))
+					.mapToObj(i->newElement.getKey().getSmartspace()+ i)
+					.map(elem->new ElementEntity(
+							newElement.getName(), 
+							newElement.getElementType(), 
+							new Location(newElement.getLatlng().getLan(),newElement.getLatlng().getLat()),
+							newElement.getCreated(), 
+							newElement.getCreator().getEmail(),
+							newElement.getCreator().getSmartspace(), 
+							newElement.isExpired(), 
+							newElement.getElementProperties()))
 		
 					.collect(Collectors.toList());
+				
 		
 		List<ElementBoundary> allBoundaris=new ArrayList<>();
 		for (ElementEntity e : allEntities) {
+			e.setElementId("some id");
+			e.setElementSmartspace("some smartspace");
 			allBoundaris.add(new ElementBoundary(e));
 		}
 		ElementBoundary[] all=allBoundaris.toArray(new ElementBoundary[0]);
 		allEntities=this.elementService.importElements(all);
+		
 
+		
+		List<ElementBoundary> lastEight = 
+				allEntities
+				.stream()
+				.skip(30)
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList());
+		
+		// WHEN I getElements using page #3 of size 10 nothing happens
+
+		
 		int size = 10;
 		int page = 3;
 		String adminSmartspace="dummy smartspace";
 		String adminEmail="dummy mail";
-		UserBoundary[] results = 
+		ElementBoundary[] results = 
 		  this.restTemplate
 			.getForObject(
-					this.baseUrl +"admin/users/{adminSmartspace}/{adminEmail}?page={page}&size={size}", 
-					UserBoundary[].class,adminSmartspace, adminEmail, 
+					this.baseUrl +"admin/elements/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
+					ElementBoundary[].class,adminSmartspace, adminEmail, 
 					size, page);
-		// THEN the response contains no messages
+		
 		assertThat(results)
-		.isEmpty();
+			.usingElementComparatorOnFields("name")
+			.containsExactlyElementsOf(lastEight);
+		
 		
 	}
 
 	
+
 }

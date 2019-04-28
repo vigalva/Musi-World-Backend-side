@@ -9,6 +9,11 @@ public class Location {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Location(double x, double y) {
+		this.x=x;
+		this.y=y;
+	}
+
 	public double getX() {
 		return x;
 	}
