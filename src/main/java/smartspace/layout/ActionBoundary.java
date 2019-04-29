@@ -7,13 +7,11 @@ import smartspace.data.ActionEntity;
 
 public class ActionBoundary {
 
-	private String actionSmartspace;
-	private String actionId;
-	private String elementSmartspace;
-	private String elementId;
+	private ActionBoundaryKey key;
+	private ElementBoundaryKey elementKey;
+	private UserBoundaryKey userKey;
 	private String playerSmartspace;
 	private String playerEmail;
-	private String actionType;
 	private Date creationTimestamp;
 	private Map<String, Object> moreAttributes;
 
@@ -21,21 +19,20 @@ public class ActionBoundary {
 	}
 
 	public ActionBoundary(ActionEntity action) {
-		this.actionSmartspace = action.getActionSmartspace();
-		this.actionId = action.getActionId();
-		this.elementSmartspace = action.getElementSmartspace();
-		this.elementId = action.getElementId();
-		this.playerSmartspace = action.getPlayerSmatspace();
-		this.playerEmail = action.getPlayerEmail();
-		this.actionType = action.getActionType();
+		this.key.setSmartspace(action.getActionSmartspace());
+		this.key.setActionId(action.getActionId());
+		this.key.setActionType(action.getActionType());
+		this.elementKey.setSmartspace(action.getElementSmartspace());
+		this.elementKey.setId(action.getElementId());
+		this.userKey.setSmartspace(action.getPlayerSmatspace());
+		this.userKey.setEmail(action.getPlayerEmail());
 		this.creationTimestamp = action.getCreationTimestamp();
 		this.moreAttributes = action.getMoreAttributes();
-
 	}
 
 	public ActionEntity convertToEntity() {
 		ActionEntity action = new ActionEntity();
-		action.setKey(this.actionSmartspace + "#" + this.actionId);
+		action.setKey(this.key.getSmartspace() + "#" + this.key.getActionId());
 		action.setActionSmartspace(this.getActionSmartspace());
 		action.setActionId(this.getActionId());
 		action.setElementSmartspace(this.getElementSmartspace());
@@ -51,66 +48,66 @@ public class ActionBoundary {
 
 	@Override
 	public String toString() {
-		return "ActionBoundary [actionSmartspace=" + actionSmartspace + ", userId=" + actionId + ", elementSmartspace="
-				+ elementSmartspace + ", elementId=" + elementId + ", playerSmartspace=" + playerSmartspace
-				+ ", playerEmail=" + playerEmail + ",actionType=" + actionType + ",creationTimestamp"
+		return "ActionBoundary [actionSmartspace=" + key.getSmartspace() + ", userId=" + key.getActionId() + ", elementSmartspace="
+				+ elementKey.getSmartspace() + ", elementId=" + elementKey.getId() + ", playerSmartspace=" + playerSmartspace
+				+ ", playerEmail=" + playerEmail + ",actionType=" + key.getActionType() + ",creationTimestamp"
 				+ creationTimestamp + ",moreAttributes" + moreAttributes + "]";
 	}
 
 	public String getActionSmartspace() {
-		return actionSmartspace;
+		return key.getSmartspace();
 	}
 
 	public void setActionSmartspace(String actionSmartspace) {
-		this.actionSmartspace = actionSmartspace;
+		key.setSmartspace(actionSmartspace);
 	}
 
 	public String getActionId() {
-		return actionId;
+		return key.getActionId();
 	}
 
 	public void setActionId(String actionId) {
-		this.actionId = actionId;
+		key.setActionId(actionId);
 	}
 
 	public String getElementSmartspace() {
-		return elementSmartspace;
+		return elementKey.getSmartspace();
 	}
 
 	public void setElementSmartspace(String elementSmartspace) {
-		this.elementSmartspace = elementSmartspace;
+		elementKey.setSmartspace(elementSmartspace);
 	}
 
 	public String getElementId() {
-		return elementId;
+		return elementKey.getId();
 	}
 
 	public void setElementId(String elementId) {
-		this.elementId = elementId;
+		elementKey.setId(elementId);
 	}
 
 	public String getPlayerSmartspace() {
-		return playerSmartspace;
+		return userKey.getSmartspace();
 	}
 
 	public void setPlayerSmartspace(String playerSmartspace) {
-		this.playerSmartspace = playerSmartspace;
+		userKey.setSmartspace(playerSmartspace);
 	}
 
 	public String getPlayerEmail() {
-		return playerEmail;
+		return userKey.getEmail();
 	}
 
 	public void setPlayerEmail(String playerEmail) {
-		this.playerEmail = playerEmail;
+		userKey.setEmail(playerEmail);
 	}
 
 	public String getActionType() {
-		return actionType;
+		return key.getActionType();
 	}
 
 	public void setActionType(String actionType) {
-		this.actionType = actionType;
+		key.setActionType(actionType);
 	}
 
 	public Date getCreationTimestamp() {
