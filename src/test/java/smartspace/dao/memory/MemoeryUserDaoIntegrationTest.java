@@ -4,12 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
-import smartspace.data.UserRole;
 import smartspace.data.util.EntityFactory;
 
 

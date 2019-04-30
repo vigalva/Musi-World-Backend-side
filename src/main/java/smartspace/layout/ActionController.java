@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import smartspace.data.ElementEntity;
 import smartspace.logic.ActionService;
 
 @RestController
@@ -36,7 +35,7 @@ public class ActionController {
 
 	@RequestMapping(path = "/smartspace/admin/action/{adminSmartspace}/{adminEmail}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ActionBoundary[] getActions(@PathVariable("adminSmartspace") String adminSmartspace,
-			@PathVariable("adminEmail") String adminEmail, @RequestBody ActionEntity[] elements) {
-		return (ActionBoundary[]) this.elementService.importElements(elements).toArray();
+			@PathVariable("adminEmail") String adminEmail, @RequestBody ActionBoundary[] actions) {
+		return (ActionBoundary[]) this.actionService.importActions(actions).toArray();
 	}
 }

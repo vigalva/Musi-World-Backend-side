@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
-
 import smartspace.dao.ActionDao;
 import smartspace.data.ActionEntity;
 

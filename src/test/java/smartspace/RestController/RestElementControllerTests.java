@@ -26,11 +26,9 @@ import org.springframework.web.client.RestTemplate;
 import smartspace.dao.AdvancedElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
-import smartspace.data.UserEntity;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.ElementBoundaryKey;
 import smartspace.layout.LatLng;
-import smartspace.layout.UserBoundary;
 import smartspace.layout.UserBoundaryKey;
 import smartspace.logic.ElementService;
 
@@ -72,9 +70,6 @@ public class RestElementControllerTests {
 		this.elementDao
 			.deleteAll();
 	}
-	
-
-
 
 	@Test
 	public void testImportElementsToDataBase() throws Exception{

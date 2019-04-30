@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import javax.annotation.PostConstruct;
 
 import org.junit.After;
@@ -120,7 +118,7 @@ public class RestUserControllerTests {
 		newUser.setUsername("dummy user");
 		List<UserEntity> allEntities = 
 		IntStream.range(1, totalSize + 1)
-			.mapToObj(i->key.getSmartspace()+ i)
+			.mapToObj(i->key.getSmartspace() + i)
 			.map(user->new UserEntity(
 					user, 
 					newUser.getKey().getEmail(),

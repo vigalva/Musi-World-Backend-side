@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.AdvancedElementDao;
-import smartspace.dao.AdvancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.layout.ElementBoundary;
 
