@@ -162,7 +162,7 @@ public class RestElementControllerTests {
 					.map(elem->new ElementEntity(
 							newElement.getName(), 
 							newElement.getElementType(), 
-							new Location(newElement.getLatlng().getLan(),newElement.getLatlng().getLat()),
+							new Location(newElement.getLatlng().getLng(),newElement.getLatlng().getLat()),
 							newElement.getCreated(), 
 							newElement.getCreator().getEmail(),
 							newElement.getCreator().getSmartspace(), 
@@ -171,15 +171,12 @@ public class RestElementControllerTests {
 		
 					.collect(Collectors.toList());
 				
-		
-		List<ElementBoundary> allBoundaris=new ArrayList<>();
-		for (ElementEntity e : allEntities) {
-			e.setElementId("some id");
-			e.setElementSmartspace("some smartspace");
-			allBoundaris.add(new ElementBoundary(e));
+		for (int i=0;i<allEntities.size();i++) {
+			allEntities.get(i).setElementSmartspace(dummyKey.getSmartspace());
+			allEntities.get(i).setElementId(dummyKey.getId());
+
 		}
-		ElementBoundary[] all=allBoundaris.toArray(new ElementBoundary[0]);
-		allEntities=this.elementService.importElements(all);
+		allEntities=this.elementService.importElements(allEntities);
 		
 
 		
@@ -203,7 +200,7 @@ public class RestElementControllerTests {
 					this.baseUrl +"admin/elements/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
 					ElementBoundary[].class,adminSmartspace, adminEmail, 
 					size, page);
-		System.err.println(results.length);
+		
 		ArrayList<ElementBoundary> arrayList = new ArrayList<ElementBoundary>(Arrays.asList(results));	
 		assertThat(results)
 			.usingElementComparatorOnFields("name")
@@ -252,7 +249,7 @@ public class RestElementControllerTests {
 					.map(elem->new ElementEntity(
 							newElement.getName(), 
 							newElement.getElementType(), 
-							new Location(newElement.getLatlng().getLan(),newElement.getLatlng().getLat()),
+							new Location(newElement.getLatlng().getLng(),newElement.getLatlng().getLat()),
 							newElement.getCreated(), 
 							newElement.getCreator().getEmail(),
 							newElement.getCreator().getSmartspace(), 
@@ -262,14 +259,12 @@ public class RestElementControllerTests {
 					.collect(Collectors.toList());
 				
 		
-		List<ElementBoundary> allBoundaris=new ArrayList<>();
-		for (ElementEntity e : allEntities) {
-			e.setElementId("some id");
-			e.setElementSmartspace("some smartspace");
-			allBoundaris.add(new ElementBoundary(e));
+		for (int i=0;i<allEntities.size();i++) {
+			allEntities.get(i).setElementSmartspace(dummyKey.getSmartspace());
+			allEntities.get(i).setElementId(dummyKey.getId());
+
 		}
-		ElementBoundary[] all=allBoundaris.toArray(new ElementBoundary[0]);
-		allEntities=this.elementService.importElements(all);
+		allEntities=this.elementService.importElements(allEntities);
 		
 
 		

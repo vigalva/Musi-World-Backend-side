@@ -20,15 +20,13 @@ public class ElementServiceImpl implements ElementService {
 	
 	@Transactional
 	@Override
-	public List<ElementEntity> importElements(ElementBoundary[] convertToEntity) {
+	public List<ElementEntity> importElements(List<ElementEntity> entities) {
 		
 			List<ElementEntity> elementsEntites=new ArrayList<ElementEntity>();
-			
-
-		for (ElementBoundary boundary : convertToEntity) {
-			if(boundary.convertToEntity().getElementSmartspace().equals("inbala1"))
+		for (ElementEntity entity : entities) {
+			if(entity.getElementSmartspace().equals("inbala1"))
 					throw new RuntimeException("You are trying to import elements from your own project-can't do that");
-			else elementsEntites.add(this.ElementsDao.create(boundary.convertToEntity()));
+			else elementsEntites.add(this.ElementsDao.create(entity));
 		}
 		return elementsEntites;
 		

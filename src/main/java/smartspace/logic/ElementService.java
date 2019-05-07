@@ -7,7 +7,7 @@ import smartspace.layout.ElementBoundary;
 
 public interface ElementService {
 
-	public List<ElementEntity> importElements(ElementBoundary[] convertToEntity);
+	public List<ElementEntity> importElements(List<ElementEntity> convertToEntity);
 	public List<ElementEntity> ExportElements(int size, int page);
 
 }

@@ -120,7 +120,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	}
 
 	@Id
-	@Override	public String getKey() {
+	@Override public String getKey() {
 		return  (String) (actionId +"!"+ actionSmartspace);
 	}
 

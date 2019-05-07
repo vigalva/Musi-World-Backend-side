@@ -6,7 +6,7 @@ import smartspace.data.UserEntity;
 import smartspace.layout.UserBoundary;
 
 public interface UserService {
-	public List<UserEntity> importUsers(UserBoundary[] convertToEntity);
+	public List<UserEntity> importUsers(List<UserEntity> entities);
 	public List<UserEntity> ExportUsers(int size, int page);
 
 }

@@ -48,7 +48,10 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 	public ElementEntity create(ElementEntity element) {
 		
 		GeneratorId idEntity = this.generatorIdCrud.save(new GeneratorId());
-		element.setKey(smartspace + "!" + elementId+ idEntity.getId());
+		if (element.getElementSmartspace()!=null&& element.getElementId()!=null)
+			element.setKey(element.getElementSmartspace() + "!" + element.getElementId()+ idEntity.getId());
+		else
+			element.setKey(smartspace+"!"+elementId+idEntity.getId());
 		this.generatorIdCrud.delete(idEntity);
 		// SQL: INSERT
 		if (!this.elementCrud.existsById(element.getKey())) {

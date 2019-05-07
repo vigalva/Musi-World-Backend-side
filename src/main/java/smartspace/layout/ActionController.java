@@ -1,6 +1,8 @@
 package smartspace.layout;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
 import smartspace.logic.ActionService;
 
 
@@ -27,7 +31,7 @@ public class ActionController {
 			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundary[] exportUserEntities (
+	public ActionBoundary[] exportActionEntities (
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail,
 			@RequestParam(name="size", required=false, defaultValue="10") int size, 
@@ -46,14 +50,22 @@ public class ActionController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-			public ActionBoundary[] importElementEntites (
+			public ActionBoundary[] importActionEntites (
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail,
 			@RequestBody ActionBoundary[] actions) {
-			
+		List<ActionEntity> actionEntites=new ArrayList<ActionEntity>();
+		
+
+
+		for (ActionBoundary action : actions) {
+			//System.err.println(action.getElement().getSmartspace());
+			actionEntites.add(action.convertToEntity());
+		}
+				
 				
 			return	this.actionService
-				.importActions(actions)
+				.importActions(actionEntites)
 					.stream()
 					.map(ActionBoundary::new)
 					.collect(Collectors.toList())

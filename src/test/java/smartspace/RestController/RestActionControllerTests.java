@@ -92,13 +92,13 @@ public class RestActionControllerTests {
 		dummyElement.setSmartspace("dummy smartspace");
 		
 		ActionBoundaryKey dummyKey=new ActionBoundaryKey();
-		dummyKey.setActionId("some id");
+		dummyKey.setId("some id");
 		dummyKey.setSmartspace("some somartspace");
 		
 		List<ActionBoundary> actions = new ArrayList<>();
 		ActionBoundary action= new ActionBoundary();
 		action.setCreated(new Date());
-		action.setElement(dummyElement);action.setKey(dummyKey);
+		action.setElement(dummyElement);action.setActionKey(dummyKey);
 		action.setPlayer(dummyCreator);
 		action.setProperties(new HashMap<>());
 		action.setType("dummy Type");
@@ -146,7 +146,7 @@ public class RestActionControllerTests {
 		dummyElement.setId("some id");
 		dummyElement.setSmartspace("some smartspace");
 		
-		dummyKey.setActionId("some id");
+		dummyKey.setId("some id");
 		dummyKey.setSmartspace("some smartspace");
 		
 
@@ -154,7 +154,7 @@ public class RestActionControllerTests {
 		
 		newAction.setCreated(new Date());
 		newAction.setElement(dummyElement);
-		newAction.setKey(dummyKey);
+		newAction.setActionKey(dummyKey);
 		newAction.setPlayer(dummyCreator);
 		newAction.setProperties(new HashMap<>());
 		newAction.setType("dummy Type");
@@ -162,7 +162,7 @@ public class RestActionControllerTests {
 		
 		List<ActionEntity> allEntities = 
 				IntStream.range(1, totalSize + 1)
-					.mapToObj(i->newAction.getKey().getSmartspace()+ i)
+					.mapToObj(i->newAction.getActionKey().getSmartspace()+ i)
 					.map(action->new ActionEntity(
 							newAction.getElement().getId(), 
 							newAction.getElement().getSmartspace(),
@@ -175,14 +175,12 @@ public class RestActionControllerTests {
 					.collect(Collectors.toList());
 				
 		
-		List<ActionBoundary> allBoundaris=new ArrayList<>();
-		for (ActionEntity e : allEntities) {
-			e.setActionId("some id");
-			e.setActionSmartspace("some smartspace");
-			allBoundaris.add(new ActionBoundary(e));
+		for (int i=0;i<allEntities.size();i++) {
+			allEntities.get(i).setActionSmartspace(dummyKey.getSmartspace());
+			allEntities.get(i).setActionId(dummyKey.getId());
+
 		}
-		ActionBoundary[] all=allBoundaris.toArray(new ActionBoundary[0]);
-		allEntities=this.actionService.importActions(all);
+		allEntities=this.actionService.importActions(allEntities);
 		
 
 		
@@ -236,7 +234,7 @@ public class RestActionControllerTests {
 		dummyElement.setId("some id");
 		dummyElement.setSmartspace("some smartspace");
 		
-		dummyKey.setActionId("some id");
+		dummyKey.setId("some id");
 		dummyKey.setSmartspace("some smartspace");
 		
 
@@ -244,7 +242,7 @@ public class RestActionControllerTests {
 		
 		newAction.setCreated(new Date());
 		newAction.setElement(dummyElement);
-		newAction.setKey(dummyKey);
+		newAction.setActionKey(dummyKey);
 		newAction.setPlayer(dummyCreator);
 		newAction.setProperties(new HashMap<>());
 		newAction.setType("dummy Type");
@@ -252,7 +250,7 @@ public class RestActionControllerTests {
 		
 		List<ActionEntity> allEntities = 
 				IntStream.range(1, totalSize + 1)
-					.mapToObj(i->newAction.getKey().getSmartspace()+ i)
+					.mapToObj(i->newAction.getActionKey().getSmartspace()+ i)
 					.map(action->new ActionEntity(
 							newAction.getElement().getId(), 
 							newAction.getElement().getSmartspace(),
@@ -265,14 +263,12 @@ public class RestActionControllerTests {
 					.collect(Collectors.toList());
 				
 		
-		List<ActionBoundary> allBoundaris=new ArrayList<>();
-		for (ActionEntity e : allEntities) {
-			e.setActionId("some id");
-			e.setActionSmartspace("some smartspace");
-			allBoundaris.add(new ActionBoundary(e));
+		for (int i=0;i<allEntities.size();i++) {
+			allEntities.get(i).setActionSmartspace(dummyKey.getSmartspace());
+			allEntities.get(i).setActionId(dummyKey.getId());
+
 		}
-		ActionBoundary[] all=allBoundaris.toArray(new ActionBoundary[0]);
-		allEntities=this.actionService.importActions(all);
+		allEntities=this.actionService.importActions(allEntities);
 		
 
 		

@@ -7,7 +7,7 @@ import smartspace.data.ActionEntity;
 
 public class ActionBoundary {
 
-	private ActionBoundaryKey key;
+	private ActionBoundaryKey actionKey;
 	private ElementBoundaryKey element;
 	private UserBoundaryKey player;
 	private String type;
@@ -19,11 +19,11 @@ public class ActionBoundary {
 
 	public ActionBoundary(ActionEntity action) {
 		
-		this.key=new ActionBoundaryKey();
+		this.actionKey=new ActionBoundaryKey();
 		this.element=new ElementBoundaryKey();
 		this.player=new UserBoundaryKey();
-		this.key.setActionId(action.getActionId());
-		this.key.setSmartspace(action.getActionSmartspace());
+		this.actionKey.setId(action.getActionId());
+		this.actionKey.setSmartspace(action.getActionSmartspace());
 		this.element.setId(action.getElementId());
 		this.element.setSmartspace(action.getElementSmartspace());
 		this.player.setEmail(action.getPlayerEmail());
@@ -36,8 +36,8 @@ public class ActionBoundary {
 	public ActionEntity convertToEntity() {
 		ActionEntity action = new ActionEntity();
 		
-		action.setActionId(this.getKey().getActionId());
-		action.setActionSmartspace(this.getKey().getSmartspace());
+		action.setActionId(this.getActionKey().getId());
+		action.setActionSmartspace(this.getActionKey().getSmartspace());
 		action.setActionType(this.getType());
 		action.setCreationTimestamp(this.getCreated());
 		action.setElementId(this.getElement().getId());
@@ -50,8 +50,8 @@ public class ActionBoundary {
 		return action;
 	}
 	
-	public ActionBoundaryKey getKey() {
-		return key;
+	public ActionBoundaryKey getActionKey() {
+		return actionKey;
 	}
 	public Date getCreated() {
 		return created;
@@ -74,8 +74,8 @@ public class ActionBoundary {
 	public void setElement(ElementBoundaryKey element) {
 		this.element = element;
 	}
-	public void setKey(ActionBoundaryKey key) {
-		this.key = key;
+	public void setActionKey(ActionBoundaryKey actionKey) {
+		this.actionKey = actionKey;
 	}
 	public void setProperties(Map<String, Object> properties) {
 		this.properties = properties;

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.AdvancedUserDao;
 import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.layout.UserBoundary;
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,12 +21,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	@Override
-	public  List<UserEntity> importUsers(UserBoundary[] convertToEntity) {
+	public  List<UserEntity> importUsers(List<UserEntity> entities) {
 		List<UserEntity> userEntites=new ArrayList<UserEntity>();
-		for (UserBoundary boundary : convertToEntity) {
-			if(boundary.convertToEntity().getUserSmatspace().equals("inbala1"))
+		for (UserEntity entity : entities) {
+			if(entity.getUserSmatspace().equals("inbala1"))
 					throw new RuntimeException("You are trying to import users from your own project-can't do that");
-			else userEntites.add(this.userDao.create(boundary.convertToEntity()));
+			else userEntites.add(this.userDao.create(entity));
 		}
 		return userEntites;
 		

@@ -38,7 +38,7 @@ public class UserEntityDemo implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		UserEntity user1 = this.factory.createNewUser("dummy", "dummy", "dummy userName", "dummy avatar", UserRole.PLAYER, 100);
+		UserEntity user1 = this.factory.createNewUser(null, null, "dummy userName", "dummy avatar", UserRole.PLAYER, 100);
 
 		System.err.println("new user:\n" + user1);
 		

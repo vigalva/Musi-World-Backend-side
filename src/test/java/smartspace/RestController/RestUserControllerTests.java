@@ -80,13 +80,13 @@ public class RestUserControllerTests {
 		key.setSmartspace("dummy smartspace");
 		newUser.setKey(key);
 		newUser.setPoints(300);
-		newUser.setRole(UserRole.PLAYER);
+		newUser.setRole("PLAYER");
 		newUser.setUsername("dummy user");
 		users.add(newUser);
 		
 		UserBoundary[] response = this.restTemplate
 			.postForObject(
-					this.baseUrl+"admin/useres/{adminSmartspace}/{adminEmail}",
+					this.baseUrl+"admin/users/{adminSmartspace}/{adminEmail}",
 					users, 
 					UserBoundary[].class,adminSmartspace, adminEmail);
 	
@@ -114,7 +114,7 @@ public class RestUserControllerTests {
 		key.setSmartspace("dummy smartspace");
 		newUser.setKey(key);
 		newUser.setPoints(300);
-		newUser.setRole(UserRole.PLAYER);
+		newUser.setRole("PLAYER");
 		newUser.setUsername("dummy user");
 		List<UserEntity> allEntities = 
 		IntStream.range(1, totalSize + 1)
@@ -124,16 +124,12 @@ public class RestUserControllerTests {
 					newUser.getKey().getEmail(),
 					newUser.getUsername(), 
 					newUser.getAvatar(), 
-					newUser.getRole(), 
+					UserRole.valueOf(newUser.getRole()), 
 					newUser.getPoints()))
 			
 			.collect(Collectors.toList());
-		List<UserBoundary> allBoundaris=new ArrayList<>();
-		for (UserEntity e : allEntities) {
-			allBoundaris.add(new UserBoundary(e));
-		}
-		UserBoundary[] all=allBoundaris.toArray(new UserBoundary[0]);
-		allEntities=this.userService.importUsers(all);
+		
+		allEntities=this.userService.importUsers(allEntities);
 		
 		List<UserBoundary> lastEight = 
 				allEntities
@@ -178,7 +174,7 @@ public class RestUserControllerTests {
 				key.setSmartspace("dummy smartspace");
 				newUser.setKey(key);
 				newUser.setPoints(300);
-				newUser.setRole(UserRole.PLAYER);
+				newUser.setRole("PLAYER");
 				newUser.setUsername("dummy user");
 				List<UserEntity> allEntities = 
 				IntStream.range(1, totalSize + 1)
@@ -188,16 +184,12 @@ public class RestUserControllerTests {
 							newUser.getKey().getEmail(),
 							newUser.getUsername(), 
 							newUser.getAvatar(), 
-							newUser.getRole(), 
+							UserRole.valueOf(newUser.getRole()), 
 							newUser.getPoints()))
 					
 					.collect(Collectors.toList());
-				List<UserBoundary> allBoundaris=new ArrayList<>();
-				for (UserEntity e : allEntities) {
-					allBoundaris.add(new UserBoundary(e));
-				}
-				UserBoundary[] all=allBoundaris.toArray(new UserBoundary[0]);
-				allEntities=this.userService.importUsers(all);
+				
+				allEntities=this.userService.importUsers(allEntities);
 				
 			
 				// WHEN I getUsers using page #3 of size 10

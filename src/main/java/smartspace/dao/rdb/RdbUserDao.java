@@ -32,7 +32,7 @@ public class RdbUserDao implements AdvancedUserDao<String> {
 	public void setSmartspace(String smartspace) {
 		this.smartspace = smartspace;
 	}
-
+	
 	@Value("${userEmail:dummy mail}")
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;

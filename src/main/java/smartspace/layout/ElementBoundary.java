@@ -24,6 +24,7 @@ public class ElementBoundary {
 	public ElementBoundary(ElementEntity elementEntity) {
 		
 		this.key=new ElementBoundaryKey();
+		
 		this.latlng= new LatLng();
 		this.creator=new UserBoundaryKey();
 		
@@ -59,7 +60,7 @@ public class ElementBoundary {
 			entity.setLocation(null);
 		else {
 			entity.setLocation(new Location());
-			entity.getLocation().setX(this.getLatlng().getLan());
+			entity.getLocation().setX(this.getLatlng().getLng());
 			entity.getLocation().setY(this.getLatlng().getLat());
 		}
 		entity.setMoreAttributes(this.getElementProperties());

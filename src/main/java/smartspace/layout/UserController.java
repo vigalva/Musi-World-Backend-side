@@ -27,7 +27,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(
-	path="/smartspace/admin/useres/{adminSmartspace}/{adminEmail}",
+	path="/smartspace/admin/users/{adminSmartspace}/{adminEmail}",
 	method=RequestMethod.POST,
 	consumes=MediaType.APPLICATION_JSON_VALUE,
 	produces=MediaType.APPLICATION_JSON_VALUE)
@@ -41,7 +41,7 @@ public class UserController {
 		}
 		
 	return	this.userSerivce.
-		importUsers(users)
+		importUsers(userEntites)
 			.stream()
 			.map(UserBoundary::new)
 			.collect(Collectors.toList())

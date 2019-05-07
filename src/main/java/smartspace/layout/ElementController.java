@@ -1,6 +1,8 @@
 package smartspace.layout;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -11,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import smartspace.data.ElementEntity;
+import smartspace.data.UserEntity;
 import smartspace.logic.ElementService;
 
 
@@ -47,14 +50,17 @@ public class ElementController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-			public ElementBoundary[] importElementEntites (
+	public ElementBoundary[] importElementEntites (
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail,
 			@RequestBody ElementBoundary[] elements) {
-			
+			List<ElementEntity> elementEntites=new ArrayList<ElementEntity>();
+		for (ElementBoundary element : elements) {
+			elementEntites.add(element.convertToEntity());
+		}
 				
 			return	this.elementService
-				.importElements(elements)
+				.importElements(elementEntites)
 					.stream()
 					.map(ElementBoundary::new)
 					.collect(Collectors.toList())
