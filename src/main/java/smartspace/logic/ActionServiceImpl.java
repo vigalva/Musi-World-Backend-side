@@ -19,8 +19,9 @@ private AdvancedActionDao<String> ActionsDao;
 private AdvancedElementDao<String> ElementDao;
 
 	
-	public ActionServiceImpl(AdvancedActionDao<String> ActionsDao) {
+	public ActionServiceImpl(AdvancedActionDao<String> ActionsDao,AdvancedElementDao<String> ElementDao) {
 		this.ActionsDao = ActionsDao;
+		this.ElementDao=ElementDao;
 		
 	}
 	
