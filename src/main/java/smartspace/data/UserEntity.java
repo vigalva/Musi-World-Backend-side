@@ -1,5 +1,6 @@
 package smartspace.data;
  
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -80,6 +81,7 @@ public class UserEntity implements SmartspaceEntity<String>{
 		super();
 	}
 	@Id
+	@Column(name="Id")
 	@Override
 	public String getKey() {
 		return (String) (userSmatspace+ "!"+ userEmail);

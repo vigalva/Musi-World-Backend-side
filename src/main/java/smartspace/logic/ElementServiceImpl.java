@@ -36,6 +36,9 @@ public class ElementServiceImpl implements ElementService {
 	public List<ElementEntity> ExportElements(int size, int page) {
 		return this.ElementsDao.readAll(size, page);
 	}
+	
+	
+	
 
 
 

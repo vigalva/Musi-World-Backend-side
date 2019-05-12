@@ -3,6 +3,7 @@ package smartspace.data;
 import java.util.Date;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Convert;
 //import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -120,6 +121,7 @@ public class ActionEntity implements SmartspaceEntity<String>{
 	}
 
 	@Id
+	@Column(name="Id")
 	@Override public String getKey() {
 		return  (String) (actionId +"!"+ actionSmartspace);
 	}
