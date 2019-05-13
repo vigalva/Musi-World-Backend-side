@@ -68,6 +68,19 @@ public class ElementController {
 						
 	}
 	
+	@RequestMapping(
+			path="/smartspace/elements/{managerSmartspace}/{managerEmail}",
+			method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary createANewElement (
+			@PathVariable("managerSmartspace") String managerSmartspace,
+			@PathVariable("managerEmail") String managerEmail,
+			@RequestBody ElementBoundary element) {
+				
+			return	new ElementBoundary(this.elementService.createElement(element.convertToEntity()));
+						
+	}
 						
 
 	

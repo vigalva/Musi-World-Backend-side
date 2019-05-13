@@ -70,7 +70,50 @@ public class RestElementControllerTests {
 		this.elementDao
 			.deleteAll();
 	}
-
+	@Test
+	public void testCreateNewElementToDataBase() throws Exception{
+		//Given the database is clean
+		String managerSmartspace="dummy smartspace";
+		String managerEmail="dummy mail";
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
+		
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("some smartspace");
+		
+		ElementBoundaryKey dummyKey=new ElementBoundaryKey();
+		
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some smartspace");
+		
+		LatLng dummlocation=new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		//when i create new element and read it
+		ElementBoundary newElement= new ElementBoundary();
+		newElement.setKey(dummyKey);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+		
+		ElementBoundary response = this.restTemplate
+				.postForObject(
+						this.baseUrl+"/elements/{managerSmartspace}/{managerEmail}",
+						newElement, 
+						ElementBoundary.class,managerSmartspace, managerEmail);
+		// THEN the database contains 1 message
+				// AND the returned element is similar to the elemnt in the database
+				assertThat(
+						this.elementDao.readAll())
+					.hasSize(1)
+				.usingElementComparatorOnFields("key")
+				.containsExactly(response.convertToEntity());
+				
+				tearDown();
+	}
 	@Test
 	public void testImportElementsToDataBase() throws Exception{
 		// GIVEN the database is clean 

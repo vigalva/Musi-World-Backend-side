@@ -55,4 +55,11 @@ public class ActionServiceImpl implements ActionService {
 	public List<ActionEntity> ExportActions(int size, int page) {
 		return this.ActionsDao.readAll(size, page);
 	}
+
+	@Override
+	public ActionEntity invokeAction(ActionEntity convertToEntity) {
+		// TODO Auto-validate methodes
+		
+		return this.ActionsDao.create(convertToEntity);
+	}
 }

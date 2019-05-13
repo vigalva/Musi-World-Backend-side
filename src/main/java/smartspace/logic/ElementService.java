@@ -9,5 +9,6 @@ public interface ElementService {
 
 	public List<ElementEntity> importElements(List<ElementEntity> convertToEntity);
 	public List<ElementEntity> ExportElements(int size, int page);
+	public ElementEntity createElement(ElementEntity entity);
 
 }

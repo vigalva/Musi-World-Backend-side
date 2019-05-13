@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import smartspace.dao.AdvancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
+import smartspace.layout.NewUserForm;
 import smartspace.layout.UserBoundary;
 import smartspace.layout.UserBoundaryKey;
 import smartspace.logic.UserService;
@@ -65,7 +66,33 @@ public class RestUserControllerTests {
 		this.userDao
 			.deleteAll();
 	}
-	
+	@Test
+	public void testCreateNewUser() throws Exception{
+		//GIVEN the database is clean
+		
+		//WHEN I create a new user
+		NewUserForm form=new NewUserForm();
+		form.setAvatar("dummy avatar");
+		form.setEmail("someemail@gmail.com");
+		form.setRole("PLAYER");
+		form.setUsername("mydummyusername");
+		UserBoundary response = this.restTemplate
+				.postForObject(
+						this.baseUrl+"users",
+						form, 
+						UserBoundary.class);
+		
+		// THEN the database contains 1 user
+		// AND the returned user is similar to the user in the database
+		
+		assertThat(
+				this.userDao.readAll())
+			.hasSize(1)
+			.usingElementComparatorOnFields("key")
+			.containsExactly(response.convertToEntity());
+		
+		tearDown();
+	}
 	@Test
 	public void testImportUsersToDataBase() throws Exception{
 		// GIVEN the database is clean 
@@ -101,9 +128,46 @@ public class RestUserControllerTests {
 		
 		tearDown();
 	}
-
 	@Test
-	public void testGetMessagesUsingPagination() throws Exception{
+	public void testLoginAndRetriveUserDetails() throws Exception{
+		
+		//GIVEN I have empty database
+		
+		
+		
+		
+		//WHEN I create new user and he Logs in
+		
+		UserBoundary bound=new UserBoundary();
+		UserBoundaryKey key=new UserBoundaryKey();
+		key.setEmail("someemail@gmail.com");
+		key.setSmartspace("inbala1");
+		bound.setAvatar("some avatar");
+		bound.setKey(key);
+		bound.setRole("PLAYER");
+		bound.setUsername("username");
+		
+		UserEntity user=bound.convertToEntity();
+		this.userDao.create(user);
+		
+		UserBoundary response=this.restTemplate
+					.getForObject(
+						this.baseUrl+"users/login/{userSmartspace}/{userEmail}"
+						, UserBoundary.class,bound.getKey().getSmartspace(),bound.getKey().getEmail());
+		
+		//THEN the user details are recived
+		assertThat(this.userDao.readById(response.getKey().getSmartspace()
+				+"!"+response.getKey().getEmail()).get().getUserEmail())
+		.isEqualTo(user.getUserEmail());
+		
+		assertThat(this.userDao.readById(response.getKey().getSmartspace()
+				+"!"+response.getKey().getEmail()).get().getUserSmatspace())
+		.isEqualTo(user.getUserSmatspace());
+		
+		tearDown();
+	}
+	@Test
+	public void testGetUsersUsingPagination() throws Exception{
 		
 		// GIVEN the database contains 38 messages
 		int totalSize = 38;
@@ -164,7 +228,7 @@ public class RestUserControllerTests {
 	}
 
 	@Test
-	public void testGetMessagesUsingPaginationWithNoResult() throws Exception{
+	public void testGetUsersUsingPaginationWithNoResult() throws Exception{
 		// GIVEN the database contains 38 messages
 				int totalSize = 30;
 				UserBoundary newUser= new UserBoundary();
@@ -212,6 +276,53 @@ public class RestUserControllerTests {
 		// THEN the response contains no messages
 		assertThat(results)
 			.isEmpty();
+	}
+	
+	@Test
+	public void TestUpdateUserDetailsExceptHisPoints() throws Exception{
+		
+		//GIVEN empty database
+		
+		//WHEN I create a user and update his details
+		UserBoundary bound=new UserBoundary();
+		UserBoundaryKey key=new UserBoundaryKey();
+		key.setEmail("someemail@gmail.com");
+		key.setSmartspace("inbala1");
+		bound.setAvatar("some avatar");
+		bound.setKey(key);
+		bound.setRole("PLAYER");
+		bound.setUsername("username");
+		
+		UserEntity user=bound.convertToEntity();
+		this.userDao.create(user);
+		
+		bound=new UserBoundary(user);
+		
+		bound.setAvatar("something elses");
+		bound.setUsername("otherUserName");
+		
+		this.restTemplate
+		.put(
+			this.baseUrl+"users/login/{userSmartspace}/{userEmail}",
+			bound,bound.getKey().getSmartspace(),bound.getKey().getEmail());
+		//THEN the user is saved with his new details
+		
+		
+		
+		assertThat(this.userDao.readById(user.getKey()))
+		.isPresent()
+		.get()
+		.extracting("avatar")
+		.containsExactly(bound.getAvatar());
+		
+		assertThat(this.userDao.readById(user.getKey()))
+		.isPresent()
+		.get()
+		.extracting("username")
+		.containsExactly(bound.getUsername());
+		
+		tearDown();
+		
 	}
 
 	

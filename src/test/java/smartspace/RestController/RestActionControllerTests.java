@@ -75,7 +75,48 @@ public class RestActionControllerTests {
 		this.actionDao
 			.deleteAll();
 	}
-
+	@Test
+	public void testInvokeAnACtion() throws Exception{
+		//GIVEN the database is empty
+		
+		//WHEN I create a new action 
+	
+		
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("dummy smartspace");
+		
+		ElementBoundaryKey dummyElement=new ElementBoundaryKey();
+		
+		dummyElement.setId("dummy id");
+		dummyElement.setSmartspace("dummy smartspace");
+		
+		ActionBoundaryKey dummyKey=new ActionBoundaryKey();
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some somartspace");
+		
+		ActionBoundary action= new ActionBoundary();
+		action.setCreated(new Date());
+		action.setElement(dummyElement);action.setActionKey(dummyKey);
+		action.setPlayer(dummyCreator);
+		action.setProperties(new HashMap<>());
+		action.setType("dummy Type");
+		
+		ActionBoundary response = this.restTemplate
+				.postForObject(
+						this.baseUrl+"actions",
+						action, 
+						ActionBoundary.class);
+		
+			// THEN the database contains 1 message
+			// AND the returned message is similar to the message in the database
+			assertThat(
+					this.actionDao.readAll())
+				.hasSize(1)
+			.usingElementComparatorOnFields("key")
+			.containsExactly(response.convertToEntity());
+		//THEN the action is stoed in the database
+	}
 	@Test
 	public void testImportActionsToDataBase() throws Exception{
 		// GIVEN the database is clean 

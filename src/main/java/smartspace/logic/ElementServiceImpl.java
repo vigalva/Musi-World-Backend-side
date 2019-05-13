@@ -36,6 +36,12 @@ public class ElementServiceImpl implements ElementService {
 	public List<ElementEntity> ExportElements(int size, int page) {
 		return this.ElementsDao.readAll(size, page);
 	}
+
+	@Override
+	public ElementEntity createElement(ElementEntity entity) {
+		// TODO Auto-need to do validation
+		return this.ElementsDao.create(entity);
+	}
 	
 	
 	

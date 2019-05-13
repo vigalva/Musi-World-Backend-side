@@ -1,5 +1,7 @@
 package smartspace.layout;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,10 +50,37 @@ public class UserController {
 			.toArray(new UserBoundary[0]);		
 				
 	}
+	
+	@RequestMapping(
+			path="/smartspace/users",
+			method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+			public UserBoundary createANewUser (
+			@RequestBody NewUserForm form) {
+				
+				UserBoundary user= new UserBoundary();
+				UserBoundaryKey key=new UserBoundaryKey();
+				
+				key.setEmail(form.getEmail());
+				user.setAvatar(form.getAvatar());
+				
+				user.setRole(form.getAvatar());
+				user.setRole(form.getRole());
+				user.setUsername(form.getUsername());
+				user.setKey(key);
+				return new UserBoundary(this.userSerivce.createUser(user.convertToEntity()));
+						
+			}
 				
 		
 	
 	
+	private UserBoundary newUserBoundary(UserBoundary createUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@RequestMapping(
 			path="/smartspace/admin/users/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
@@ -69,5 +98,36 @@ public class UserController {
 			.collect(Collectors.toList())
 			.toArray(new UserBoundary[0]);
 	}
+	
+	@RequestMapping(
+			path="/smartspace/users/login/{userSmartspace}/{userEmail}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public UserBoundary loginValidUserAndRetriveUserDetails (
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail) {
+			
+			UserBoundary user=new UserBoundary();
+			UserBoundaryKey key=new UserBoundaryKey();
+			key.setEmail(userEmail);
+			key.setSmartspace(userSmartspace);
+			user.setKey(key);
+			
+			return new UserBoundary(this.userSerivce.loginAndRetriveDetails(user.convertToEntity()));
+			
+	}
+	
+	@RequestMapping(
+			path="/smartspace/users/login/{userSmartspace}/{userEmail}",
+			method=RequestMethod.PUT,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
+	public void updateUserDetailsExceptThierPoints (
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail,
+			@RequestBody UserBoundary update) {
+			
+			this.userSerivce.updateUser(update.convertToEntity());
+	}
+
 
 }

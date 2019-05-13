@@ -37,4 +37,29 @@ public class UserServiceImpl implements UserService {
 		return this.userDao.readAll(size, page);
 	}
 
+	@Override
+	public UserEntity createUser(UserEntity convertToEntity) {
+		// TODO Auto-validate method
+		return this.userDao.create(convertToEntity);
+		
+	}
+
+	@Override
+	public UserEntity loginAndRetriveDetails(UserEntity convertToEntity) {
+		
+		// TODO Auto-validate function
+
+		return this.userDao.readById(convertToEntity.getUserSmatspace()
+									+"!"+convertToEntity.getUserEmail()).get();
+	}
+
+	@Override
+	public void updateUser(UserEntity convertToEntity) {
+		// TODO Auto-validate function
+		
+		convertToEntity.setPoints(-1);
+		convertToEntity.setKey(convertToEntity.getUserSmatspace()+"!"+convertToEntity.getUserEmail());
+		this.userDao.update(convertToEntity);
+	}
+
 }

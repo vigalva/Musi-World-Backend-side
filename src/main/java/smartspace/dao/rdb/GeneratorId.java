@@ -2,6 +2,7 @@ package smartspace.dao.rdb;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 //import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
@@ -13,7 +14,7 @@ public class GeneratorId {
 	}
 
 	@Id
-	@GeneratedValue//(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}

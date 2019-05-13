@@ -64,15 +64,18 @@ public class UserBoundary {
 		entity.setUserEmail(this.getKey().getEmail());
 		entity.setUsername(this.getUsername());
 		entity.setAvatar(this.getAvatar());
-		entity.setRole(UserRole.valueOf(this.getRole()));
+		if (this.getRole()!=null)
+			entity.setRole(UserRole.valueOf(this.getRole()));
 		entity.setPoints(this.getPoints());
 		return entity;
 	}
 	
 	@Override
 	public String toString() {
+		if (key.getSmartspace()!=null)
 		return "UserBoundary [key=" + key.getSmartspace()+ " "+key.getEmail() + ", username=" + username + ", avatar=" + avatar + 
 				", role=" + role+ ", points=" + points  + "]"+"\n";
+		return key.getEmail();
 	}
 
 }

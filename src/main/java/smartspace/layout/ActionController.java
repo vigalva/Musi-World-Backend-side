@@ -59,7 +59,6 @@ public class ActionController {
 
 
 		for (ActionBoundary action : actions) {
-			//System.err.println(action.getElement().getSmartspace());
 			actionEntites.add(action.convertToEntity());
 		}
 				
@@ -71,6 +70,16 @@ public class ActionController {
 					.collect(Collectors.toList())
 					.toArray(new ActionBoundary[0]);		
 						
+			}
+	@RequestMapping(
+			path="/smartspace/actions",
+			method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+			public ActionBoundary invokeAnAction (
+			@RequestBody ActionBoundary action) {
+				
+				return new ActionBoundary(this.actionService.invokeAction(action.convertToEntity()));
 			}
 						
 
