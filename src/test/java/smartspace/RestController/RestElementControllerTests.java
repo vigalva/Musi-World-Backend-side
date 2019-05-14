@@ -275,8 +275,6 @@ public class RestElementControllerTests {
 		dummlocation.setLat(200);
 		// WHEN I import array of 30 ElementBoundaries
 		
-		
-		
 		newElement.setKey(dummyKey);
 		newElement.setName("dummy name");
 		newElement.setElementType("dummy type");
@@ -338,7 +336,123 @@ public class RestElementControllerTests {
 		
 		
 	}
+	@Test
+	public void testUpdateElement() throws Exception{
+		
+		//GIVEN i have empty database
+		
+		//WHEN i add new element and try to update his details
+		
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
+		
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("some smartspace");
+		
+		ElementBoundaryKey dummyKey=new ElementBoundaryKey();
+		
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some smartspace");
+		
+		LatLng dummlocation=new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		//when i create new element and read it
+		ElementBoundary newElement= new ElementBoundary();
+		newElement.setKey(dummyKey);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+		ElementEntity element=newElement.convertToEntity();
+		this.elementDao.create(element);
+		
+		System.err.println(element.getElementId());
+		ElementBoundary updated= newElement;
+		newElement.setName("other name");
+		newElement.setElementType("other type ");
+		updated.setKey(null);
+		
+		this.restTemplate
+		.put(
+			this.baseUrl+"elements/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
+			updated,
+			element.getCreatorSmartspace(),
+			element.getCreatorEmail(),
+			element.getElementSmartspace(),
+			element.getElementId());
+		//THEN the details are updated
+		assertThat(this.elementDao.readById(element.getKey()))
+		.isPresent()
+		.get()
+		.extracting("name")
+		.containsExactly(updated.getName());
+		
+		assertThat(this.elementDao.readById(element.getKey()))
+		.isPresent()
+		.get()
+		.extracting("type")
+		.containsExactly(updated.getElementType());
+		
+		tearDown();
+		
+	}
+	
+	@Test
+	public void testGetSpecificElement() {
+		
+		//GIVEN an empty database
+		
+		//WHEN i create an element and read it from database
+		
+		
+		UserBoundaryKey dummyCreator=new UserBoundaryKey();
+		
+		dummyCreator.setEmail("dummy mail");
+		dummyCreator.setSmartspace("some smartspace");
+		
+		ElementBoundaryKey dummyKey=new ElementBoundaryKey();
+		
+		dummyKey.setId("some id");
+		dummyKey.setSmartspace("some smartspace");
+		
+		LatLng dummlocation=new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		//when i create new element and read it
+		ElementBoundary newElement= new ElementBoundary();
+		newElement.setKey(dummyKey);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+		
+		ElementEntity entity=newElement.convertToEntity();
+		this.elementDao.create(entity);
 
+		ElementBoundary result = 
+				  this.restTemplate
+					.getForObject(
+							this.baseUrl +"elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}", 
+							ElementBoundary.class,
+							entity.getCreatorSmartspace(), 
+							entity.getCreatorEmail(),
+							entity.getElementSmartspace(),
+							entity.getElementId());
+		//THEN i will get the element i wanted
+		
+		assertThat(result.getKey().getSmartspace())
+		.isEqualTo(entity.getElementSmartspace());
+		
+		assertThat(result.getKey().getId())
+		.asString()
+		.isEqualTo(entity.getElementId());
+	}
 	
 
 }

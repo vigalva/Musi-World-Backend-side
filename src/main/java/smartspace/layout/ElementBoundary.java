@@ -53,8 +53,10 @@ public class ElementBoundary {
 		entity.setCreationTimestamp(this.getCreated());
 		entity.setCreatorEmail(this.getCreator().getEmail());
 		entity.setCreatorSmartspace(this.getCreator().getSmartspace());
+		if (this.getKey()!=null) {
 		entity.setElementId(this.getKey().getId());
 		entity.setElementSmartspace(this.getKey().getSmartspace());
+		}
 		entity.setExpired(this.isExpired());
 		if (this.latlng==null)
 			entity.setLocation(null);

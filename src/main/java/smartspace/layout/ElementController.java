@@ -46,6 +46,20 @@ public class ElementController {
 	}
 	
 	@RequestMapping(
+			path="/smartspace/elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary RetriveSpecificElement (
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail,
+			@PathVariable("elementSmartspace") String elementSmartspace,
+			@PathVariable("elementId") String elementId) {
+		
+			return new ElementBoundary(this.elementService.retriveElement(elementSmartspace,elementId));
+		
+	}
+	
+	@RequestMapping(
 			path="/smartspace/admin/elements/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
@@ -81,6 +95,22 @@ public class ElementController {
 			return	new ElementBoundary(this.elementService.createElement(element.convertToEntity()));
 						
 	}
+	
+	@RequestMapping(
+			path="/smartspace/elements/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
+			method=RequestMethod.PUT,
+			consumes=MediaType.APPLICATION_JSON_VALUE)
+			public void UpdateAnElement (
+			@PathVariable("managerSmartspace") String managerSmartspace,
+			@PathVariable("managerEmail") String managerEmail,
+			@PathVariable("elementSmartspace") String elementSmartspace,
+			@PathVariable("elementId") String elementId,
+		
+			@RequestBody ElementBoundary element) {
+		
+				this.elementService.update(element.convertToEntity(), elementSmartspace, elementId);
+				
+			}
 						
 
 	

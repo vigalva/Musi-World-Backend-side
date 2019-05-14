@@ -42,6 +42,22 @@ public class ElementServiceImpl implements ElementService {
 		// TODO Auto-need to do validation
 		return this.ElementsDao.create(entity);
 	}
+
+	@Override
+	public void update(ElementEntity convertToEntity,String elementSmartspace,String elementId) {
+		// TODO Auto-validate function
+		
+		convertToEntity.setKey(elementSmartspace+"!"+elementId);
+		this.ElementsDao.update(convertToEntity);
+		
+	}
+
+	@Override
+	public ElementEntity retriveElement(String elementSmartspace, String elementId) {
+		// TODO Auto-validate function
+		
+		return this.ElementsDao.readById(elementSmartspace+"!"+elementId).get();
+	}
 	
 	
 	
