@@ -1,6 +1,7 @@
 package smartspace.logic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -57,6 +58,32 @@ public class ElementServiceImpl implements ElementService {
 		// TODO Auto-validate function
 		
 		return this.ElementsDao.readById(elementSmartspace+"!"+elementId).get();
+	}
+
+	@Override
+	public List<ElementEntity> getElements(int size, int page) {
+		// TODO Auto-validate function
+		
+		return this.ElementsDao.readAll(size, page);
+	}
+
+	@Override
+	public List<ElementEntity> getElementsByName(String name, int size, int page) {
+		
+		return this.ElementsDao.readElementsByNamePattern(name, size, page);
+
+	}
+
+	@Override
+	public List<ElementEntity> getElementsByType(String value, int size, int page) {
+		
+		return this.ElementsDao.readElementsByType(value, size, page);
+
+	}
+
+	@Override
+	public List<ElementEntity> getElementsByDistance(double x, double y, double distance, int size, int page) {
+				return this.ElementsDao.readElementsByDistance(x, y, distance, size, page);
 	}
 	
 	

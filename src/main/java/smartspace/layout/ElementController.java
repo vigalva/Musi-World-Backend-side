@@ -4,8 +4,12 @@ package smartspace.layout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.JsonPath;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +59,65 @@ public class ElementController {
 			@PathVariable("elementSmartspace") String elementSmartspace,
 			@PathVariable("elementId") String elementId) {
 		
-			return new ElementBoundary(this.elementService.retriveElement(elementSmartspace,elementId));
+			return new ElementBoundary(this.elementService.retriveElement(elementSmartspace,elementId));	
+	}
+	
+	
+	@RequestMapping(
+			path="/smartspace/elements/{userSmartspace}/{userEmail}",
+			method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] getAllElelemntBySearch(
+			@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail,
+			@RequestParam(name="search", required=false, defaultValue= "")  String search,
+			@RequestParam(name="value", required=false, defaultValue= "")  String value,
+			@RequestParam(name="x", required=false, defaultValue= "0")  double x,
+			@RequestParam(name="y", required=false, defaultValue= "0")  double y,
+			@RequestParam(name="distance", required=false, defaultValue= "0")  double distance,
+			@RequestParam(name="page", required=false, defaultValue="0") int page, 
+			@RequestParam(name="size", required=false, defaultValue="10") int size) {
+		
+		System.err.println(value);
+		if (search.equals("")) {
+			return 
+			this.elementService
+			.getElements(size, page)
+			.stream()
+			.map(ElementBoundary::new)
+			.collect(Collectors.toList())
+			.toArray(new ElementBoundary[0]);
+		}
+		else if (search.equals("name")) {
+			
+		return
+		this.elementService
+			.getElementsByName(value,size, page)
+			.stream()
+			.map(ElementBoundary::new)
+			.collect(Collectors.toList())
+			.toArray(new ElementBoundary[0]);
+		}
+		
+		else if (search.equals("type")) {
+			
+			return
+			this.elementService
+				.getElementsByType(value,size, page)
+				.stream()
+				.map(ElementBoundary::new)
+				.collect(Collectors.toList())
+				.toArray(new ElementBoundary[0]);
+			}
+		
+		return
+				this.elementService
+					.getElementsByDistance(x ,y,distance,size,page)
+					.stream()
+					.map(ElementBoundary::new)
+					.collect(Collectors.toList())
+					.toArray(new ElementBoundary[0]);
+				
 		
 	}
 	

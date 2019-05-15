@@ -59,6 +59,8 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public ActionEntity invokeAction(ActionEntity convertToEntity) {
 		// TODO Auto-validate methodes
+		if (convertToEntity.getActionType().equals("echo"))
+		return this.ActionsDao.create(convertToEntity);
 		
 		return this.ActionsDao.create(convertToEntity);
 	}

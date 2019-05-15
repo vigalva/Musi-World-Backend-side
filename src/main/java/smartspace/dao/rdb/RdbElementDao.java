@@ -154,4 +154,37 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public List<ElementEntity> readElementsByNamePattern(String name,int size, int page) {
+		
+		return this.elementCrud
+				.findAllByNameLike("%" + name + "%", 
+						PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<ElementEntity> readElementsByType(String type, int size, int page) {
+		
+		return this.elementCrud
+				.findAllByTypeLike( type, 
+						PageRequest.of(page, size));
+	}
+
+	@Override
+	public List<ElementEntity> readElementsByDistance(double x, double y, double distance, int size, int page) {
+		System.err.println("i'm here");
+		double minX=x-distance;
+		double maxX=x+distance;
+		double minY=y-distance;
+		double maxY=y+distance;
+		return this.elementCrud
+				.findAllByLocationXBetweenAndLocationYBetween(
+						minX,
+						maxX,
+						minY,
+						maxY,
+						PageRequest.of(page, size));
+	}
+
 }
