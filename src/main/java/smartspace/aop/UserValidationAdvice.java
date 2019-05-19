@@ -16,30 +16,7 @@ public class UserValidationAdvice {
 	
 	@Before("@annotation(smartspace.aop.UserValidation)")
 	public void sampleTime(JoinPoint jp) {
-		String methodName = jp.getSignature().getName();
-		String className = jp.getTarget().getClass().getName();
 		
-		long currentTime = System.currentTimeMillis();
-		log.debug("***********"  + className + "." + methodName + "() - " + currentTime);
-	}
-	
-	
-	@Around("@annotation(smartspace.aop.UserValidation) && args(key,..)")
-	public Object sampleTime(ProceedingJoinPoint pjp, String key) throws Throwable{
-		String methodName = pjp.getSignature().getName();
-		String className = pjp.getTarget().getClass().getName();
-		
-		long currentTime = System.currentTimeMillis();
-		
-		try {
-			Object rv = pjp.proceed();
-			return rv;
-		} catch (Throwable e) {
-			throw e;
-		}finally {
-			long elapsed = System.currentTimeMillis() - currentTime;
-			log.trace("***********"  + className + "." + methodName + "(key=" + key+ ",...) - " + elapsed + "ms");
-		}
 	}
 
 }
