@@ -23,6 +23,7 @@ public class ElementPerformanceMonitorAdvice {
 		log.debug("***********"  + className + "." + methodName + "() - " + currentTime);
 	}
 	
+	
 	@Around("@annotation(smartspace.aop.ElementPerformanceMonitor) && args(key,..)")
 	public Object sampleTime(ProceedingJoinPoint pjp, String key) throws Throwable{
 		String methodName = pjp.getSignature().getName();
