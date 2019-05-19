@@ -15,7 +15,7 @@ public class ManegerValidationAdvice {
 	Log log = LogFactory.getLog(ManegerValidationAdvice.class);
 	
 	@Before("@annotation(smartspace.aop.ManegerValidation)")
-	public void sampleTime(JoinPoint jp) {
+	public void validateUserType(JoinPoint jp) {
 
 	}
 	

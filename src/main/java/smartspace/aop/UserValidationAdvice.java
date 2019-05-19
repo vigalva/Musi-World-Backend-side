@@ -15,7 +15,7 @@ public class UserValidationAdvice {
 	Log log = LogFactory.getLog(UserValidationAdvice.class);
 	
 	@Before("@annotation(smartspace.aop.UserValidation)")
-	public void sampleTime(JoinPoint jp) {
+	public void validateUserType(JoinPoint jp) {
 		
 	}
 
