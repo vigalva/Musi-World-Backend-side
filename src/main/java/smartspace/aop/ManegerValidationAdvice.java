@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class ElementPerformanceMonitorAdvice {
-	Log log = LogFactory.getLog(ElementPerformanceMonitorAdvice.class);
+public class ManegerValidationAdvice {
+	Log log = LogFactory.getLog(ManegerValidationAdvice.class);
 	
-	@Before("@annotation(smartspace.aop.ElementPerformanceMonitor)")
+	@Before("@annotation(smartspace.aop.ManegerValidation)")
 	public void sampleTime(JoinPoint jp) {
 		String methodName = jp.getSignature().getName();
 		String className = jp.getTarget().getClass().getName();
@@ -24,7 +24,7 @@ public class ElementPerformanceMonitorAdvice {
 	}
 	
 	
-	@Around("@annotation(smartspace.aop.ElementPerformanceMonitor) && args(key,..)")
+	@Around("@annotation(smartspace.aop.ManegerValidation) && args(key,..)")
 	public Object sampleTime(ProceedingJoinPoint pjp, String key) throws Throwable{
 		String methodName = pjp.getSignature().getName();
 		String className = pjp.getTarget().getClass().getName();
