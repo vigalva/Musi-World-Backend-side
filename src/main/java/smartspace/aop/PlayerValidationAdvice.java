@@ -2,8 +2,10 @@ package smartspace.aop;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Around;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +14,16 @@ import smartspace.data.UserRole;
 
 @Component
 @Aspect
-public class AdminValidationAdvice {
-	Log log = LogFactory.getLog(AdminValidationAdvice.class);
+public class PlayerValidationAdvice {
+	Log log = LogFactory.getLog(PlayerValidationAdvice.class);
 	
-	@Around("@annotation(smartspace.aop.AdminValidation)")
+	@Around("@annotation(smartspace.aop.PlayerValidation)")
 	public Object validateUserType(ProceedingJoinPoint pjp) throws Throwable{
 		String methodName = pjp.getSignature().getName();
 		UserEntity user =  (UserEntity)pjp.getThis();
 		
 		try {
-			if((user == null)||(user.getRole() != UserRole.ADMIN)) {
+			if((user == null)||(user.getRole() != UserRole.PLAYER)) {
 				throw new RuntimeException(methodName +"can not be executed by user type " + user.getRole().name()) ;
 			}
 			Object[] args = pjp.getArgs();
