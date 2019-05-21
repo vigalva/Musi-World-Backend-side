@@ -1,17 +1,17 @@
 package smartspace.logic;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import smartspace.aop.RoleValidation;
 import smartspace.dao.AdvancedActionDao;
 import smartspace.dao.AdvancedElementDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
-import smartspace.layout.ActionBoundary;
+import smartspace.data.UserRole;
 
 @Service
 
@@ -25,9 +25,10 @@ public class ActionServiceImpl implements ActionService {
 
 	}
 
+	@RoleValidation(permissions = {UserRole.ADMIN})
 	@Transactional
 	@Override
-	public List<ActionEntity> importActions(List<ActionEntity> actions) {
+	public List<ActionEntity> importActions(String smartspace, String email,List<ActionEntity> actions) {
 		List<ActionEntity> actionEntites = new ArrayList<ActionEntity>();
 		List<ElementEntity> elements = this.ElementDao.readAll();
 		boolean foundElement=false;
@@ -51,13 +52,15 @@ public class ActionServiceImpl implements ActionService {
 		return actionEntites;
 	}
 
+	@RoleValidation(permissions = {UserRole.ADMIN})
 	@Override
-	public List<ActionEntity> ExportActions(int size, int page) {
+	public List<ActionEntity> ExportActions(String smartspace, String email,int size, int page) {
 		return this.ActionsDao.readAll(size, page);
 	}
 
+	@RoleValidation(permissions = {UserRole.PLAYER})
 	@Override
-	public ActionEntity invokeAction(ActionEntity convertToEntity) {
+	public ActionEntity invokeAction(String smartspace, String email,ActionEntity convertToEntity) {
 		// TODO Auto-validate methodes
 		if (convertToEntity.getActionType().equals("echo"))
 		return this.ActionsDao.create(convertToEntity);

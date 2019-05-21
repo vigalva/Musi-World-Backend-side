@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import smartspace.aop.RoleValidation;
 import smartspace.dao.AdvancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
@@ -19,9 +20,10 @@ public class UserServiceImpl implements UserService {
 		this.userDao = userDao;
 	}
 	
+	@RoleValidation(permissions = {UserRole.ADMIN})
 	@Transactional
 	@Override
-	public  List<UserEntity> importUsers(List<UserEntity> entities) {
+	public  List<UserEntity> importUsers(String smartspace, String email,List<UserEntity> entities) {
 		List<UserEntity> userEntites=new ArrayList<UserEntity>();
 		for (UserEntity entity : entities) {
 			if(entity.getUserSmatspace().equals("inbala1"))
@@ -32,8 +34,9 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@RoleValidation(permissions = {UserRole.ADMIN})
 	@Override
-	public List<UserEntity> ExportUsers(int size, int page) {
+	public List<UserEntity> ExportUsers(String smartspace, String email,int size, int page) {
 		return this.userDao.readAll(size, page);
 	}
 
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserEntity loginAndRetriveDetails(UserEntity convertToEntity) {
+	public UserEntity loginAndRetriveDetails(String smartspace, String email,UserEntity convertToEntity) {
 		
 		// TODO Auto-validate function
 
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(UserEntity convertToEntity) {
+	public void updateUser(String smartspace, String email,UserEntity convertToEntity) {
 		// TODO Auto-validate function
 		
 		convertToEntity.setPoints(-1);
