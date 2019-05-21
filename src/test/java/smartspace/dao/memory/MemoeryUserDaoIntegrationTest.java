@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.data.util.EntityFactory;
 
 
@@ -54,7 +58,7 @@ public class MemoeryUserDaoIntegrationTest {
 //		
 //
 //		// WHEN I create 20 messages
-//		List<UserEntity<String>> allMessages = 
+//		List<UserEntity> allMessages = 
 //		IntStream.range(1, 21) // int Stream
 //			.mapToObj(num->"user #" + num) // String Stream
 //			.map(text-> // MessageEntity Stream
@@ -70,8 +74,8 @@ public class MemoeryUserDaoIntegrationTest {
 //		
 //		// THEN the dao contains 20 message
 //		assertThat(this.userDao.readAll())
-////			.hasSize(20)
-//			.containsAll(allMessages);
+//			.hasSize(20);
+//			//.containsAll(allMessages);
 //	}
 	
 	@Test

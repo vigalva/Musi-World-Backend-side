@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,34 +54,34 @@ public class MemoryActionDaoIntegrationTest {
 //		this.messageDao.deleteAll();
 	}
 
-//	@Test
-//	public void testCreateManyMessages() throws Exception{
-//		// GIVEN we have a clean dao
-//		// AND we have a factory
-//		
-//
-//		// WHEN I create 20 messages
-//		List<ActionEntity<String>> allMessages = 
-//		IntStream.range(1, 21) // int Stream
-//			.mapToObj(num->"action #" + num) // String Stream
-//			.map(action-> // MessageEntity Stream
-//					this.factory.createNewAction(
-//						action,
-//						null,
-//						"something",
-//						new Date(),
-//						null,
-//						null,
-//						new HashMap<>()))
-//						
-//			.map(this.actionDao::create) // MessageEntity Stream
-//			.collect(Collectors.toList());
-//		
-//		// THEN the dao contains 20 message
-//		assertThat(this.actionDao.readAll())
-////			.hasSize(20)
+	@Test
+	public void testCreateManyMessages() throws Exception{
+		// GIVEN we have a clean dao
+		// AND we have a factory
+		
+
+		// WHEN I create 20 messages
+		List<ActionEntity> allMessages = 
+		IntStream.range(1, 21) // int Stream
+			.mapToObj(num->"action #" + num) // String Stream
+			.map(action-> // MessageEntity Stream
+					this.factory.createNewAction(
+						action,
+						null,
+						"something",
+						new Date(),
+						null,
+						null,
+						new HashMap<>()))
+						
+			.map(this.actionDao::create) // MessageEntity Stream
+			.collect(Collectors.toList());
+		
+		// THEN the dao contains 20 message
+		assertThat(this.actionDao.readAll())
+			.hasSize(20);
 //			.containsAll(allMessages);
-//	}
+	}
 	
 	@Test
 	public void testCreateUpdateReadByKeyDeleteAllReadAll() throws Exception{

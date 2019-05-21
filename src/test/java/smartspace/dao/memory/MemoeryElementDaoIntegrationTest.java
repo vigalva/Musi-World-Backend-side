@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.Location;
 import smartspace.data.util.EntityFactory;
 
 
@@ -54,34 +58,34 @@ public class MemoeryElementDaoIntegrationTest {
 //		this.messageDao.deleteAll();
 	}
 
-//	@Test
-//	public void testCreateManyMessages() throws Exception{
-//		// GIVEN we have a clean dao
-//		// AND we have a factory
-//		
-//
-//		// WHEN I create 20 messages
-//		List<ElementEntity<String>> allMessages = 
-//		IntStream.range(1, 21) // int Stream
-//			.mapToObj(num->"element #" + num) // String Stream
-//			.map(text-> // MessageEntity Stream
-//					this.factory.createNewElement(
-//							"dummy", 
-//							null, 
-//							null, 
-//							new Date(), 
-//							null, 
-//							null, 
-//							false, 
-//							null))
-//			.map(this.elementDao::create) // MessageEntity Stream
-//			.collect(Collectors.toList());
-//		
-//		// THEN the dao contains 20 message
-//		assertThat(this.elementDao.readAll())
-////			.hasSize(20)
-//			.containsAll(allMessages);
-//	}
+	@Test
+	public void testCreateManyMessages() throws Exception{
+		// GIVEN we have a clean dao
+		// AND we have a factory
+		
+
+		// WHEN I create 20 messages
+		List<ElementEntity> allMessages = 
+		IntStream.range(1, 21) // int Stream
+			.mapToObj(num->"element #" + num) // String Stream
+			.map(text-> // MessageEntity Stream
+					this.factory.createNewElement(
+							"dummy", 
+							null, 
+							new Location(), 
+							new Date(), 
+							null, 
+							null, 
+							false, 
+							null))
+			.map(this.elementDao::create) // MessageEntity Stream
+			.collect(Collectors.toList());
+		
+		// THEN the dao contains 20 message
+		assertThat(this.elementDao.readAll())
+			.hasSize(20);
+			//.containsAll(allMessages);
+	}
 	
 	@Test
 	public void testCreateUpdateReadByKeyDeleteAllReadAll() throws Exception{
@@ -98,7 +102,7 @@ public class MemoeryElementDaoIntegrationTest {
 		details.put("size", text.length());
 		details.put("font", "Arial-7px");
 		details.put("language", Locale.ENGLISH);
-		ElementEntity element1 = this.factory.createNewElement(text, null, null, new Date(), null, null, false, details);
+		ElementEntity element1 = this.factory.createNewElement(text, null, new Location(), new Date(), null, null, false, details);
 		element1 = this.elementDao.create(element1);
 		ElementEntity initElement = new ElementEntity();
 		initElement.setKey(element1.getKey());
