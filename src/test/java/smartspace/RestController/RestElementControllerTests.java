@@ -25,8 +25,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import smartspace.dao.AdvancedElementDao;
+import smartspace.dao.AdvancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
+import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.ElementBoundaryKey;
 import smartspace.layout.LatLng;
@@ -43,6 +46,8 @@ public class RestElementControllerTests {
 	private String baseUrl;
 	private RestTemplate restTemplate;
 	private AdvancedElementDao<String> elementDao;
+	private AdvancedUserDao<String> userDao;
+	private UserEntity admin, player, manager;
 	private ElementService elementService;
 
 	@Autowired
@@ -53,6 +58,11 @@ public class RestElementControllerTests {
 	@Autowired
 	public void setMessageService(ElementService elementService) {
 		this.elementService = elementService;
+	}
+	
+	@Autowired
+	public void setUserDao(AdvancedUserDao<String> userDao) {
+		this.userDao = userDao;
 	}
 
 	@LocalServerPort
@@ -65,21 +75,44 @@ public class RestElementControllerTests {
 		this.baseUrl = "http://localhost:" + port + "/smartspace/";
 		this.restTemplate = new RestTemplate();
 	}
+	
+	public void adminInit(){
+		admin = new UserEntity();
+		admin.setRole(UserRole.ADMIN);
+		admin.setUserEmail("admin Email");
+		admin = this.userDao.create(admin);
+	}
+	
+	public void playerInit(){
+		player = new UserEntity();
+		player.setRole(UserRole.PLAYER);
+		player.setUserEmail("player Email");
+		player = this.userDao.create(player);
+	}
+	
+	public void managerInit(){
+		manager = new UserEntity();
+		manager.setRole(UserRole.MANAGER);
+		manager.setUserEmail("manager Email");
+		manager = this.userDao.create(manager);
+	}
+	
+	
 
 	@After
 	public void tearDown() {
 		this.elementDao.deleteAll();
+		this.userDao.deleteAll();
 	}
 
 	@Test
 	public void testCreateNewElementToDataBase() throws Exception {
 		// Given the database is clean
-		String managerSmartspace = "dummy smartspace";
-		String managerEmail = "dummy mail";
+		managerInit();
 		UserBoundaryKey dummyCreator = new UserBoundaryKey();
 
-		dummyCreator.setEmail("dummy mail");
-		dummyCreator.setSmartspace("some smartspace");
+		dummyCreator.setEmail(manager.getUserEmail());
+		dummyCreator.setSmartspace(manager.getUserSmatspace());
 
 		ElementBoundaryKey dummyKey = new ElementBoundaryKey();
 
@@ -102,7 +135,7 @@ public class RestElementControllerTests {
 
 		ElementBoundary response = this.restTemplate.postForObject(
 				this.baseUrl + "/elements/{managerSmartspace}/{managerEmail}", newElement, ElementBoundary.class,
-				managerSmartspace, managerEmail);
+				manager.getUserSmatspace(), manager.getUserEmail());
 		// THEN the database contains 1 message
 		// AND the returned element is similar to the elemnt in the database
 		assertThat(this.elementDao.readAll()).hasSize(1).usingElementComparatorOnFields("key")
@@ -114,8 +147,7 @@ public class RestElementControllerTests {
 	@Test
 	public void testImportElementsToDataBase() throws Exception {
 		// GIVEN the database is clean
-		String adminSmartspace = "dummy smartspace";
-		String adminEmail = "dummy mail";
+		adminInit();
 		UserBoundaryKey dummyCreator = new UserBoundaryKey();
 
 		dummyCreator.setEmail("dummy mail");
@@ -146,7 +178,7 @@ public class RestElementControllerTests {
 
 		ElementBoundary[] response = this.restTemplate.postForObject(
 				this.baseUrl + "admin/elements/{adminSmartspace}/{adminEmail}", elements, ElementBoundary[].class,
-				adminSmartspace, adminEmail);
+				admin.getUserSmatspace(), admin.getUserEmail());
 		
 		
 		// THEN the database contains 1 message
@@ -156,11 +188,12 @@ public class RestElementControllerTests {
 
 		tearDown();
 	}
-
+//
 	@Test
 	public void testGetElementsUsingPaginationForAdmin() throws Exception {
 
 		// GIVEN the database contains 38 messages
+		adminInit();
 		int totalSize = 38;
 		ElementBoundary newElement = new ElementBoundary();
 		UserBoundaryKey dummyCreator = new UserBoundaryKey();
@@ -202,7 +235,7 @@ public class RestElementControllerTests {
 			allEntities.get(i).setElementId(dummyKey.getId());
 
 		}
-		allEntities = this.elementService.importElements(allEntities);
+		allEntities = this.elementService.importElements(admin.getUserSmatspace(),admin.getUserEmail(),allEntities);
 
 		List<ElementBoundary> lastEight = allEntities.stream().skip(30).map(ElementBoundary::new)
 				.collect(Collectors.toList());
@@ -211,11 +244,10 @@ public class RestElementControllerTests {
 
 		int size = 10;
 		int page = 3;
-		String adminSmartspace = "dummy smartspace";
-		String adminEmail = "dummy mail";
+		
 		ElementBoundary[] results = this.restTemplate.getForObject(
 				this.baseUrl + "admin/elements/{adminSmartspace}/{adminEmail}" + "?size={size}&page={page}",
-				ElementBoundary[].class, adminSmartspace, adminEmail, size, page);
+				ElementBoundary[].class,admin.getUserSmatspace(),admin.getUserEmail(), size, page);
 
 		ArrayList<ElementBoundary> arrayList = new ArrayList<ElementBoundary>(Arrays.asList(results));
 		assertThat(results).usingElementComparatorOnFields("name").containsExactlyElementsOf(lastEight);
@@ -226,7 +258,7 @@ public class RestElementControllerTests {
 	public void testGetMessagesUsingPaginationWithoutNoResult() throws Exception {
 
 		// GIVEN the database contains 38 messages
-
+		adminInit();
 		// GIVEN the database contains 38 messages
 		int totalSize = 30;
 		ElementBoundary newElement = new ElementBoundary();
@@ -269,7 +301,7 @@ public class RestElementControllerTests {
 			allEntities.get(i).setElementId(dummyKey.getId());
 
 		}
-		allEntities = this.elementService.importElements(allEntities);
+		allEntities = this.elementService.importElements(admin.getUserSmatspace(),admin.getUserEmail(),allEntities);
 
 		List<ElementBoundary> lastEight = allEntities.stream().skip(30).map(ElementBoundary::new)
 				.collect(Collectors.toList());
@@ -278,11 +310,9 @@ public class RestElementControllerTests {
 
 		int size = 10;
 		int page = 3;
-		String adminSmartspace = "dummy smartspace";
-		String adminEmail = "dummy mail";
 		ElementBoundary[] results = this.restTemplate.getForObject(
 				this.baseUrl + "admin/elements/{adminSmartspace}/{adminEmail}" + "?size={size}&page={page}",
-				ElementBoundary[].class, adminSmartspace, adminEmail, size, page);
+				ElementBoundary[].class, admin.getUserSmatspace(),admin.getUserEmail(), size, page);
 
 		assertThat(results).usingElementComparatorOnFields("name").containsExactlyElementsOf(lastEight);
 
@@ -292,13 +322,13 @@ public class RestElementControllerTests {
 	public void testUpdateElement() throws Exception {
 
 		// GIVEN i have empty database
-
+		managerInit();
 		// WHEN i add new element and try to update his details
 
 		UserBoundaryKey dummyCreator = new UserBoundaryKey();
 
-		dummyCreator.setEmail("dummy mail");
-		dummyCreator.setSmartspace("some smartspace");
+		dummyCreator.setEmail(manager.getUserEmail());
+		dummyCreator.setSmartspace(manager.getUserSmatspace());
 
 		ElementBoundaryKey dummyKey = new ElementBoundaryKey();
 
@@ -346,7 +376,7 @@ public class RestElementControllerTests {
 	public void testGetSpecificElement() {
 
 		// GIVEN an empty database
-
+		playerInit();
 		// WHEN i create an element and read it from database
 
 		UserBoundaryKey dummyCreator = new UserBoundaryKey();
@@ -378,7 +408,7 @@ public class RestElementControllerTests {
 
 		ElementBoundary result = this.restTemplate.getForObject(
 				this.baseUrl + "elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
-				ElementBoundary.class, entity.getCreatorSmartspace(), entity.getCreatorEmail(),
+				ElementBoundary.class, player.getUserSmatspace(), player.getUserEmail(),
 				entity.getElementSmartspace(), entity.getElementId());
 		// THEN i will get the element i wanted
 
@@ -390,6 +420,8 @@ public class RestElementControllerTests {
 	@Test
 	public void testGetAllElementsByName() throws Exception {
 		// GIVEN i the database contains 2 elements with name "da"
+		managerInit();
+		playerInit();
 		//and 3 elements without "da"
 		List<ElementEntity> all = 
 				  Stream.of("dark chest of wonders", "dark light", "asylum",
@@ -399,11 +431,11 @@ public class RestElementControllerTests {
 							"some type", 
 							new Location(), 
 							new Date(),
-							"some email", 
-							"some smartspace", 
+							manager.getUserEmail(), 
+							manager.getUserSmatspace(), 
 							false, 
 							new HashMap<String, Object>()))							
-					.map(this.elementService::createElement)
+					.map(elem->this.elementService.createElement(manager.getUserSmatspace(),manager.getUserEmail(),elem))
 					.collect(Collectors.toList());
 				
 		
@@ -419,8 +451,7 @@ public class RestElementControllerTests {
 				int size = 100;
 				int page = 0;
 				
-				String userSmartspace="tetsSmartspace";
-				String userEmail="test email";
+				
 				String name="da";
 				String search="name";
 				ElementBoundary[] results = 
@@ -429,7 +460,7 @@ public class RestElementControllerTests {
 							this.baseUrl + "/elements/{userSmartspace}/{userEmail}"+
 					"?search={search}&value={name}&page={page}&size={size}", 
 							ElementBoundary[].class, 
-							userSmartspace, userEmail,
+							player.getUserSmatspace(), player.getUserEmail(),
 							search,name, page,size);
 				
 				for (int i=0;i<results.length;i++) {
@@ -440,16 +471,14 @@ public class RestElementControllerTests {
 					.usingElementComparatorOnFields("name")
 					.containsExactlyInAnyOrderElementsOf(elementsWithPattern);
 		
-		
-
-		
-		
 		tearDown();
 	}
 	
 	@Test
 	public void testGetAllElementsByType() throws Exception {
 		// GIVEN i the database contains 2 elements with type "type"
+		managerInit();
+		playerInit();
 		//and 3 elements type not "type"
 		List<ElementEntity> all = 
 				  Stream.of("type", "type", "noType",
@@ -459,11 +488,11 @@ public class RestElementControllerTests {
 							elem, 
 							new Location(), 
 							new Date(),
-							"some email", 
-							"some smartspace", 
+							manager.getUserEmail(), 
+							manager.getUserSmatspace(),  
 							false, 
 							new HashMap<String, Object>()))							
-					.map(this.elementService::createElement)
+					.map(elem->this.elementService.createElement(manager.getUserSmatspace(),manager.getUserEmail(),elem))
 					.collect(Collectors.toList());
 				
 		
@@ -479,8 +508,7 @@ public class RestElementControllerTests {
 				int size = 100;
 				int page = 0;
 				
-				String userSmartspace="tetsSmartspace";
-				String userEmail="test email";
+				
 				String name="da";
 				String search="type";
 				ElementBoundary[] results = 
@@ -489,7 +517,7 @@ public class RestElementControllerTests {
 							this.baseUrl + "/elements/{userSmartspace}/{userEmail}"+
 					"?search={search}&value={name}&page={page}&size={size}", 
 							ElementBoundary[].class, 
-							userSmartspace, userEmail,
+							player.getUserSmatspace(), player.getUserEmail(),
 							search,name, page,size);
 				
 				
@@ -508,6 +536,8 @@ public class RestElementControllerTests {
 	@Test
 	public void tesetGetAllElementsByDistance()throws Exception{
 		// GIVEN i the database contains 2 elements with location in range
+		managerInit();
+		playerInit();
 				//and 3 elements not in range
 				List<ElementEntity> all = 
 						  Stream.of(new Location(0.5,0.5), new Location(2,1), new Location(2.5,1.5),
@@ -517,11 +547,11 @@ public class RestElementControllerTests {
 									"some type", 
 									elem, 
 									new Date(),
-									"some email", 
-									"some smartspace", 
+									manager.getUserEmail(), 
+									manager.getUserSmatspace(),  
 									false, 
 									new HashMap<String, Object>()))							
-							.map(this.elementService::createElement)
+							.map(elem->this.elementService.createElement(manager.getUserSmatspace(),manager.getUserEmail(),elem))
 							.collect(Collectors.toList());
 						
 				double distance=4;
@@ -540,8 +570,6 @@ public class RestElementControllerTests {
 						int size = 100;
 						int page = 0;
 						
-						String userSmartspace="tetsSmartspace";
-						String userEmail="test email";
 						
 						double x=2;
 						double y=3;
@@ -552,7 +580,7 @@ public class RestElementControllerTests {
 									this.baseUrl + "/elements/{userSmartspace}/{userEmail}"+
 							"?search={search}&x{x}&y={y}&distance={distance}&page={page}&size={size}", 
 									ElementBoundary[].class, 
-									userSmartspace, userEmail,
+									player.getUserSmatspace(), player.getUserEmail(),
 									search,x,y,distance, page,size);
 						
 						List<Double> Xs= new ArrayList<>();
@@ -588,7 +616,7 @@ public class RestElementControllerTests {
 	@Test
 	public void testGetAllElementsWithPagination() throws Exception {
 		// GIVEN i have empty databse
-
+		playerInit();
 		// WHEN I add 38 Elements
 		// and I use getElements using page #3 of size 10 i get 8 messages
 		int totalSize = 38;
@@ -637,11 +665,10 @@ public class RestElementControllerTests {
 		int size = 10;
 		int page = 3;
 		
-		String userSmartspace = "dummy smartspace";
-		String userEmail = "dummy mail";
+		
 		ElementBoundary[] results = this.restTemplate.getForObject(
 				this.baseUrl + "elements/{userSmartspace}/{userEmail}"+"?page={page}&size={size}",
-				ElementBoundary[].class, userSmartspace, userEmail, page, size);
+				ElementBoundary[].class, player.getUserSmatspace(), player.getUserEmail(), page, size);
 
 	
 		assertThat(results).usingElementComparatorOnFields("name").containsExactlyElementsOf(lastEight);

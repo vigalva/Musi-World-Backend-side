@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import javax.annotation.PostConstruct;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class RestUserControllerTests {
 	private String baseUrl;
 	private RestTemplate restTemplate;
 	private AdvancedUserDao<String> userDao;
+	private UserEntity admin;
 	private UserService userService;
 	
 	@Autowired
@@ -59,6 +61,13 @@ public class RestUserControllerTests {
 	public void init(){
 		this.baseUrl = "http://localhost:" + port + "/smartspace/";
 		this.restTemplate = new RestTemplate();
+	}
+	
+	public void adminInit(){
+		admin = new UserEntity();
+		admin.setRole(UserRole.ADMIN);
+		admin.setUserEmail("admin Email");
+		admin = this.userDao.create(admin);
 	}
 
 	@After
@@ -96,8 +105,7 @@ public class RestUserControllerTests {
 	@Test
 	public void testImportUsersToDataBase() throws Exception{
 		// GIVEN the database is clean 
-		String adminSmartspace="dummy smartspace";
-		String adminEmail="dummy mail";
+		adminInit();
 		// WHEN I import array of 1 UserBoundaries
 		List<UserBoundary> users = new ArrayList<>();
 		UserBoundary newUser= new UserBoundary();
@@ -115,13 +123,14 @@ public class RestUserControllerTests {
 			.postForObject(
 					this.baseUrl+"admin/users/{adminSmartspace}/{adminEmail}",
 					users, 
-					UserBoundary[].class,adminSmartspace, adminEmail);
+					UserBoundary[].class,admin.getUserSmatspace(), admin.getUserEmail());
 	
 		
 		// THEN the database contains 1 message
 		// AND the returned message is similar to the message in the database
-		assertThat(
-				this.userDao.readAll())
+		
+		
+		assertThat(this.userDao.readAll().stream().filter(x -> !x.getKey().equals(admin.getKey())))
 			.hasSize(1)
 			.usingElementComparatorOnFields("key")
 			.containsExactly(response[0].convertToEntity());
@@ -169,7 +178,8 @@ public class RestUserControllerTests {
 	@Test
 	public void testGetUsersUsingPagination() throws Exception{
 		
-		// GIVEN the database contains 38 messages
+		adminInit();
+		// GIVEN the database contains 38 messages + 1 admin
 		int totalSize = 38;
 		UserBoundary newUser= new UserBoundary();
 		newUser.setAvatar("dummy avtar");
@@ -193,44 +203,39 @@ public class RestUserControllerTests {
 			
 			.collect(Collectors.toList());
 		
-		allEntities=this.userService.importUsers(allEntities);
+		allEntities=this.userService.importUsers(admin.getUserSmatspace(),admin.getUserEmail(),allEntities);
 		
-		List<UserBoundary> lastEight = 
+		List<UserBoundary> lastNine = 
 				allEntities
 				.stream()
-				.skip(30)
+				.skip(29)
 				.map(UserBoundary::new)
 				.collect(Collectors.toList());
 		
 		// WHEN I getUsers using page #3 of size 10
-
+		
 		
 		int size = 10;
 		int page = 3;
-		String adminSmartspace="dummy smartspace";
-		String adminEmail="dummy mail";
+		
 		UserBoundary[] results = 
 		  this.restTemplate
 			.getForObject(
 					this.baseUrl +"admin/users/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
-					UserBoundary[].class,adminSmartspace, adminEmail, 
+					UserBoundary[].class,admin.getUserSmatspace(),admin.getUserEmail(), 
 					size, page);
-		
-		ArrayList<UserBoundary> arrayList = new ArrayList<UserBoundary>(Arrays.asList(results));
-		System.err.println(arrayList);
-		System.err.println(lastEight
-				);
-		// THEN the response contains 8 messages
+		// THEN the response contains 9 messages  
 		assertThat(results)
 			.usingElementComparatorOnFields("username")
-			.containsExactlyElementsOf(lastEight);
+			.containsExactlyElementsOf(lastNine);
 		
 	}
 
 	@Test
 	public void testGetUsersUsingPaginationWithNoResult() throws Exception{
-		// GIVEN the database contains 38 messages
-				int totalSize = 30;
+		adminInit();
+		// GIVEN the database contains 29 messages + 1 admin 
+				int totalSize = 29;
 				UserBoundary newUser= new UserBoundary();
 				newUser.setAvatar("dummy avtar");
 				UserBoundaryKey key=new UserBoundaryKey();
@@ -253,7 +258,8 @@ public class RestUserControllerTests {
 					
 					.collect(Collectors.toList());
 				
-				allEntities=this.userService.importUsers(allEntities);
+				allEntities=this.userService.importUsers(admin.getUserSmatspace(),admin.getUserEmail(),allEntities);
+				
 				
 			
 				// WHEN I getUsers using page #3 of size 10
@@ -261,13 +267,12 @@ public class RestUserControllerTests {
 				
 				int size = 10;
 				int page = 3;
-				String adminSmartspace="dummy smartspace";
-				String adminEmail="dummy mail";
+				
 				UserBoundary[] results = 
 				  this.restTemplate
 					.getForObject(
 							this.baseUrl +"admin/users/{adminSmartspace}/{adminEmail}?page={page}&size={size}", 
-							UserBoundary[].class,adminSmartspace, adminEmail, 
+							UserBoundary[].class,admin.getUserSmatspace(),admin.getUserEmail(), 
 							size, page);
 				
 				

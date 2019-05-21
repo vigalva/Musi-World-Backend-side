@@ -25,9 +25,12 @@ import org.springframework.web.client.RestTemplate;
 
 import smartspace.dao.AdvancedActionDao;
 import smartspace.dao.AdvancedElementDao;
+import smartspace.dao.AdvancedUserDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
+import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
 import smartspace.layout.ActionBoundary;
 import smartspace.layout.ActionBoundaryKey;
 import smartspace.layout.ElementBoundary;
@@ -48,8 +51,11 @@ public class RestActionControllerTests {
 	private RestTemplate restTemplate;
 	private AdvancedActionDao<String> actionDao;
 	private AdvancedElementDao<String> elementDao;
+	private AdvancedUserDao<String> userDao;
+	private UserEntity admin, player;
 	private ActionService actionService;
 	private ElementService elementService;
+	
 	
 	@Autowired
 	public void setMessageDao(AdvancedActionDao<String> actionDao) {
@@ -59,6 +65,11 @@ public class RestActionControllerTests {
 	@Autowired
 	public void setElementDao(AdvancedElementDao<String> elementDao) {
 		this.elementDao = elementDao;
+	}
+	
+	@Autowired
+	public void setUserDao(AdvancedUserDao<String> userDao) {
+		this.userDao = userDao;
 	}
 	
 	@Autowired
@@ -81,6 +92,20 @@ public class RestActionControllerTests {
 		this.baseUrl = "http://localhost:" + port + "/smartspace/";
 		this.restTemplate = new RestTemplate();
 	}
+	
+	public void adminInit(){
+		admin = new UserEntity();
+		admin.setRole(UserRole.ADMIN);
+		admin.setUserEmail("admin Email");
+		admin = this.userDao.create(admin);
+	}
+	
+	public void userInit(){
+		player = new UserEntity();
+		player.setRole(UserRole.PLAYER);
+		player.setUserEmail("player Email");
+		player = this.userDao.create(player);
+	}
 
 	@After
 	public void tearDown() {
@@ -88,17 +113,19 @@ public class RestActionControllerTests {
 			.deleteAll();
 		this.elementDao
 		.deleteAll();
+		this.userDao
+		.deleteAll();
 	}
 	@Test
 	public void testInvokeAnACtion() throws Exception{
 		//GIVEN the database is empty
-		
+		userInit();
 		//WHEN I create a new action 
 	
 		
 		UserBoundaryKey dummyCreator=new UserBoundaryKey();
-		dummyCreator.setEmail("dummy mail");
-		dummyCreator.setSmartspace("dummy smartspace");
+		dummyCreator.setEmail(player.getUserEmail());
+		dummyCreator.setSmartspace(player.getUserSmatspace());
 		
 		ElementBoundaryKey dummyElement=new ElementBoundaryKey();
 		
@@ -135,8 +162,7 @@ public class RestActionControllerTests {
 	@Test
 	public void testImportActionsToDataBase() throws Exception{
 		// GIVEN the database is clean 
-		String adminSmartspace="dummy smartspace";
-		String adminEmail="dummy mail";
+		adminInit();
 		
 		UserBoundaryKey dummyCreator=new UserBoundaryKey();
 		dummyCreator.setEmail("dummy mail");
@@ -172,7 +198,7 @@ public class RestActionControllerTests {
 
 		ElementBoundary[] responseE = this.restTemplate.postForObject(
 				this.baseUrl + "admin/elements/{adminSmartspace}/{adminEmail}", elements, ElementBoundary[].class,
-				adminSmartspace, adminEmail);
+				admin.getUserSmatspace(), admin.getUserEmail());
 		
 		//////////////////////////////////////////////
 		
@@ -194,7 +220,7 @@ public class RestActionControllerTests {
 			.postForObject(
 					this.baseUrl+"admin/actions/{adminSmartspace}/{adminEmail}",
 					actions, 
-					ActionBoundary[].class,adminSmartspace, adminEmail);
+					ActionBoundary[].class,admin.getUserSmatspace(), admin.getUserEmail());
 	
 		// THEN the database contains 1 message
 		// AND the returned message is similar to the message in the database
@@ -213,6 +239,7 @@ public class RestActionControllerTests {
 	public void testGetActionUsingPagination() throws Exception{
 		
 		// GIVEN the database contains 38 messages
+		adminInit();
 		int totalSize = 38;
 		
 		ActionBoundary newAction=new ActionBoundary();
@@ -267,7 +294,7 @@ public class RestActionControllerTests {
 			allELEEntities.get(i).setElementId(dummyElement.getId());
 
 		}
-		allELEEntities = this.elementService.importElements(allELEEntities);
+		allELEEntities = this.elementService.importElements(admin.getUserSmatspace(),admin.getUserEmail(),allELEEntities);
 		
 		//////////////////////////////////////////////////////////////////
 
@@ -300,7 +327,7 @@ public class RestActionControllerTests {
 			allEntities.get(i).setActionId(dummyKey.getId());
 
 		}
-		allEntities=this.actionService.importActions(allEntities);
+		allEntities=this.actionService.importActions(admin.getUserSmatspace(),admin.getUserEmail(),allEntities);
 		
 
 		
@@ -316,13 +343,11 @@ public class RestActionControllerTests {
 		
 		int size = 10;
 		int page = 3;
-		String adminSmartspace="dummy smartspace";
-		String adminEmail="dummy mail";
 		ActionBoundary[] results = 
 		  this.restTemplate
 			.getForObject(
 					this.baseUrl +"admin/actions/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
-					ActionBoundary[].class,adminSmartspace, adminEmail, 
+					ActionBoundary[].class,admin.getUserSmatspace(),admin.getUserEmail(), 
 					size, page);
 		
 		ArrayList<ActionBoundary> arrayList = new ArrayList<ActionBoundary>(Arrays.asList(results));	
@@ -337,7 +362,8 @@ public class RestActionControllerTests {
 	public void testGetMessagesUsingPaginationWithoutNoResult() throws Exception{
 		
 		
-	 //GIVEN the database is clean 
+	 //GIVEN the database is clean
+		adminInit();
 		int totalSize = 30;
 		
 		ActionBoundary newAction=new ActionBoundary();
@@ -392,7 +418,7 @@ public class RestActionControllerTests {
 			allELEEntities.get(i).setElementId(dummyElement.getId());
 
 		}
-		allELEEntities = this.elementService.importElements(allELEEntities);
+		allELEEntities = this.elementService.importElements(admin.getUserSmatspace(),admin.getUserEmail(),allELEEntities);
 		
 		//////////////////////////////////////////////////////////////////
 
@@ -425,7 +451,7 @@ public class RestActionControllerTests {
 
 		}
 		
-		allEntities=this.actionService.importActions(allEntities);
+		allEntities=this.actionService.importActions(admin.getUserSmatspace(),admin.getUserEmail(),allEntities);
 		
 
 		
@@ -441,13 +467,11 @@ public class RestActionControllerTests {
 		
 		int size = 10;
 		int page = 3;
-		String adminSmartspace="dummy smartspace";
-		String adminEmail="dummy mail";
 		ActionBoundary[] results = 
 		  this.restTemplate
 			.getForObject(
 					this.baseUrl +"admin/actions/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
-					ActionBoundary[].class,adminSmartspace, adminEmail, 
+					ActionBoundary[].class,admin.getUserSmatspace(),admin.getUserEmail(), 
 					size, page);
 		
 		ArrayList<ActionBoundary> arrayList = new ArrayList<ActionBoundary>(Arrays.asList(results));
