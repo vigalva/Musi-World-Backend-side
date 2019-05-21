@@ -38,7 +38,7 @@ public class ActionController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return
 		this.actionService
-		.ExportActions(size, page)
+		.ExportActions(adminSmartspace,adminEmail,size, page)
 			.stream()
 			.map(ActionBoundary::new)
 			.collect(Collectors.toList())
@@ -64,7 +64,7 @@ public class ActionController {
 				
 				
 			return	this.actionService
-				.importActions(actionEntites)
+				.importActions(adminSmartspace,adminEmail,actionEntites)
 					.stream()
 					.map(ActionBoundary::new)
 					.collect(Collectors.toList())
@@ -79,8 +79,8 @@ public class ActionController {
 			public ActionBoundary invokeAnAction (
 			@RequestBody ActionBoundary action) {
 				
-			
-				return new ActionBoundary(this.actionService.invokeAction(action.convertToEntity()));
+				ActionEntity ae = action.convertToEntity();
+				return new ActionBoundary(this.actionService.invokeAction(ae.getPlayerSmatspace(),ae.getPlayerEmail(),ae));
 			}
 	
 	

@@ -42,7 +42,7 @@ public class ElementController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return
 		this.elementService.
-		ExportElements(size, page)
+		ExportElements(adminSmartspace,adminEmail,size, page)
 			.stream()
 			.map(ElementBoundary::new)
 			.collect(Collectors.toList())
@@ -59,7 +59,7 @@ public class ElementController {
 			@PathVariable("elementSmartspace") String elementSmartspace,
 			@PathVariable("elementId") String elementId) {
 		
-			return new ElementBoundary(this.elementService.retriveElement(elementSmartspace,elementId));	
+			return new ElementBoundary(this.elementService.retriveElement(userSmartspace,userEmail,elementSmartspace,elementId));	
 	}
 	
 	
@@ -82,7 +82,7 @@ public class ElementController {
 		if (search.equals("")) {
 			return 
 			this.elementService
-			.getElements(size, page)
+			.getElements(userSmartspace,userEmail,size, page)
 			.stream()
 			.map(ElementBoundary::new)
 			.collect(Collectors.toList())
@@ -92,7 +92,7 @@ public class ElementController {
 			
 		return
 		this.elementService
-			.getElementsByName(value,size, page)
+			.getElementsByName(userSmartspace,userEmail,value,size, page)
 			.stream()
 			.map(ElementBoundary::new)
 			.collect(Collectors.toList())
@@ -103,7 +103,7 @@ public class ElementController {
 			
 			return
 			this.elementService
-				.getElementsByType(value,size, page)
+				.getElementsByType(userSmartspace,userEmail,value,size, page)
 				.stream()
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList())
@@ -112,7 +112,7 @@ public class ElementController {
 		
 		return
 				this.elementService
-					.getElementsByDistance(x ,y,distance,size,page)
+					.getElementsByDistance(userSmartspace,userEmail,x ,y,distance,size,page)
 					.stream()
 					.map(ElementBoundary::new)
 					.collect(Collectors.toList())
@@ -136,7 +136,7 @@ public class ElementController {
 		}
 				
 			return	this.elementService
-				.importElements(elementEntites)
+				.importElements(adminSmartspace,adminEmail,elementEntites)
 					.stream()
 					.map(ElementBoundary::new)
 					.collect(Collectors.toList())
@@ -154,7 +154,7 @@ public class ElementController {
 			@PathVariable("managerEmail") String managerEmail,
 			@RequestBody ElementBoundary element) {
 				
-			return	new ElementBoundary(this.elementService.createElement(element.convertToEntity()));
+			return	new ElementBoundary(this.elementService.createElement(managerSmartspace,managerEmail,element.convertToEntity()));
 						
 	}
 	
@@ -170,7 +170,7 @@ public class ElementController {
 		
 			@RequestBody ElementBoundary element) {
 		
-				this.elementService.update(element.convertToEntity(), elementSmartspace, elementId);
+				this.elementService.update(managerSmartspace,managerEmail,element.convertToEntity(), elementSmartspace, elementId);
 				
 			}
 						

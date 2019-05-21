@@ -43,7 +43,7 @@ public class UserController {
 		}
 		
 	return	this.userSerivce.
-		importUsers(userEntites)
+		importUsers(adminSmartspace,adminEmail,userEntites)
 			.stream()
 			.map(UserBoundary::new)
 			.collect(Collectors.toList())
@@ -92,7 +92,7 @@ public class UserController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return
 		this.userSerivce.
-		ExportUsers(size, page)
+		ExportUsers(adminSmartspace,adminEmail,size, page)
 			.stream()
 			.map(UserBoundary::new)
 			.collect(Collectors.toList())
@@ -113,7 +113,7 @@ public class UserController {
 			key.setSmartspace(userSmartspace);
 			user.setKey(key);
 			
-			return new UserBoundary(this.userSerivce.loginAndRetriveDetails(user.convertToEntity()));
+			return new UserBoundary(this.userSerivce.loginAndRetriveDetails(userSmartspace,userEmail,user.convertToEntity()));
 			
 	}
 	
@@ -126,7 +126,7 @@ public class UserController {
 			@PathVariable("userEmail") String userEmail,
 			@RequestBody UserBoundary update) {
 			
-			this.userSerivce.updateUser(update.convertToEntity());
+			this.userSerivce.updateUser(userSmartspace,userEmail,update.convertToEntity());
 	}
 
 
