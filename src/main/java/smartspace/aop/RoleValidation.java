@@ -6,6 +6,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import smartspace.data.UserRole;
+
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface PlayerValidation {}
+public @interface RoleValidation {
+	UserRole[] permissions();
+}
