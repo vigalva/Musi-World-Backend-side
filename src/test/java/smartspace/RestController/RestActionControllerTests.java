@@ -47,7 +47,9 @@ public class RestActionControllerTests {
 	private String baseUrl;
 	private RestTemplate restTemplate;
 	private AdvancedActionDao<String> actionDao;
+	private AdvancedElementDao<String> elementDao;
 	private ActionService actionService;
+	private ElementService elementService;
 	
 	@Autowired
 	public void setMessageDao(AdvancedActionDao<String> actionDao) {
@@ -55,8 +57,18 @@ public class RestActionControllerTests {
 	}
 	
 	@Autowired
+	public void setElementDao(AdvancedElementDao<String> elementDao) {
+		this.elementDao = elementDao;
+	}
+	
+	@Autowired
 	public void setActionService(ActionService actionService) {
 		this.actionService = actionService;
+	}
+	
+	@Autowired
+	public void setMessageService(ElementService elementService) {
+		this.elementService = elementService;
 	}
 	
 	@LocalServerPort
@@ -74,6 +86,8 @@ public class RestActionControllerTests {
 	public void tearDown() {
 		this.actionDao
 			.deleteAll();
+		this.elementDao
+		.deleteAll();
 	}
 	@Test
 	public void testInvokeAnACtion() throws Exception{
@@ -116,6 +130,7 @@ public class RestActionControllerTests {
 			.usingElementComparatorOnFields("key")
 			.containsExactly(response.convertToEntity());
 		//THEN the action is stoed in the database
+			tearDown();
 	}
 	@Test
 	public void testImportActionsToDataBase() throws Exception{
@@ -136,10 +151,37 @@ public class RestActionControllerTests {
 		dummyKey.setId("some id");
 		dummyKey.setSmartspace("some somartspace");
 		
+		///////////////////////////////////////////
+		
+		List<ElementBoundary> elements = new ArrayList<>();
+		LatLng dummlocation = new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		
+		ElementBoundary newElement = new ElementBoundary();
+		newElement.setKey(dummyElement);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+
+		elements.add(newElement);
+
+		ElementBoundary[] responseE = this.restTemplate.postForObject(
+				this.baseUrl + "admin/elements/{adminSmartspace}/{adminEmail}", elements, ElementBoundary[].class,
+				adminSmartspace, adminEmail);
+		
+		//////////////////////////////////////////////
+		
+		
 		List<ActionBoundary> actions = new ArrayList<>();
 		ActionBoundary action= new ActionBoundary();
 		action.setCreated(new Date());
-		action.setElement(dummyElement);action.setActionKey(dummyKey);
+		action.setElement(dummyElement);
+		action.setActionKey(dummyKey);
 		action.setPlayer(dummyCreator);
 		action.setProperties(new HashMap<>());
 		action.setType("dummy Type");
@@ -192,6 +234,43 @@ public class RestActionControllerTests {
 		
 
 //		// WHEN I import array of 38 ElementBoundaries
+		
+		
+		//////////////////////////////////////////////////////////////////
+		
+		LatLng dummlocation = new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		ElementBoundary newElement = new ElementBoundary();
+		newElement.setKey(dummyElement);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+
+		List<ElementEntity> allELEEntities = IntStream.range(1, 2)
+				.mapToObj(i -> newElement.getKey().getSmartspace() + i)
+				.map(elem -> new ElementEntity(newElement.getName(), newElement.getElementType(),
+						new Location(newElement.getLatlng().getLng(), newElement.getLatlng().getLat()),
+						newElement.getCreated(), newElement.getCreator().getEmail(),
+						newElement.getCreator().getSmartspace(), newElement.isExpired(),
+						newElement.getElementProperties()))
+
+				.collect(Collectors.toList());
+
+		
+		for (int i = 0; i < allELEEntities.size(); i++) {
+			allELEEntities.get(i).setElementSmartspace(dummyElement.getSmartspace());
+			allELEEntities.get(i).setElementId(dummyElement.getId());
+
+		}
+		allELEEntities = this.elementService.importElements(allELEEntities);
+		
+		//////////////////////////////////////////////////////////////////
+
 		
 		newAction.setCreated(new Date());
 		newAction.setElement(dummyElement);
@@ -252,7 +331,7 @@ public class RestActionControllerTests {
 			.containsExactlyElementsOf(lastEight);
 		
 	
-
+		tearDown();
 	}
 	@Test
 	public void testGetMessagesUsingPaginationWithoutNoResult() throws Exception{
@@ -279,15 +358,51 @@ public class RestActionControllerTests {
 		dummyKey.setSmartspace("some smartspace");
 		
 
-//		// WHEN I import array of 38 ElementBoundaries
+//		// WHEN I import array of 38 ActionBoundaries
 		
+		
+		
+		//////////////////////////////////////////////////////////////////
+		
+		LatLng dummlocation = new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		ElementBoundary newElement = new ElementBoundary();
+		newElement.setKey(dummyElement);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+
+		List<ElementEntity> allELEEntities = IntStream.range(1, 2)
+				.mapToObj(i -> newElement.getKey().getSmartspace() + i)
+				.map(elem -> new ElementEntity(newElement.getName(), newElement.getElementType(),
+						new Location(newElement.getLatlng().getLng(), newElement.getLatlng().getLat()),
+						newElement.getCreated(), newElement.getCreator().getEmail(),
+						newElement.getCreator().getSmartspace(), newElement.isExpired(),
+						newElement.getElementProperties()))
+
+				.collect(Collectors.toList());
+
+		for (int i = 0; i < allELEEntities.size(); i++) {
+			allELEEntities.get(i).setElementSmartspace(dummyElement.getSmartspace());
+			allELEEntities.get(i).setElementId(dummyElement.getId());
+
+		}
+		allELEEntities = this.elementService.importElements(allELEEntities);
+		
+		//////////////////////////////////////////////////////////////////
+
 		newAction.setCreated(new Date());
 		newAction.setElement(dummyElement);
 		newAction.setActionKey(dummyKey);
 		newAction.setPlayer(dummyCreator);
 		newAction.setProperties(new HashMap<>());
 		newAction.setType("dummy Type");
-
+		
 		
 		List<ActionEntity> allEntities = 
 				IntStream.range(1, totalSize + 1)
@@ -309,6 +424,7 @@ public class RestActionControllerTests {
 			allEntities.get(i).setActionId(dummyKey.getId());
 
 		}
+		
 		allEntities=this.actionService.importActions(allEntities);
 		
 
@@ -340,7 +456,7 @@ public class RestActionControllerTests {
 			.usingElementComparatorOnFields("name")
 			.containsExactlyElementsOf(lastEight);
 		
-		
+		tearDown();
 	}
 
 	
