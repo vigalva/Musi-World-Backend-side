@@ -109,6 +109,8 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 		if (update.getName()!=null) {
 			existing.setName(update.getName());
 		}
+		existing.setExpired(update.isExpired());
+		
 		if (update.getType()!=null) {
 			existing.setType(update.getType());
 		}
@@ -117,7 +119,6 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 //		}
 	
 		
-
 		// SQL: UPDATE
 		this.elementCrud.save(existing);
 	}
@@ -156,15 +157,33 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 
 	@Override
 	@Transactional(readOnly=true)
-	public List<ElementEntity> readElementsByNamePattern(String name,int size, int page) {
+	public List<ElementEntity> readElementsByNamePatternForPlayer(String name,int size, int page) {
+		System.err.println("i'm here");
+		return this.elementCrud
+				.findAllByNameLikeAndExpiredIs("%" + name + "%", 
+						false,
+						PageRequest.of(page, size));
+	}
+	@Override
+	@Transactional(readOnly=true)
+	public List<ElementEntity> readElementsByNamePatternForManager(String name,int size, int page) {
 		
 		return this.elementCrud
 				.findAllByNameLike("%" + name + "%", 
 						PageRequest.of(page, size));
 	}
+	
+	@Override
+	public List<ElementEntity> readElementsByTypeForPlayer(String type, int size, int page) {
+		
+		return this.elementCrud
+				.findAllByTypeLikeAndExpiredIs( type, 
+						false,
+						PageRequest.of(page, size));
+	}
 
 	@Override
-	public List<ElementEntity> readElementsByType(String type, int size, int page) {
+	public List<ElementEntity> readElementsByTypeForManager(String type, int size, int page) {
 		
 		return this.elementCrud
 				.findAllByTypeLike( type, 
@@ -172,8 +191,8 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 	}
 
 	@Override
-	public List<ElementEntity> readElementsByDistance(double x, double y, double distance, int size, int page) {
-		System.err.println("i'm here");
+	public List<ElementEntity> readElementsByDistanceForManager(double x, double y, double distance, int size, int page) {
+		
 		double minX=x-distance;
 		double maxX=x+distance;
 		double minY=y-distance;
@@ -184,6 +203,22 @@ public class RdbElementDao implements AdvancedElementDao<String> {
 						maxX,
 						minY,
 						maxY,
+						PageRequest.of(page, size));
+	}
+public List<ElementEntity> readElementsByDistanceForPlayer(double x, double y, double distance, int size, int page) {
+		
+		
+		double minX=x-distance;
+		double maxX=x+distance;
+		double minY=y-distance;
+		double maxY=y+distance;
+		return this.elementCrud
+				.findAllByLocationXBetweenAndLocationYBetweenAndExpiredIs(
+						minX,
+						maxX,
+						minY,
+						maxY,
+						false,
 						PageRequest.of(page, size));
 	}
 

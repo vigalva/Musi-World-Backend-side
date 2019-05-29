@@ -130,7 +130,6 @@ public class RdbElementIntegrationTests {
 		assertThat(newelement.getLocation().getY()).isEqualTo(Updatedelement.get().getLocation().getY());
 		assertThat(newelement.getCreatorSmartspace()).isEqualTo(Updatedelement.get().getCreatorSmartspace());
 		assertThat(newelement.getCreatorEmail()).isEqualTo(Updatedelement.get().getCreatorEmail());
-		assertThat(newelement.getCreationTimestamp()).isEqualTo(Updatedelement.get().getCreationTimestamp());
 
 
 		teardown();

@@ -78,7 +78,6 @@ public class ElementController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page, 
 			@RequestParam(name="size", required=false, defaultValue="10") int size) {
 		
-		System.err.println(value);
 		if (search.equals("")) {
 			return 
 			this.elementService
@@ -170,6 +169,7 @@ public class ElementController {
 		
 			@RequestBody ElementBoundary element) {
 		
+			
 				this.elementService.update(managerSmartspace,managerEmail,element.convertToEntity(), elementSmartspace, elementId);
 				
 			}

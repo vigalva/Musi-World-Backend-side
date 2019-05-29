@@ -29,4 +29,27 @@ public interface ElementCrud extends PagingAndSortingRepository<ElementEntity, S
 			@Param("minY") double minY, 
 			@Param("maxY") double maxY,
 			Pageable pageable);
+	
+	public List<ElementEntity> 
+	findAllByNameLikeAndExpiredIs(
+			@Param("name") String name, 
+			@Param("expired") boolean expired,
+			Pageable pageable);
+	
+	public List<ElementEntity> 
+	findAllByTypeLikeAndExpiredIs(
+			@Param("type") String type,
+			@Param("expired") boolean expired,
+			Pageable pageable);
+	
+	public List<ElementEntity> 
+	findAllByLocationXBetweenAndLocationYBetweenAndExpiredIs(
+			@Param("minX") double minX, 
+			@Param("maxX") double maxX, 
+			@Param("minY") double minY, 
+			@Param("maxY") double maxY,
+			@Param("expired") boolean expired,
+			Pageable pageable);
+	
+
 }

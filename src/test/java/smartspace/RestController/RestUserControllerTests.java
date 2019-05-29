@@ -67,6 +67,7 @@ public class RestUserControllerTests {
 		admin = new UserEntity();
 		admin.setRole(UserRole.ADMIN);
 		admin.setUserEmail("admin Email");
+		admin.setUsername("dummy user");
 		admin = this.userDao.create(admin);
 	}
 
@@ -224,6 +225,11 @@ public class RestUserControllerTests {
 					this.baseUrl +"admin/users/{adminSmartspace}/{adminEmail}"+"?size={size}&page={page}", 
 					UserBoundary[].class,admin.getUserSmatspace(),admin.getUserEmail(), 
 					size, page);
+		
+	
+		for (int i=0;i<results.length;i++) {
+			System.err.println(results[i]);
+		}
 		// THEN the response contains 9 messages  
 		assertThat(results)
 			.usingElementComparatorOnFields("username")

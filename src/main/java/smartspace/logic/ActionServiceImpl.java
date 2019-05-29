@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import smartspace.aop.RoleValidation;
 import smartspace.dao.AdvancedActionDao;
 import smartspace.dao.AdvancedElementDao;
+import smartspace.dao.AdvancedUserDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
+import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
 @Service
@@ -18,11 +20,12 @@ import smartspace.data.UserRole;
 public class ActionServiceImpl implements ActionService {
 	private AdvancedActionDao<String> ActionsDao;
 	private AdvancedElementDao<String> ElementDao;
+	private AdvancedUserDao<String> userDao;
 
-	public ActionServiceImpl(AdvancedActionDao<String> ActionsDao, AdvancedElementDao<String> ElementDao) {
+	public ActionServiceImpl(AdvancedActionDao<String> ActionsDao, AdvancedElementDao<String> ElementDao,AdvancedUserDao<String> userDao) {
 		this.ActionsDao = ActionsDao;
 		this.ElementDao = ElementDao;
-
+		this.userDao=userDao;
 	}
 
 	@RoleValidation(permissions = {UserRole.ADMIN})
@@ -62,8 +65,54 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public ActionEntity invokeAction(String smartspace, String email,ActionEntity convertToEntity) {
 		// TODO Auto-validate methodes
-		if (convertToEntity.getActionType().equals("echo"))
-		return this.ActionsDao.create(convertToEntity);
+		if (convertToEntity.getActionType().equals("echo")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("check in")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("check out")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("buy album")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("buy tickets")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("cancel tickets")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("rate album")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
+		else if (convertToEntity.getActionType().equals("preview")) {
+			UserEntity user=this.userDao.readById(smartspace+"!"+email).get();
+			user.setPoints(user.getPoints()+10);
+			this.userDao.update(user);
+			return this.ActionsDao.create(convertToEntity);
+		}
 		
 		return this.ActionsDao.create(convertToEntity);
 	}
