@@ -3,7 +3,9 @@ package smartspace.logic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +52,19 @@ public class ElementServiceImpl implements ElementService {
 	@Override
 	public ElementEntity createElement(String smartspace, String email,ElementEntity entity) {
 		entity.setCreationTimestamp(new Date());
+		if (entity.getType().equals("gener")) {
+			Map<String,Object> properties=entity.getMoreAttributes();
+			properties.put("check in", 0);
+			properties.put("check out", 0);
+			entity.setMoreAttributes(properties);
+			
+		}
+		else if (entity.getType().equals("album")) {
+			 
+				Map<String,Object> properties=entity.getMoreAttributes();
+				properties.put("rating", 0);
+				entity.setMoreAttributes(properties);
+		}
 		return this.ElementsDao.create(entity);
 	}
 
