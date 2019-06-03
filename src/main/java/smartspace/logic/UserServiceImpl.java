@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserEntity createUser(UserEntity convertToEntity) {
 		// TODO Auto-validate method
-		if (convertToEntity.getUserEmail().contains("!")){
+		if (!convertToEntity.getUserEmail().contains("@")){
 			return new UserEntity();
 		}
 		return this.userDao.create(convertToEntity);
