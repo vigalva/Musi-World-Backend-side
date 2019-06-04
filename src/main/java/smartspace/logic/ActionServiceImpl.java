@@ -35,8 +35,9 @@ public class ActionServiceImpl implements ActionService, LineListener {
 	private AdvancedActionDao<String> ActionsDao;
 	private AdvancedElementDao<String> ElementDao;
 	private AdvancedUserDao<String> userDao;
-	private boolean playCompleted = false;
-
+	private boolean isPlayCompleted = false;
+	
+	
 	public ActionServiceImpl(AdvancedActionDao<String> ActionsDao, AdvancedElementDao<String> ElementDao,
 			AdvancedUserDao<String> userDao) {
 		this.ActionsDao = ActionsDao;
@@ -165,7 +166,7 @@ public class ActionServiceImpl implements ActionService, LineListener {
 
 				audioClip.start();
 
-				while (!playCompleted) {
+				while (!isPlayCompleted) {
 					// wait for the playback completes
 					try {
 						Thread.sleep(1000);
@@ -200,7 +201,7 @@ public class ActionServiceImpl implements ActionService, LineListener {
 			System.out.println("Playback started.");
 
 		} else if (type == LineEvent.Type.STOP) {
-			playCompleted = true;
+			isPlayCompleted = true;
 			System.out.println("Playback completed.");
 		}
 
