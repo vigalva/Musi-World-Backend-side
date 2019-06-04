@@ -120,6 +120,7 @@ public class RestActionControllerTests {
 	public void testInvokeAnACtion() throws Exception{
 		//GIVEN the database is empty
 		userInit();
+		adminInit();
 		//WHEN I create a new action 
 	
 		
@@ -131,6 +132,32 @@ public class RestActionControllerTests {
 		
 		dummyElement.setId("dummy id");
 		dummyElement.setSmartspace("dummy smartspace");
+		
+		
+		///////////////////////////////////////////
+				
+		List<ElementBoundary> elements = new ArrayList<>();
+		LatLng dummlocation = new LatLng();
+		dummlocation.setLan(100);
+		dummlocation.setLat(200);
+		
+		ElementBoundary newElement = new ElementBoundary();
+		newElement.setKey(dummyElement);
+		newElement.setName("dummy name");
+		newElement.setElementType("dummy type");
+		newElement.setCreator(dummyCreator);
+		newElement.setLatlng(dummlocation);
+		newElement.setCreated(new Date());
+		newElement.setExpired(false);
+		newElement.setElementProperties(new HashMap<>());
+		
+		elements.add(newElement);
+		
+		ElementBoundary[] responseE = this.restTemplate.postForObject(
+		this.baseUrl + "admin/elements/{adminSmartspace}/{adminEmail}", elements, ElementBoundary[].class,
+		admin.getUserSmatspace(), admin.getUserEmail());
+		dummyElement.setId(responseE[0].getKey().getId());
+		//////////////////////////////////////////////
 		
 		ActionBoundaryKey dummyKey=new ActionBoundaryKey();
 		dummyKey.setId("some id");
