@@ -147,46 +147,46 @@ public class ActionServiceImpl implements ActionService, LineListener {
 			ElementEntity entity = this.ElementDao
 					.readById(convertToEntity.getElementSmartspace() + "!"+convertToEntity.getElementId()).get();
 			Map<String, Object> properties = entity.getMoreAttributes();
-			String preview = (String) properties.get("priview");
-			
-			File audioFile = new File(preview);
-			
-			try {
-				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
-				AudioFormat format = audioStream.getFormat();
-
-				DataLine.Info info = new DataLine.Info(Clip.class, format);
-
-				Clip audioClip = (Clip) AudioSystem.getLine(info);
-
-				audioClip.addLineListener(this);
-
-				audioClip.open(audioStream);
-
-				audioClip.start();
-
-				while (!isPlayCompleted) {
-					// wait for the playback completes
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException ex) {
-						ex.printStackTrace();
-					}
-				}
-
-				audioClip.close();
-
-			} catch (UnsupportedAudioFileException ex) {
-				System.out.println("The specified audio file is not supported.");
-				ex.printStackTrace();
-			} catch (LineUnavailableException ex) {
-				System.out.println("Audio line for playing back is unavailable.");
-				ex.printStackTrace();
-			} catch (IOException ex) {
-				System.out.println("Error playing the audio file.");
-				ex.printStackTrace();
-			}
+			String preview = (String) properties.get("preview");
+			convertToEntity.getMoreAttributes().put("preview", preview);
+//			File audioFile = new File(preview);
+//			try {
+//				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+//
+//				AudioFormat format = audioStream.getFormat();
+//
+//				DataLine.Info info = new DataLine.Info(Clip.class, format);
+//
+//				Clip audioClip = (Clip) AudioSystem.getLine(info);
+//				
+//				audioClip.addLineListener(this);
+//
+//				audioClip.open(audioStream);
+//
+//				audioClip.start();
+//
+//				while (!isPlayCompleted) {
+//					// wait for the playback completes
+//					
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException ex) {
+//						ex.printStackTrace();
+//					}
+//				}
+//
+//				audioClip.close();
+//
+//			} catch (UnsupportedAudioFileException ex) {
+//				System.out.println("The specified audio file is not supported.");
+//				ex.printStackTrace();
+//			} catch (LineUnavailableException ex) {
+//				System.out.println("Audio line for playing back is unavailable.");
+//				ex.printStackTrace();
+//			} catch (IOException ex) {
+//				System.out.println("Error playing the audio file.");
+//				ex.printStackTrace();
+//			}
 
 		}
 
