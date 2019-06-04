@@ -54,6 +54,7 @@ public class RoleValidationAdvice {
 		//System.err.println(roles);
 		UserRole role = userDao.readById(smartspace + "!" + email)
 				.orElseThrow(RuntimeException::new).getRole();
+		
 		if(!Arrays.asList(roles).contains(role))
 		{
 			

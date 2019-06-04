@@ -97,10 +97,11 @@ public class ElementServiceImpl implements ElementService {
 		// TODO Auto-validate function
 		UserEntity user=this.UserDao.readById(smartspace+"!"+email).get();
 		if (user.getRole().toString().equals("PLAYER")) {
-			List<ElementEntity> notExpired=this.ElementsDao.readAll(size, page);
-			for (ElementEntity e:notExpired) {
-				if (e.isExpired()==true)
-					notExpired.remove(e);
+			List<ElementEntity> notExpired=new ArrayList<>();
+			for (ElementEntity e:this.ElementsDao.readAll(size, page)) {
+				if (e.isExpired()==false) {
+					notExpired.add(e);
+				}
 			}
 			return notExpired;
 		}

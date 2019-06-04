@@ -3,6 +3,7 @@ package smartspace.logic;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class ActionServiceImpl implements ActionService, LineListener {
 			if (!foundElement)
 				throw new RuntimeException("You are trying to import action with no element");
 			else {
-				if (action.getActionSmartspace().equals("inbal1"))
+				if (action.getActionSmartspace().equals("inbala1"))
 					throw new RuntimeException("You are trying to import actions from your project");
 				else
 					actionEntites.add(this.ActionsDao.create(action));
@@ -80,7 +81,10 @@ public class ActionServiceImpl implements ActionService, LineListener {
 	@Override
 	public ActionEntity invokeAction(String smartspace, String email, ActionEntity convertToEntity) {
 		// TODO Auto-validate methodes
-
+		if (this.ElementDao.readById(convertToEntity.getElementSmartspace()+"!"+convertToEntity.getElementId()).get().isExpired()==true) {
+			return new ActionEntity();
+		}
+		convertToEntity.setCreationTimestamp(new Date());
 		UserEntity user = this.userDao.readById(smartspace + "!" + email).get();
 		user.setPoints(user.getPoints() + 10);
 		this.userDao.update(user);
@@ -109,7 +113,7 @@ public class ActionServiceImpl implements ActionService, LineListener {
 
 		else if (convertToEntity.getActionType().equals("buy tickets")) {
 			ElementEntity entity = this.ElementDao
-					.readById(convertToEntity.getElementSmartspace() + convertToEntity.getElementId()).get();
+					.readById(convertToEntity.getElementSmartspace() + "!"+convertToEntity.getElementId()).get();
 			Map<String, Object> properties = entity.getMoreAttributes();
 			int numOfTickets = (int) properties.get("tickets");
 			numOfTickets--;
@@ -117,9 +121,10 @@ public class ActionServiceImpl implements ActionService, LineListener {
 			entity.setMoreAttributes(properties);
 			this.ElementDao.update(entity);
 		} 
+	
 		else if (convertToEntity.getActionType().equals("cancel tickets")) {
 			ElementEntity entity = this.ElementDao
-					.readById(convertToEntity.getElementSmartspace() + convertToEntity.getElementId()).get();
+					.readById(convertToEntity.getElementSmartspace() + "!"+convertToEntity.getElementId()).get();
 			Map<String, Object> properties = entity.getMoreAttributes();
 			int numOfTickets = (int) properties.get("tickets");
 			numOfTickets++;
@@ -129,7 +134,7 @@ public class ActionServiceImpl implements ActionService, LineListener {
 		} 
 		else if (convertToEntity.getActionType().equals("rate album")) {
 			ElementEntity entity = this.ElementDao
-					.readById(convertToEntity.getElementSmartspace() + convertToEntity.getElementId()).get();
+					.readById(convertToEntity.getElementSmartspace() + "!"+convertToEntity.getElementId()).get();
 			Map<String, Object> properties = entity.getMoreAttributes();
 			int rating = (int) properties.get("rating");
 			rating++;
@@ -139,11 +144,12 @@ public class ActionServiceImpl implements ActionService, LineListener {
 		} 
 		else if (convertToEntity.getActionType().equals("preview")) {
 			ElementEntity entity = this.ElementDao
-					.readById(convertToEntity.getElementSmartspace() + convertToEntity.getElementId()).get();
+					.readById(convertToEntity.getElementSmartspace() + "!"+convertToEntity.getElementId()).get();
 			Map<String, Object> properties = entity.getMoreAttributes();
 			String preview = (String) properties.get("priview");
+			
 			File audioFile = new File(preview);
-
+			
 			try {
 				AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
